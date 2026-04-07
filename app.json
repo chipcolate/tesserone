@@ -7,7 +7,6 @@
     "icon": "./assets/icon.png",
     "scheme": "tesserone",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -15,14 +14,16 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.chipcolate.tesserone"
+      "bundleIdentifier": "com.chipcolate.tesserone",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0A0A0A"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.chipcolate.tesserone",
       "permissions": [
         "android.permission.CAMERA",
