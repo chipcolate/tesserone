@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "Tesserone",
+    "slug": "tesserone",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "tesserone",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0A0A"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.chipcolate.tesserone"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A0A0A"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.chipcolate.tesserone",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.WRITE_SETTINGS"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Tesserone needs camera access to scan barcodes on your loyalty cards."
+        }
+      ],
+      [
+        "expo-brightness",
+        {
+          "isSystemBrightnessAllowed": true
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "be2e28e5-6dae-42f0-99f0-6c92da02a69d"
+      }
+    },
+    "owner": "chipcolate"
+  }
+}
