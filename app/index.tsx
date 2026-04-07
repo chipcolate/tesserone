@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
@@ -6,14 +6,48 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { useCardsStore, getSortedCards } from '../src/stores/cards';
+import { useSettingsStore } from '../src/stores/settings';
+import { useTheme, textOnColor, typography } from '../src/theme';
+import { FidelityCard } from '../src/types';
 
-const CARD_WIDTH = 320;
-const CARD_HEIGHT = 200;
+const SAMPLE_CARDS: Omit<FidelityCard, 'id' | 'sortIndex' | 'createdAt' | 'updatedAt'>[] = [
+  { name: 'Esselunga', code: '1234567890123', format: 'EAN13', color: '#1B5E20' },
+  { name: 'Coop', code: '9876543210987', format: 'EAN13', color: '#D32F2F' },
+  { name: 'IKEA', code: 'IKEA-FAMILY-001', format: 'CODE128', color: '#0051BA', logoSlug: 'ikea' },
+];
+
+function makeCard(sample: (typeof SAMPLE_CARDS)[number], index: number): FidelityCard {
+  const now = new Date().toISOString();
+  return {
+    ...sample,
+    id: `card-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    sortIndex: index,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
+  const { colors } = useTheme();
+  const { cards, addCard, removeCard, clearAll } = useCardsStore();
+  const { sortMode, themeMode, setThemeMode } = useSettingsStore();
 
+  const cardsList = getSortedCards(cards, sortMode);
+
+  const handleAddSample = () => {
+    const sample = SAMPLE_CARDS[Object.keys(cards).length % SAMPLE_CARDS.length];
+    addCard(makeCard(sample, Object.keys(cards).length));
+  };
+
+  const cycleTheme = () => {
+    const modes = ['system', 'light', 'dark'] as const;
+    const next = modes[(modes.indexOf(themeMode) + 1) % modes.length];
+    setThemeMode(next);
+  };
+
+  // Draggable test card
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -45,22 +79,55 @@ export default function HomeScreen() {
   }));
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Text style={styles.title}>Tesserone</Text>
-      <Text style={styles.subtitle}>Drag the card to test Reanimated + Gesture Handler</Text>
+    <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
+      <Text style={[typography.title, { color: colors.text }]}>Tesserone</Text>
+      <Text style={[typography.caption, { color: colors.textSecondary, marginTop: 4 }]}>
+        Phase 0–2: Reanimated + Stores + Theme
+      </Text>
 
-      <View style={styles.cardArea}>
-        <GestureDetector gesture={panGesture}>
-          <Animated.View style={[styles.card, animatedStyle]}>
-            <Text style={styles.cardName}>Esselunga</Text>
-            <Text style={styles.cardCode}>1234 5678 9012</Text>
-          </Animated.View>
-        </GestureDetector>
+      <GestureDetector gesture={panGesture}>
+        <Animated.View style={[styles.dragCard, { backgroundColor: colors.accent }, animatedStyle]}>
+          <Text style={[typography.label, { color: textOnColor(colors.accent), fontWeight: '600' }]}>
+            Drag me
+          </Text>
+        </Animated.View>
+      </GestureDetector>
+
+      <View style={styles.buttons}>
+        <Pressable style={[styles.button, { backgroundColor: colors.surface }]} onPress={handleAddSample}>
+          <Text style={[typography.label, { color: colors.text, fontWeight: '600' }]}>+ Add Card</Text>
+        </Pressable>
+        <Pressable style={[styles.button, { backgroundColor: colors.surface }]} onPress={cycleTheme}>
+          <Text style={[typography.label, { color: colors.text, fontWeight: '600' }]}>
+            Theme: {themeMode}
+          </Text>
+        </Pressable>
+        <Pressable style={[styles.button, { backgroundColor: '#7f1d1d' }]} onPress={clearAll}>
+          <Text style={[typography.label, { color: '#F5F5F5', fontWeight: '600' }]}>Clear</Text>
+        </Pressable>
       </View>
 
-      <Text style={styles.hint}>
-        Card should spring back to center on release
+      <Text style={[typography.caption, { color: colors.textSecondary, marginTop: 12 }]}>
+        {cardsList.length} cards (sort: {sortMode})
       </Text>
+
+      <ScrollView style={styles.list} contentContainerStyle={styles.listContent}>
+        {cardsList.map((card) => {
+          const bg = card.color || '#333';
+          return (
+            <Pressable
+              key={card.id}
+              style={[styles.cardRow, { backgroundColor: bg }]}
+              onPress={() => removeCard(card.id)}
+            >
+              <Text style={[typography.cardName, { color: textOnColor(bg) }]}>{card.name}</Text>
+              <Text style={[typography.caption, { color: textOnColor(bg), opacity: 0.7, marginTop: 4 }]}>
+                {card.format} | {card.code} | tap to remove
+              </Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 }
@@ -68,52 +135,43 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0A0A',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#F5F5F5',
-    marginTop: 24,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#888',
-    marginTop: 8,
-  },
-  cardArea: {
-    flex: 1,
+  dragCard: {
+    width: 200,
+    height: 60,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  card: {
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
-    backgroundColor: '#1B5E20',
-    borderRadius: 16,
-    padding: 24,
-    justifyContent: 'space-between',
+    marginTop: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
-  cardName: {
-    fontSize: 22,
-    fontWeight: '600',
-    color: '#F5F5F5',
+  buttons: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 16,
   },
-  cardCode: {
-    fontSize: 16,
-    fontFamily: 'Courier',
-    color: '#E0E0E0',
-    letterSpacing: 2,
+  button: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
   },
-  hint: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 40,
+  list: {
+    flex: 1,
+    width: '100%',
+    marginTop: 8,
+  },
+  listContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+    gap: 8,
+  },
+  cardRow: {
+    padding: 16,
+    borderRadius: 12,
   },
 });
