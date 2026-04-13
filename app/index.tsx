@@ -50,21 +50,29 @@ export default function HomeScreen() {
   }));
 
   // Menu items stagger from bottom
-  const menuItem1Style = useAnimatedStyle(() => ({
-    opacity: interpolate(fabProgress.value, [0, 0.5, 1], [0, 0, 1], Extrapolation.CLAMP),
-    transform: [
-      { translateY: interpolate(fabProgress.value, [0, 1], [30, 0], Extrapolation.CLAMP) },
-      { scale: interpolate(fabProgress.value, [0, 0.5, 1], [0.8, 0.8, 1], Extrapolation.CLAMP) },
-    ],
-  }));
+  const menuItem1Style = useAnimatedStyle(() => {
+    const visible = fabProgress.value > 0.5;
+    return {
+      opacity: interpolate(fabProgress.value, [0, 0.5, 1], [0, 0, 1], Extrapolation.CLAMP),
+      transform: [
+        { translateY: interpolate(fabProgress.value, [0, 1], [30, 0], Extrapolation.CLAMP) },
+        { scale: interpolate(fabProgress.value, [0, 0.5, 1], [0.8, 0.8, 1], Extrapolation.CLAMP) },
+      ],
+      pointerEvents: visible ? 'auto' as const : 'none' as const,
+    };
+  });
 
-  const menuItem2Style = useAnimatedStyle(() => ({
-    opacity: interpolate(fabProgress.value, [0, 0.3, 0.8], [0, 0, 1], Extrapolation.CLAMP),
-    transform: [
-      { translateY: interpolate(fabProgress.value, [0, 1], [50, 0], Extrapolation.CLAMP) },
-      { scale: interpolate(fabProgress.value, [0, 0.3, 0.8], [0.8, 0.8, 1], Extrapolation.CLAMP) },
-    ],
-  }));
+  const menuItem2Style = useAnimatedStyle(() => {
+    const visible = fabProgress.value > 0.3;
+    return {
+      opacity: interpolate(fabProgress.value, [0, 0.3, 0.8], [0, 0, 1], Extrapolation.CLAMP),
+      transform: [
+        { translateY: interpolate(fabProgress.value, [0, 1], [50, 0], Extrapolation.CLAMP) },
+        { scale: interpolate(fabProgress.value, [0, 0.3, 0.8], [0.8, 0.8, 1], Extrapolation.CLAMP) },
+      ],
+      pointerEvents: visible ? 'auto' as const : 'none' as const,
+    };
+  });
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
@@ -91,7 +99,7 @@ export default function HomeScreen() {
       </Animated.View>
 
       {/* Menu items */}
-      <View style={[styles.fabMenu, { bottom: insets.bottom + 80 }]}>
+      <View style={[styles.fabMenu, { bottom: insets.bottom + 80 }]} pointerEvents="box-none">
         <Animated.View style={menuItem2Style}>
           <Pressable
             style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}

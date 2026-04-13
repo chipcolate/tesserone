@@ -16,6 +16,8 @@ import * as Haptics from 'expo-haptics';
 import { useCardsStore } from '../../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor } from '../../src/theme';
 import { BarcodeFormat } from '../../src/types';
+import { searchBrands, getBrandColors, type BrandEntry } from '../../src/services/logos';
+import { LogoSelector } from '../../src/components/ui/LogoSelector';
 
 const FORMAT_OPTIONS: { value: BarcodeFormat; label: string }[] = [
   { value: 'EAN13', label: 'EAN-13' },
@@ -40,6 +42,11 @@ export default function CardDetailScreen() {
   const [format, setFormat] = useState<BarcodeFormat>(card?.format ?? 'CODE128');
   const [color, setColor] = useState(card?.color ?? '#42A5F5');
   const [notes, setNotes] = useState(card?.notes ?? '');
+  const [logoSlug, setLogoSlug] = useState<string | undefined>(card?.logoSlug);
+  // Pre-populate brand suggestions if no logo is set yet
+  const [brandResults, setBrandResults] = useState<BrandEntry[]>(
+    () => (!card?.logoSlug && card?.name) ? searchBrands(card.name) : []
+  );
 
   if (!card) {
     return (
@@ -51,6 +58,19 @@ export default function CardDetailScreen() {
     );
   }
 
+  const handleNameChange = (text: string) => {
+    setName(text);
+    setBrandResults(searchBrands(text));
+  };
+
+  const handleBrandSelect = (brand: BrandEntry) => {
+    setName(brand.name);
+    setLogoSlug(brand.slug);
+    const brandColors = getBrandColors(brand.slug);
+    if (brandColors) setColor(brandColors.primary);
+    setBrandResults([]);
+  };
+
   const handleSave = () => {
     if (!name.trim()) {
       Alert.alert('Missing name', 'Card name is required.');
@@ -61,6 +81,7 @@ export default function CardDetailScreen() {
       code: code.trim(),
       format,
       color,
+      logoSlug,
       notes: notes.trim() || undefined,
     });
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -111,10 +132,21 @@ export default function CardDetailScreen() {
         <TextInput
           style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
           value={name}
-          onChangeText={setName}
+          onChangeText={handleNameChange}
           placeholder="Card name"
           placeholderTextColor={colors.textSecondary}
           autoCapitalize="words"
+        />
+
+        <Text style={[styles.label, { color: colors.textSecondary }]}>Logo</Text>
+        <LogoSelector
+          logoSlug={logoSlug}
+          customLogoUri={card.customLogoUri}
+          cardName={name}
+          cardColor={color}
+          brandResults={brandResults}
+          onBrandSelect={handleBrandSelect}
+          onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
         />
 
         <Text style={[styles.label, { color: colors.textSecondary }]}>Barcode</Text>
@@ -162,6 +194,7 @@ export default function CardDetailScreen() {
               style={[
                 styles.colorDot,
                 { backgroundColor: c },
+                c === '#FFFFFF' && styles.colorLight,
                 color === c && styles.colorSelected,
               ]}
               onPress={() => setColor(c)}
@@ -268,6 +301,10 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
+  },
+  colorLight: {
+    borderWidth: 1,
+    borderColor: '#ccc',
   },
   colorSelected: {
     borderWidth: 3,

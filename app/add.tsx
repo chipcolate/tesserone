@@ -19,6 +19,7 @@ import { BarcodeFormat, FidelityCard } from '../src/types';
 import * as Haptics from 'expo-haptics';
 import { mapBarcodeType, validateBarcode, fixScannedCode } from '../src/services/scanner';
 import { searchBrands, getBrandColors, type BrandEntry } from '../src/services/logos';
+import { LogoSelector } from '../src/components/ui/LogoSelector';
 
 type Tab = 'scan' | 'manual';
 
@@ -183,7 +184,7 @@ export default function AddCardScreen() {
           contentContainerStyle={styles.formContent}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Name + brand suggestions */}
+          {/* Name */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
           <TextInput
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
@@ -193,16 +194,17 @@ export default function AddCardScreen() {
             placeholderTextColor={colors.textSecondary}
             autoCapitalize="words"
           />
-          {brandResults.length > 0 && (
-            <View style={[styles.brandList, { backgroundColor: colors.surface }]}>
-              {brandResults.map((b) => (
-                <Pressable key={b.slug} style={styles.brandRow} onPress={() => handleBrandSelect(b)}>
-                  <View style={[styles.brandDot, { backgroundColor: b.primaryColor }]} />
-                  <Text style={[typography.label, { color: colors.text }]}>{b.name}</Text>
-                </Pressable>
-              ))}
-            </View>
-          )}
+
+          {/* Logo */}
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Logo</Text>
+          <LogoSelector
+            logoSlug={logoSlug}
+            cardName={name}
+            cardColor={color}
+            brandResults={brandResults}
+            onBrandSelect={handleBrandSelect}
+            onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
+          />
 
           {/* Barcode */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Barcode</Text>
@@ -252,6 +254,7 @@ export default function AddCardScreen() {
                 style={[
                   styles.colorDot,
                   { backgroundColor: c },
+                  c === '#FFFFFF' && styles.colorLight,
                   color === c && styles.colorSelected,
                 ]}
                 onPress={() => setColor(c)}
@@ -361,23 +364,6 @@ const styles = StyleSheet.create({
     height: 80,
     paddingTop: 12,
   },
-  brandList: {
-    borderRadius: 10,
-    marginTop: 4,
-    overflow: 'hidden',
-  },
-  brandRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-  },
-  brandDot: {
-    width: 24,
-    height: 24,
-    borderRadius: 6,
-  },
   formatRow: {
     flexGrow: 0,
     marginBottom: 4,
@@ -397,6 +383,10 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
+  },
+  colorLight: {
+    borderWidth: 1,
+    borderColor: '#ccc',
   },
   colorSelected: {
     borderWidth: 3,

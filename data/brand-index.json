@@ -7,5 +7,68 @@
     "primaryColor": "#00205b",
     "secondaryColor": "#e30613",
     "logo": "esselunga.png"
+  },
+  {
+    "slug": "conad",
+    "name": "Conad",
+    "aliases": ["conad"],
+    "alt": "Conad supermarket logo",
+    "primaryColor": "#CC171E",
+    "secondaryColor": "#FBFBFB",
+    "logo": "conad.png"
+  },
+  {
+    "slug": "decathlon",
+    "name": "Decathlon",
+    "aliases": ["decathlon"],
+    "alt": "Decathlon sports store logo",
+    "primaryColor": "#3643BA",
+    "secondaryColor": "#FFFFFF",
+    "logo": "decathlon.png"
+  },
+  {
+    "slug": "ikea",
+    "name": "IKEA",
+    "aliases": ["ikea"],
+    "alt": "IKEA furniture store logo",
+    "primaryColor": "#1456A2",
+    "secondaryColor": "#0051BA",
+    "logo": "ikea.png"
+  },
+  {
+    "slug": "iperal",
+    "name": "Iperal",
+    "aliases": ["iperal"],
+    "alt": "Iperal supermarket logo",
+    "primaryColor": "#765E5E",
+    "secondaryColor": "#FFFFFF",
+    "logo": "iperal.png"
+  },
+  {
+    "slug": "lapiadineria",
+    "name": "La Piadineria",
+    "aliases": ["la piadineria", "piadineria"],
+    "alt": "La Piadineria restaurant logo",
+    "primaryColor": "#FDF9F7",
+    "secondaryColor": "#FFFFFF",
+    "logo": "lapiadineria.png"
+  },
+  {
+    "slug": "media-world",
+    "name": "Media World",
+    "aliases": ["media world", "mediaworld"],
+    "alt": "Media World electronics store logo",
+    "primaryColor": "#D8232A",
+    "secondaryColor": "#F2F2F2",
+    "logo": "media-world.png"
+  },
+  {
+    "slug": "ovs",
+    "name": "OVS",
+    "aliases": ["ovs"],
+    "alt": "OVS clothing store logo",
+    "primaryColor": "#001526",
+    "secondaryColor": "#001526",
+    "logo": "ovs.png"
   }
 ]
