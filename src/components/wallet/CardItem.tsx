@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Platform, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
+  useSharedValue,
   withSpring,
+  withRepeat,
+  withSequence,
+  withTiming,
+  cancelAnimation,
+  Easing,
 } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
@@ -12,7 +18,7 @@ import { CardFlip } from './CardFlip';
 import {
   CARD_STACK,
   SPRING_SELECT,
-  SPRING_DISMISS,
+  SPRING_REORDER,
   CardStackState,
 } from './useCardStack';
 
@@ -21,60 +27,124 @@ interface CardItemProps {
   index: number;
   total: number;
   state: CardStackState;
+  reorderMode: boolean;
+  onReorder: (from: number, to: number) => void;
 }
 
-/**
- * A single card in the stack.
- *
- * Stack mode: shows CardFace, tap to select.
- * Selected mode: shows CardFlip (tappable to flip front/back), pan to dismiss.
- */
 export const CardItem = React.memo(function CardItem({
   card,
   index,
   total,
   state,
+  reorderMode,
+  onReorder,
 }: CardItemProps) {
   const tapGesture = state.makeTapGesture(index);
   const longPressGesture = state.makeLongPressGesture(() => {
     router.push(`/card/${card.id}`);
   });
+  const reorderGesture = state.makeReorderGesture(index, onReorder);
 
-  // Compose tap + long-press: both can coexist (tap is short, long-press is held)
-  const composedGesture = Gesture.Exclusive(longPressGesture, tapGesture);
+  // Normal: long-press (edit) > tap. Reorder: drag > nothing.
+  const gesture = reorderMode
+    ? reorderGesture
+    : Gesture.Exclusive(longPressGesture, tapGesture);
 
-  // Only the selected card follows flipProgress; others stay at 0 (front face).
   const effectiveFlip = useDerivedValue(() => {
     return state.selectedCardIndex.value === index ? state.flipProgress.value : 0;
   }, [index]);
 
+  // Wobble animation for reorder mode
+  const wobble = useSharedValue(0);
+  useEffect(() => {
+    if (reorderMode) {
+      // Random-ish phase offset per card so they don't sync
+      const delay = (index % 3) * 50;
+      setTimeout(() => {
+        wobble.value = withRepeat(
+          withSequence(
+            withTiming(-2, { duration: 100, easing: Easing.inOut(Easing.ease) }),
+            withTiming(2, { duration: 200, easing: Easing.inOut(Easing.ease) }),
+            withTiming(0, { duration: 100, easing: Easing.inOut(Easing.ease) }),
+          ),
+          -1,
+          true
+        );
+      }, delay);
+    } else {
+      cancelAnimation(wobble);
+      wobble.value = withTiming(0, { duration: 150 });
+    }
+  }, [reorderMode]);
+
   const animatedStyle = useAnimatedStyle(() => {
     const selected = state.selectedCardIndex.value;
     const vh = state.viewportHeight.value;
+    const isDragged = state.draggedIndex.value === index;
 
+    // --- Dragged card follows finger ---
+    if (isDragged) {
+      return {
+        transform: [
+          { translateY: state.dragStartY.value + state.dragTranslateY.value },
+          { scale: 1.05 },
+          { rotate: '0deg' },
+        ],
+        height: CARD_STACK.CARD_HEIGHT,
+        borderRadius: CARD_STACK.CARD_RADIUS,
+        zIndex: 999,
+      };
+    }
+
+    // --- Reorder mode: shift to make room for dragged card ---
+    if (state.draggedIndex.value !== -1) {
+      const dragIdx = state.draggedIndex.value;
+      const dragCurrentY =
+        state.dragStartY.value + state.dragTranslateY.value + state.scrollOffset.value;
+      const dragCurrentSlot = Math.round(dragCurrentY / CARD_STACK.STACK_SPACING);
+      const clampedSlot = Math.max(0, Math.min(total - 1, dragCurrentSlot));
+
+      let adjustedIndex = index;
+      if (index > dragIdx && index <= clampedSlot) {
+        adjustedIndex = index - 1;
+      } else if (index < dragIdx && index >= clampedSlot) {
+        adjustedIndex = index + 1;
+      }
+
+      const targetY = adjustedIndex * CARD_STACK.STACK_SPACING - state.scrollOffset.value;
+      return {
+        transform: [
+          { translateY: withSpring(targetY, SPRING_REORDER) },
+          { rotate: `${wobble.value}deg` },
+        ],
+        height: CARD_STACK.CARD_HEIGHT,
+        borderRadius: CARD_STACK.CARD_RADIUS,
+        zIndex: index,
+      };
+    }
+
+    // --- Normal stack mode (including wobble when reorder is on) ---
     if (selected === -1) {
-      // --- Stack mode ---
-      // Stiff spring: imperceptible during scroll (target moves a few px
-      // per frame) but creates a visible shrink animation when returning
-      // from the expanded state (target jumps hundreds of px).
       const targetY = index * CARD_STACK.STACK_SPACING - state.scrollOffset.value;
       const stiff = { damping: 80, stiffness: 1200 };
       return {
-        transform: [{ translateY: withSpring(targetY, stiff) }],
+        transform: [
+          { translateY: withSpring(targetY, stiff) },
+          { rotate: `${wobble.value}deg` },
+        ],
         height: withSpring(CARD_STACK.CARD_HEIGHT, stiff),
         borderRadius: CARD_STACK.CARD_RADIUS,
         zIndex: index,
       };
     }
 
+    // --- Selected card ---
     if (selected === index) {
-      // --- Selected ---
       const miniStackHeight = Math.min(
         (total - 1) * CARD_STACK.MINI_PEEK,
         vh * 0.2
       );
       const expandedHeight = vh - CARD_STACK.EXPANDED_TOP - miniStackHeight - 10;
-
       return {
         transform: [
           {
@@ -83,6 +153,7 @@ export const CardItem = React.memo(function CardItem({
               SPRING_SELECT
             ),
           },
+          { rotate: '0deg' },
         ],
         height: withSpring(expandedHeight, SPRING_SELECT),
         borderRadius: CARD_STACK.CARD_RADIUS,
@@ -95,22 +166,23 @@ export const CardItem = React.memo(function CardItem({
     const numMiniCards = total - 1;
     const miniStackBottom = vh - 10;
     const miniY = miniStackBottom - (numMiniCards - miniIndex) * CARD_STACK.MINI_PEEK;
-
     return {
-      transform: [{ translateY: withSpring(miniY, SPRING_SELECT) }],
+      transform: [
+        { translateY: withSpring(miniY, SPRING_SELECT) },
+        { rotate: '0deg' },
+      ],
       height: CARD_STACK.CARD_HEIGHT,
       borderRadius: CARD_STACK.CARD_RADIUS,
       zIndex: miniIndex,
     };
   }, [index, total]);
 
-  // Drag indicator (handle bar) fades in when card is expanded
   const handleStyle = useAnimatedStyle(() => ({
     opacity: state.selectedCardIndex.value === index ? 1 : 0,
   }), [index]);
 
   return (
-    <GestureDetector gesture={composedGesture}>
+    <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.item, animatedStyle]}>
         <CardFlip card={card} flipProgress={effectiveFlip} />
         <Animated.View style={[styles.handleWrap, handleStyle]} pointerEvents="none">

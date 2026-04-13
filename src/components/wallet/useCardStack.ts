@@ -37,6 +37,7 @@ export const SPRING_SELECT = { damping: 25, stiffness: 180 } as const;
 export const SPRING_DISMISS = { damping: 35, stiffness: 200 } as const;
 export const SPRING_BOUNCE = { damping: 20, stiffness: 300 } as const;
 export const SPRING_FLIP = { damping: 26, stiffness: 300 } as const;
+export const SPRING_REORDER = { damping: 20, stiffness: 250 } as const;
 
 const DISMISS_DISTANCE = 100;
 const DISMISS_VELOCITY = 500;
@@ -60,12 +61,20 @@ export function useCardStack() {
   const selectedCardIndex = useSharedValue(-1);
   const dismissTranslateY = useSharedValue(0);
   const savedDismissY = useSharedValue(0);
-  /** 0 = front, Math.PI = back */
   const flipProgress = useSharedValue(0);
 
+  // Reorder state
+  const reorderMode = useSharedValue(0); // 0 = off, 1 = on
+  const draggedIndex = useSharedValue(-1);
+  const dragTranslateY = useSharedValue(0);
+  const dragStartY = useSharedValue(0);
+
+  // --- Scroll / dismiss pan ---
   const panGesture = Gesture.Pan()
     .activeOffsetY([-10, 10])
     .onStart(() => {
+      // Disable scroll during reorder mode
+      if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         savedOffset.value = scrollOffset.value;
       } else {
@@ -73,6 +82,7 @@ export function useCardStack() {
       }
     })
     .onUpdate((event) => {
+      if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         const raw = savedOffset.value - event.translationY;
         const max = maxScroll.value;
@@ -91,6 +101,7 @@ export function useCardStack() {
       }
     })
     .onEnd((event) => {
+      if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         const max = maxScroll.value;
         if (scrollOffset.value < 0) {
@@ -111,7 +122,6 @@ export function useCardStack() {
           dismissTranslateY.value < -DISMISS_DISTANCE ||
           event.velocityY < -DISMISS_VELOCITY
         ) {
-          // Dismiss: deselect, reset flip, restore brightness
           selectedCardIndex.value = -1;
           dismissTranslateY.value = withSpring(0, SPRING_DISMISS);
           flipProgress.value = withSpring(0, SPRING_FLIP);
@@ -122,16 +132,15 @@ export function useCardStack() {
       }
     });
 
-  // Single tap per card: selects if in stack mode, flips if this card
-  // is selected, does nothing if another card is selected (mini-stack).
+  // --- Tap: select or flip ---
   const makeTapGesture = (index: number) =>
     Gesture.Tap().onEnd(() => {
+      // No tap actions in reorder mode
+      if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
-        // Stack mode → select this card
         selectedCardIndex.value = index;
         runOnJS(triggerHaptic)();
       } else if (selectedCardIndex.value === index) {
-        // This card is expanded → flip
         const isFlippingToBack = flipProgress.value < Math.PI / 2;
         const target = isFlippingToBack ? Math.PI : 0;
         flipProgress.value = withSpring(target, SPRING_FLIP);
@@ -144,18 +153,48 @@ export function useCardStack() {
       }
     });
 
-  // Long-press expanded card: open detail/edit screen.
-  // Accepts a callback so the component can handle navigation.
+  // --- Long-press: edit (normal mode) or start drag (reorder mode) ---
   const makeLongPressGesture = (onEdit: () => void) =>
     Gesture.LongPress()
       .minDuration(400)
       .onStart(() => {
+        if (reorderMode.value === 1) return; // drag handles reorder
         if (selectedCardIndex.value === -1) return;
         runOnJS(triggerHaptic)();
         selectedCardIndex.value = -1;
         flipProgress.value = withSpring(0, SPRING_FLIP);
         runOnJS(restoreBrightness)();
         runOnJS(onEdit)();
+      });
+
+  // --- Reorder drag: long-press then pan to reorder ---
+  const makeReorderGesture = (index: number, onReorder: (from: number, to: number) => void) =>
+    Gesture.Pan()
+      .activateAfterLongPress(300)
+      .onStart(() => {
+        if (reorderMode.value !== 1) return;
+        draggedIndex.value = index;
+        dragTranslateY.value = 0;
+        dragStartY.value = index * CARD_STACK.STACK_SPACING - scrollOffset.value;
+        runOnJS(triggerHaptic)();
+      })
+      .onUpdate((event) => {
+        if (draggedIndex.value !== index) return;
+        dragTranslateY.value = event.translationY;
+      })
+      .onEnd(() => {
+        if (draggedIndex.value !== index) return;
+        // Calculate target position based on where card was dropped
+        const currentY = dragStartY.value + dragTranslateY.value;
+        const targetIndex = Math.round(
+          Math.max(0, currentY + scrollOffset.value) / CARD_STACK.STACK_SPACING
+        );
+        draggedIndex.value = -1;
+        dragTranslateY.value = 0;
+        if (targetIndex !== index) {
+          runOnJS(onReorder)(index, targetIndex);
+          runOnJS(triggerLightHaptic)();
+        }
       });
 
   return {
@@ -165,9 +204,14 @@ export function useCardStack() {
     selectedCardIndex,
     dismissTranslateY,
     flipProgress,
+    reorderMode,
+    draggedIndex,
+    dragTranslateY,
+    dragStartY,
     panGesture,
     makeTapGesture,
     makeLongPressGesture,
+    makeReorderGesture,
   };
 }
 
