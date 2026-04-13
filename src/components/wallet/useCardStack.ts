@@ -73,8 +73,6 @@ export function useCardStack() {
   const panGesture = Gesture.Pan()
     .activeOffsetY([-10, 10])
     .onStart(() => {
-      // Disable scroll during reorder mode
-      if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         savedOffset.value = scrollOffset.value;
       } else {
@@ -82,7 +80,6 @@ export function useCardStack() {
       }
     })
     .onUpdate((event) => {
-      if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         const raw = savedOffset.value - event.translationY;
         const max = maxScroll.value;
@@ -101,7 +98,6 @@ export function useCardStack() {
       }
     })
     .onEnd((event) => {
-      if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         const max = maxScroll.value;
         if (scrollOffset.value < 0) {
