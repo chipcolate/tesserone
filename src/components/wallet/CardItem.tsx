@@ -5,7 +5,8 @@ import Animated, {
   useDerivedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { GestureDetector } from 'react-native-gesture-handler';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { router } from 'expo-router';
 import { FidelityCard } from '../../types';
 import { CardFlip } from './CardFlip';
 import {
@@ -35,6 +36,12 @@ export const CardItem = React.memo(function CardItem({
   state,
 }: CardItemProps) {
   const tapGesture = state.makeTapGesture(index);
+  const longPressGesture = state.makeLongPressGesture(() => {
+    router.push(`/card/${card.id}`);
+  });
+
+  // Compose tap + long-press: both can coexist (tap is short, long-press is held)
+  const composedGesture = Gesture.Exclusive(longPressGesture, tapGesture);
 
   // Only the selected card follows flipProgress; others stay at 0 (front face).
   const effectiveFlip = useDerivedValue(() => {
@@ -98,7 +105,7 @@ export const CardItem = React.memo(function CardItem({
   }, [index, total]);
 
   return (
-    <GestureDetector gesture={tapGesture}>
+    <GestureDetector gesture={composedGesture}>
       <Animated.View style={[styles.item, animatedStyle]}>
         <CardFlip card={card} flipProgress={effectiveFlip} />
       </Animated.View>
