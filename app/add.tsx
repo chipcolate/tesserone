@@ -16,6 +16,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useCardsStore, nextSortIndex } from '../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } from '../src/theme';
 import { BarcodeFormat, FidelityCard } from '../src/types';
+import * as Haptics from 'expo-haptics';
 import { mapBarcodeType, validateBarcode, fixScannedCode } from '../src/services/scanner';
 import { searchBrands, getBrandColors, type BrandEntry } from '../src/services/logos';
 
@@ -116,8 +117,9 @@ export default function AddCardScreen() {
       updatedAt: now,
     };
     addCard(card);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
-  }, [name, code, format, color, logoSlug, cards, addCard]);
+  }, [name, code, format, color, logoSlug, notes, cards, addCard]);
 
   return (
     <KeyboardAvoidingView

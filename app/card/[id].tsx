@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Haptics from 'expo-haptics';
 import { useCardsStore } from '../../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor } from '../../src/theme';
 import { BarcodeFormat } from '../../src/types';
@@ -62,6 +63,7 @@ export default function CardDetailScreen() {
       color,
       notes: notes.trim() || undefined,
     });
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
   };
 

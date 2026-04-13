@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
@@ -104,9 +104,17 @@ export const CardItem = React.memo(function CardItem({
     };
   }, [index, total]);
 
+  // Drag indicator (handle bar) fades in when card is expanded
+  const handleStyle = useAnimatedStyle(() => ({
+    opacity: state.selectedCardIndex.value === index ? 1 : 0,
+  }), [index]);
+
   return (
     <GestureDetector gesture={composedGesture}>
       <Animated.View style={[styles.item, animatedStyle]}>
+        <Animated.View style={[styles.handleWrap, handleStyle]} pointerEvents="none">
+          <View style={styles.handle} />
+        </Animated.View>
         <CardFlip card={card} flipProgress={effectiveFlip} />
       </Animated.View>
     </GestureDetector>
@@ -131,5 +139,19 @@ const styles = StyleSheet.create({
         elevation: 12,
       },
     }),
+  },
+  handleWrap: {
+    position: 'absolute',
+    top: 6,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  handle: {
+    width: 36,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: 'rgba(255,255,255,0.4)',
   },
 });
