@@ -3,26 +3,29 @@ import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import { FidelityCard } from '../../types';
 import { CardItem } from './CardItem';
-import { useCardStack, stackContentHeight } from './useCardStack';
+import { stackContentHeight, CardStackState } from './useCardStack';
+
+export { useCardStack } from './useCardStack';
+export type { CardStackState } from './useCardStack';
 
 interface CardStackProps {
   cards: FidelityCard[];
+  state: CardStackState;
+  reorderMode: boolean;
+  onReorder: (from: number, to: number) => void;
 }
 
 /**
  * Vertically scrollable card stack (Apple Wallet-style).
- *
- * maxScroll is recomputed whenever the viewport height or card count
- * changes, so async store hydration and card add/remove are handled.
+ * State is owned by the parent via useCardStack() so the parent
+ * can control reorderMode and other shared values.
  */
-export function CardStack({ cards }: CardStackProps) {
-  const state = useCardStack();
+export function CardStack({ cards, state, reorderMode, onReorder }: CardStackProps) {
   const lastViewportHeight = useRef(0);
 
-  // Recompute maxScroll whenever card count changes (e.g. store hydration)
   useEffect(() => {
     const vh = lastViewportHeight.current;
-    if (vh === 0) return; // layout hasn't fired yet
+    if (vh === 0) return;
     const contentHeight = stackContentHeight(cards.length);
     state.maxScroll.value = Math.max(0, contentHeight - vh);
     if (state.scrollOffset.value > state.maxScroll.value) {
@@ -48,7 +51,15 @@ export function CardStack({ cards }: CardStackProps) {
     <GestureDetector gesture={state.panGesture}>
       <View style={styles.container} onLayout={handleLayout}>
         {cards.map((card, index) => (
-          <CardItem key={card.id} card={card} index={index} total={cards.length} state={state} />
+          <CardItem
+            key={card.id}
+            card={card}
+            index={index}
+            total={cards.length}
+            state={state}
+            reorderMode={reorderMode}
+            onReorder={onReorder}
+          />
         ))}
       </View>
     </GestureDetector>

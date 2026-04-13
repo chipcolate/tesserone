@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -12,15 +12,22 @@ import Animated, {
 import { useCardsStore, getSortedCards } from '../src/stores/cards';
 import { useSettingsStore } from '../src/stores/settings';
 import { useTheme, typography, textOnColor } from '../src/theme';
-import { CardStack } from '../src/components/wallet/CardStack';
+import { CardStack, useCardStack } from '../src/components/wallet/CardStack';
 
 const SPRING = { damping: 18, stiffness: 260 } as const;
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
-  const { cards } = useCardsStore();
+  const { cards, reorderCard } = useCardsStore();
   const { sortMode } = useSettingsStore();
+  const stackState = useCardStack();
+  const [reorderMode, setReorderMode] = useState(false);
+
+  // Sync React state to shared value so gesture worklets can read it
+  useEffect(() => {
+    stackState.reorderMode.value = reorderMode ? 1 : 0;
+  }, [reorderMode, stackState.reorderMode]);
 
   // 0 = closed, 1 = open
   const fabProgress = useSharedValue(0);
@@ -37,6 +44,19 @@ export default function HomeScreen() {
   }, [fabProgress]);
 
   const cardsList = getSortedCards(cards, sortMode);
+
+  const toggleReorder = useCallback(() => {
+    close();
+    setReorderMode((v) => !v);
+  }, [close]);
+
+  const handleReorder = useCallback(
+    (from: number, to: number) => {
+      const card = cardsList[from];
+      if (card) reorderCard(card.id, to);
+    },
+    [cardsList, reorderCard]
+  );
 
   // Scrim fade
   const scrimStyle = useAnimatedStyle(() => ({
@@ -74,6 +94,18 @@ export default function HomeScreen() {
     };
   });
 
+  const menuItem3Style = useAnimatedStyle(() => {
+    const visible = fabProgress.value > 0.2;
+    return {
+      opacity: interpolate(fabProgress.value, [0, 0.2, 0.6], [0, 0, 1], Extrapolation.CLAMP),
+      transform: [
+        { translateY: interpolate(fabProgress.value, [0, 1], [70, 0], Extrapolation.CLAMP) },
+        { scale: interpolate(fabProgress.value, [0, 0.2, 0.6], [0.8, 0.8, 1], Extrapolation.CLAMP) },
+      ],
+      pointerEvents: visible ? 'auto' as const : 'none' as const,
+    };
+  });
+
   return (
     <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
       <View style={styles.header}>
@@ -89,7 +121,7 @@ export default function HomeScreen() {
             </Text>
           </View>
         ) : (
-          <CardStack cards={cardsList} />
+          <CardStack cards={cardsList} state={stackState} reorderMode={reorderMode} onReorder={handleReorder} />
         )}
       </View>
 
@@ -100,13 +132,23 @@ export default function HomeScreen() {
 
       {/* Menu items */}
       <View style={[styles.fabMenu, { bottom: insets.bottom + 80 }]} pointerEvents="box-none">
-        <Animated.View style={menuItem2Style}>
+        <Animated.View style={menuItem3Style}>
           <Pressable
             style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
             onPress={() => { close(); router.push('/settings'); }}
           >
             <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
               Settings
+            </Text>
+          </Pressable>
+        </Animated.View>
+        <Animated.View style={menuItem2Style}>
+          <Pressable
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
+            onPress={toggleReorder}
+          >
+            <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+              {reorderMode ? 'Done' : 'Reorder'}
             </Text>
           </Pressable>
         </Animated.View>
