@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useCardsStore, getSortedCards } from '../src/stores/cards';
 import { useSettingsStore } from '../src/stores/settings';
-import { useTheme, typography } from '../src/theme';
+import { useTheme, typography, textOnColor } from '../src/theme';
 import { CardStack } from '../src/components/wallet/CardStack';
 
 export default function HomeScreen() {
@@ -11,6 +12,7 @@ export default function HomeScreen() {
   const { colors } = useTheme();
   const { cards, clearAll } = useCardsStore();
   const { sortMode } = useSettingsStore();
+  const [fabOpen, setFabOpen] = useState(false);
 
   const cardsList = getSortedCards(cards, sortMode);
 
@@ -35,12 +37,42 @@ export default function HomeScreen() {
         )}
       </View>
 
-      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 8 }]}>
+      {/* FAB overlay: scrim + menu items when open */}
+      {fabOpen && (
+        <Pressable style={styles.scrim} onPress={() => setFabOpen(false)}>
+          <View style={[styles.fabMenu, { bottom: insets.bottom + 80 }]}>
+            <Pressable
+              style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
+              onPress={() => { setFabOpen(false); router.push('/add'); }}
+            >
+              <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+                Add Card
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
+              onPress={() => { setFabOpen(false); router.push('/settings'); }}
+            >
+              <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+                Settings
+              </Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      )}
+
+      {/* FAB button */}
+      <View style={[styles.fabWrap, { paddingBottom: insets.bottom + 8 }]}>
         <Pressable
-          style={[styles.addButton, { backgroundColor: colors.accent }]}
-          onPress={() => router.push('/add')}
+          style={[styles.fab, { backgroundColor: fabOpen ? colors.surface : colors.accent }]}
+          onPress={() => setFabOpen((v) => !v)}
         >
-          <Text style={{ color: '#fff', fontSize: 28, fontWeight: '300', marginTop: -2 }}>+</Text>
+          <Text style={{
+            color: fabOpen ? colors.text : textOnColor(colors.accent),
+            fontSize: 22,
+          }}>
+            {fabOpen ? '✕' : '☰'}
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -70,11 +102,34 @@ const styles = StyleSheet.create({
     fontSize: 64,
     fontWeight: '200',
   },
-  bottomBar: {
-    alignItems: 'center',
-    paddingTop: 12,
+  scrim: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    zIndex: 90,
   },
-  addButton: {
+  fabMenu: {
+    position: 'absolute',
+    right: 20,
+    gap: 8,
+    alignItems: 'flex-end',
+  },
+  fabMenuItem: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderRadius: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  fabWrap: {
+    position: 'absolute',
+    bottom: 0,
+    right: 20,
+    zIndex: 100,
+  },
+  fab: {
     width: 56,
     height: 56,
     borderRadius: 28,
