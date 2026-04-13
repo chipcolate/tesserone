@@ -19,7 +19,7 @@ const SPRING = { damping: 18, stiffness: 260 } as const;
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
-  const { cards, clearAll } = useCardsStore();
+  const { cards } = useCardsStore();
   const { sortMode } = useSettingsStore();
 
   // 0 = closed, 1 = open
@@ -69,9 +69,7 @@ export default function HomeScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <Pressable onLongPress={clearAll}>
-          <Text style={[typography.title, { color: colors.text }]}>Tesserone</Text>
-        </Pressable>
+        <Text style={[typography.title, { color: colors.text }]}>Tesserone</Text>
       </View>
 
       <View style={styles.stackWrap}>
@@ -121,6 +119,8 @@ export default function HomeScreen() {
         <Pressable
           style={[styles.fab, { backgroundColor: colors.accent }]}
           onPress={toggle}
+          accessibilityLabel="Menu"
+          accessibilityRole="button"
         >
           <Animated.Text
             style={[{ color: textOnColor(colors.accent), fontSize: 22 }, fabIconStyle]}

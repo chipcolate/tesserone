@@ -9,6 +9,10 @@ function triggerHaptic() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 }
 
+function triggerLightHaptic() {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+}
+
 async function maxBrightness() {
   savedBrightness = await Brightness.getBrightnessAsync();
   await Brightness.setBrightnessAsync(1);
@@ -91,8 +95,10 @@ export function useCardStack() {
         const max = maxScroll.value;
         if (scrollOffset.value < 0) {
           scrollOffset.value = withSpring(0, SPRING_BOUNCE);
+          runOnJS(triggerLightHaptic)();
         } else if (scrollOffset.value > max) {
           scrollOffset.value = withSpring(max, SPRING_BOUNCE);
+          runOnJS(triggerLightHaptic)();
         } else {
           scrollOffset.value = withDecay({
             velocity: -event.velocityY,
