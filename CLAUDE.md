@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Tesserone is a loyalty card manager app (v2 rewrite of "Cardshive") with an Apple Wallet-style card stack interaction. Local-first, zero cloud, open source (MIT). Bundle ID: `com.chipcolate.tesserone`.
+Tesserone is a loyalty card manager app with an Apple Wallet-style card stack interaction. Local-first, zero cloud, open source (MIT). Bundle ID: `com.chipcolate.tesserone`.
 
-The legacy v1 app lives in `legacy/Cardshive/`. The v2 app will be built from scratch in the repo root following the architecture in `PLAN.md`.
+The legacy v1 app ("Cardshive") lives in `legacy/Cardshive/` for data model reference only.
 
 ## Tech Stack
 
@@ -15,67 +15,84 @@ The legacy v1 app lives in `legacy/Cardshive/`. The v2 app will be built from sc
 - **react-native-reanimated 4.x** — all animations run on the UI thread via worklets
 - **react-native-gesture-handler 2.x** — pan, tap, long-press gestures for the card stack
 - **zustand** + AsyncStorage — state management with persistence
-- **Simple Icons** — bundled brand SVGs (CC0) for store logos on card faces
-- **fuse.js** — fuzzy search over brand name index
-- **lucide-react-native** — UI icons (replaces react-native-vector-icons from v1)
+- **fuse.js** — fuzzy search over curated brand name index
 
-No react-native-paper in v2 (custom UI components for full visual control).
+Custom UI components throughout (no react-native-paper or third-party UI kits).
 
 ## Build & Run
 
 ```bash
 # Install dependencies
-bun install          # or npm install
+bun install
 
-# Start dev server
-bun start            # or npx expo start
+# Dev build on physical device (required — no Expo Go or simulator)
+npx expo run:ios --device
 
-# Run on device/simulator
-bun run ios          # or npx expo run:ios
-bun run android      # or npx expo run:android
+# Start Metro dev server (if not already running)
+npx expo start --dev-client
 
-# Production builds (local only, no EAS cloud)
+# Preview build (ad-hoc, no dev client)
+eas build --platform ios --local --profile preview
+
+# Install IPA on device
+xcrun devicectl device install app --device <DEVICE_UUID> <path-to-ipa>
+
+# Production build
 eas build --platform ios --local --profile production
 eas build --platform android --local --profile production
 ```
 
-**Important:** Use dev builds, not Expo Go — Reanimated 4 and Gesture Handler require native modules.
-
 ## Architecture
 
 ### Routing (`app/`)
-File-based routing via expo-router: `index.tsx` (home/wallet), `add.tsx` (add card modal), `card/[id].tsx` (card detail), `settings.tsx`.
+File-based routing via expo-router:
+- `index.tsx` — home screen with card wallet stack and FAB menu
+- `add.tsx` — add card (scan + manual), modal presentation
+- `card/[id].tsx` — card detail/edit, modal presentation
+- `settings.tsx` — theme, import/export, about
+- `_layout.tsx` — root Stack with ThemeProvider + GestureHandlerRootView
 
-### Card Stack System (`src/components/wallet/`)
-The core of the app. Cards are `<Animated.View>` elements with transforms driven by shared values from the `useCardStack` hook. The stack supports: fan/scroll, tap-to-expand, swipe-to-dismiss, card flip (rotateY), long-press-to-reorder, and inline search filtering.
+### Card Stack (`src/components/wallet/`)
+Apple Wallet-style card stack. Cards are `<Animated.View>` elements with transforms driven by shared values from `useCardStack`.
 
-All animations use `withSpring()` (not `withTiming()`, except for opacity fades). Card positions are computed from scroll offset, selection state, and drag state.
+- `useCardStack.ts` — central hook: scroll, select/dismiss, flip, reorder shared values and gesture handlers
+- `CardStack.tsx` — container with scroll pan gesture, layout measurement
+- `CardItem.tsx` — single card: animated positioning, gesture composition, wobble for reorder mode
+- `CardFace.tsx` — front face: brand logo or name-initial fallback, notes
+- `CardBack.tsx` — back face: barcode rendering (EAN13, CODE128, QR, etc.)
+- `CardFlip.tsx` — rotateY flip wrapper with opacity-based face swap
+
+Interactions: vertical scroll with rubber-band overscroll, tap to expand, swipe up to dismiss, tap expanded card to flip (shows barcode + maxes brightness), long-press expanded card to edit, wobble + drag to reorder.
 
 ### State (`src/stores/`)
-- `cards.ts` — card CRUD, ordering, filtered queries
-- `settings.ts` — theme mode, sort preference
+- `cards.ts` — card CRUD, reorder, sort (manual/alphabetical/dateCreated), filter by name/logoSlug
+- `settings.ts` — theme mode (system/light/dark), sort mode
 
 ### Services (`src/services/`)
-- `logos.ts` — brand index loading, fuse.js search, SVG resolution, color extraction
-- `scanner.ts` — barcode validation and format mapping
-- `importExport.ts` — JSON import/export with merge strategies
+- `logos.ts` — curated brand database (fuse.js search, bundled PNG logos, custom upload via expo-image-picker)
+- `scanner.ts` — barcode type mapping, validation, scan artifact fixes
+- `importExport.ts` — JSON export via expo-sharing, import via expo-document-picker, v1 format migration, conflict resolution (keep existing/use imported/keep newer)
 - `permissions.ts` — camera permission flow
 
 ### Theme (`src/theme/`)
-Dynamic accent color derived from the top card's brand color. Background: `#0A0A0A` dark / `#FAFAF8` light. System fonts only.
+- `colors.ts` — dark/light tokens, 27-color card palette (including black/grey/white), `isLightColor()`, `textOnColor()`
+- `typography.ts` — system font scales (card name 18pt, barcode monospace, labels 14pt, etc.)
+- `index.ts` — ThemeProvider with dynamic accent color, `useTheme()` hook
 
-### Data (`data/brand-index.json`)
-Generated at build time from Simple Icons dataset. Maps brand names/aliases to slugs with category tags.
+### Brand Logos (`data/brand-index.json` + `assets/logos/`)
+Curated database of store logos (PNG). Each entry has: slug, name, aliases, alt text, primaryColor, secondaryColor, logo filename. Fuse.js fuzzy search for brand matching when adding cards.
+
+To add a brand: drop PNG in `assets/logos/`, add `require()` in `BUNDLED_LOGOS` map in `logos.ts`, add entry to `brand-index.json`.
 
 ## Key Design Decisions
 
-- **Springs everywhere** — `withSpring()` is the default animation. Specific spring configs per interaction (see PLAN.md "Spring configs" section).
-- **Logo colors are original** — brand SVGs render in their official colors, not tinted. Card background is auto-derived from brand hex.
-- **Full-screen barcode via gesture only** — long-press triggers it, no button.
-- **Sort modes:** manual (drag reorder), alphabetical, date created.
-- **v1 data compatibility** — v1 JSON imports work; missing fields get defaults (`logoSlug`: absent, `sortIndex`: creation order).
-- **Card flip** uses `rotateY` with `backfaceVisibility: 'hidden'` on front/back children — standard Reanimated pattern, no Skia needed.
+- **Apple Wallet UX** — cards at fixed stack spacing (170px), scroll to browse, tap to expand with mini-stack at bottom, swipe up to dismiss
+- **Springs for transitions, raw values for scroll** — scroll tracking is 1:1 with finger (no spring lag), state transitions (select/dismiss/reorder) use springs
+- **Brightness boost on barcode flip** — saves/restores device brightness automatically
+- **Reorder mode** — FAB menu toggle, iOS home screen wobble, long-press + drag
+- **Curated logos, not API** — bundled PNGs for offline-first, user upload for anything not in the set
+- **v1 import compatibility** — lowercase format enums auto-migrated, missing fields get defaults
 
 ## Legacy App
 
-`legacy/Cardshive/` contains the v1 app (Expo + react-native-paper + @react-navigation). Reference it for data model compatibility but don't modify it. The v2 app uses a different bundle ID and is a new app listing, not an in-place upgrade.
+`legacy/Cardshive/` contains the v1 app. Reference for data model compatibility only — don't modify. V2 uses a different bundle ID (`com.chipcolate.tesserone` vs `com.chipcolate.cardshive`).
