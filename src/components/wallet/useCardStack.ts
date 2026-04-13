@@ -1,9 +1,24 @@
 import { useSharedValue, withDecay, withSpring, runOnJS } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import * as Brightness from 'expo-brightness';
+
+let savedBrightness: number | null = null;
 
 function triggerHaptic() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+}
+
+async function maxBrightness() {
+  savedBrightness = await Brightness.getBrightnessAsync();
+  await Brightness.setBrightnessAsync(1);
+}
+
+async function restoreBrightness() {
+  if (savedBrightness !== null) {
+    await Brightness.setBrightnessAsync(savedBrightness);
+    savedBrightness = null;
+  }
 }
 
 export const CARD_STACK = {
@@ -90,10 +105,11 @@ export function useCardStack() {
           dismissTranslateY.value < -DISMISS_DISTANCE ||
           event.velocityY < -DISMISS_VELOCITY
         ) {
-          // Dismiss: deselect and reset flip to front
+          // Dismiss: deselect, reset flip, restore brightness
           selectedCardIndex.value = -1;
           dismissTranslateY.value = withSpring(0, SPRING_DISMISS);
           flipProgress.value = withSpring(0, SPRING_FLIP);
+          runOnJS(restoreBrightness)();
         } else {
           dismissTranslateY.value = withSpring(0, SPRING_SELECT);
         }
@@ -110,11 +126,31 @@ export function useCardStack() {
         runOnJS(triggerHaptic)();
       } else if (selectedCardIndex.value === index) {
         // This card is expanded → flip
-        const target = flipProgress.value < Math.PI / 2 ? Math.PI : 0;
+        const isFlippingToBack = flipProgress.value < Math.PI / 2;
+        const target = isFlippingToBack ? Math.PI : 0;
         flipProgress.value = withSpring(target, SPRING_FLIP);
         runOnJS(triggerHaptic)();
+        if (isFlippingToBack) {
+          runOnJS(maxBrightness)();
+        } else {
+          runOnJS(restoreBrightness)();
+        }
       }
     });
+
+  // Long-press expanded card: open detail/edit screen.
+  // Accepts a callback so the component can handle navigation.
+  const makeLongPressGesture = (onEdit: () => void) =>
+    Gesture.LongPress()
+      .minDuration(400)
+      .onStart(() => {
+        if (selectedCardIndex.value === -1) return;
+        runOnJS(triggerHaptic)();
+        selectedCardIndex.value = -1;
+        flipProgress.value = withSpring(0, SPRING_FLIP);
+        runOnJS(restoreBrightness)();
+        runOnJS(onEdit)();
+      });
 
   return {
     scrollOffset,
@@ -125,6 +161,7 @@ export function useCardStack() {
     flipProgress,
     panGesture,
     makeTapGesture,
+    makeLongPressGesture,
   };
 }
 

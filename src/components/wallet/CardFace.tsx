@@ -41,9 +41,16 @@ export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
           {card.name.charAt(0).toUpperCase()}
         </Text>
       )}
-      <Text style={[typography.cardName, styles.name, { color: fg }]} numberOfLines={1}>
-        {card.name}
-      </Text>
+      <View>
+        <Text style={[typography.cardName, styles.name, { color: fg }]} numberOfLines={1}>
+          {card.name}
+        </Text>
+        {card.notes ? (
+          <Text style={[typography.caption, { color: fg, opacity: 0.7, marginTop: 4 }]} numberOfLines={2}>
+            {card.notes}
+          </Text>
+        ) : null}
+      </View>
     </View>
   );
 });
