@@ -18,6 +18,13 @@ export interface BrandEntry {
 // Add entries here as you add logos to assets/logos/.
 const BUNDLED_LOGOS: Record<string, ImageSourcePropType> = {
   'esselunga.png': require('../../assets/logos/esselunga.png'),
+  'conad.png': require('../../assets/logos/conad.png'),
+  'decathlon.png': require('../../assets/logos/decathlon.png'),
+  'ikea.png': require('../../assets/logos/ikea.png'),
+  'iperal.png': require('../../assets/logos/iperal.png'),
+  'lapiadineria.png': require('../../assets/logos/lapiadineria.png'),
+  'media-world.png': require('../../assets/logos/media-world.png'),
+  'ovs.png': require('../../assets/logos/ovs.png'),
 };
 
 // Fuse.js for fuzzy search

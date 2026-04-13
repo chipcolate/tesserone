@@ -112,10 +112,10 @@ export const CardItem = React.memo(function CardItem({
   return (
     <GestureDetector gesture={composedGesture}>
       <Animated.View style={[styles.item, animatedStyle]}>
+        <CardFlip card={card} flipProgress={effectiveFlip} />
         <Animated.View style={[styles.handleWrap, handleStyle]} pointerEvents="none">
           <View style={styles.handle} />
         </Animated.View>
-        <CardFlip card={card} flipProgress={effectiveFlip} />
       </Animated.View>
     </GestureDetector>
   );
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   handleWrap: {
     position: 'absolute',
-    top: 6,
+    bottom: 8,
     left: 0,
     right: 0,
     alignItems: 'center',

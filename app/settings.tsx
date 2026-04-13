@@ -113,11 +113,7 @@ export default function SettingsScreen() {
   return (
     <View style={[styles.screen, { backgroundColor: colors.bg }]}>
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[typography.label, { color: colors.textSecondary }]}>Done</Text>
-        </Pressable>
         <Text style={[typography.cardName, { color: colors.text }]}>Settings</Text>
-        <View style={{ width: 40 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
@@ -184,6 +180,15 @@ export default function SettingsScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
+        <Pressable
+          style={[styles.actionButton, { backgroundColor: colors.accent }]}
+          onPress={() => router.back()}
+        >
+          <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>Done</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -191,8 +196,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1 },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingBottom: 16,
@@ -233,5 +236,14 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
+  },
+  bottomActions: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+  },
+  actionButton: {
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: 'center',
   },
 });

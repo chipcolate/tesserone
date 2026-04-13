@@ -45,6 +45,8 @@ export const CARD_COLORS = [
   '#8D6E63', '#4E342E',
   // Greys
   '#78909C', '#37474F',
+  // Neutrals
+  '#000000', '#CCCCCC', '#FFFFFF',
 ] as const;
 
 export type CardColor = (typeof CARD_COLORS)[number];
