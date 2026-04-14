@@ -114,12 +114,12 @@ export default function HomeScreen() {
 
       <View style={styles.stackWrap}>
         {cardsList.length === 0 ? (
-          <View style={styles.empty}>
+          <Pressable style={styles.empty} onPress={() => router.push('/add')}>
             <Text style={[styles.emptyIcon, { color: colors.textSecondary }]}>+</Text>
             <Text style={[typography.body, { color: colors.textSecondary, textAlign: 'center' }]}>
               Add your first card
             </Text>
-          </View>
+          </Pressable>
         ) : (
           <CardStack cards={cardsList} state={stackState} reorderMode={reorderMode} onReorder={handleReorder} />
         )}
