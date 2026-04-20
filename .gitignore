@@ -44,3 +44,7 @@ yarn-error.*
 *.ipa
 *.apk
 *.aab
+
+# local working state (Claude Code harness, internal planning)
+.claude/
+PLAN.md
