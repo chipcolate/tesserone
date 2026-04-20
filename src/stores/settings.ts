@@ -16,6 +16,10 @@ export const useSettingsStore = create<SettingsState>()(
       setThemeMode: (themeMode) => set({ themeMode }),
       setSortMode: (sortMode) => set({ sortMode }),
     }),
-    { name: 'settings', storage: createJSONStorage(() => AsyncStorage) }
+    {
+      name: 'settings',
+      storage: createJSONStorage(() => AsyncStorage),
+      version: 1,
+    }
   )
 );

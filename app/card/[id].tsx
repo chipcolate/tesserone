@@ -7,9 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
+import { KeyboardAwareScrollView, type KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
@@ -20,13 +19,17 @@ import { searchBrands, getBrandColors } from '../../src/services/logos';
 import { BARCODE_FORMAT_OPTIONS } from '../../src/services/scanner';
 import { LogoSelector } from '../../src/components/ui/LogoSelector';
 
+const ACTION_BAR_HEIGHT = 68;
+
 export default function CardDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
-  const { cards, updateCard, removeCard } = useCardsStore();
+  const cards = useCardsStore((s) => s.cards);
+  const updateCard = useCardsStore((s) => s.updateCard);
+  const removeCard = useCardsStore((s) => s.removeCard);
 
-  const card = cards[id!];
+  const card = cards[id];
 
   const [name, setName] = useState(card?.name ?? '');
   const [code, setCode] = useState(card?.code ?? '');
@@ -37,16 +40,12 @@ export default function CardDetailScreen() {
   const [brandResults, setBrandResults] = useState<BrandEntry[]>(
     () => (!card?.logoSlug && card?.name) ? searchBrands(card.name) : []
   );
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
 
   useEffect(() => {
     const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
     return () => clearTimeout(t);
   }, []);
-
-  const handleNotesFocus = () => {
-    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
-  };
 
   if (!card) {
     return (
@@ -76,7 +75,7 @@ export default function CardDetailScreen() {
       Alert.alert('Missing name', 'Card name is required.');
       return;
     }
-    updateCard(id!, {
+    updateCard(id, {
       name: name.trim(),
       code: code.trim(),
       format,
@@ -95,7 +94,7 @@ export default function CardDetailScreen() {
         text: 'Delete',
         style: 'destructive',
         onPress: () => {
-          removeCard(id!);
+          removeCard(id);
           router.back();
         },
       },
@@ -103,10 +102,7 @@ export default function CardDetailScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.screen, { backgroundColor: colors.bg }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <View style={[styles.screen, { backgroundColor: colors.bg }]}>
       <View style={styles.header}>
         <Text style={[typography.cardName, { color: colors.text }]}>Edit Card</Text>
       </View>
@@ -122,12 +118,13 @@ export default function CardDetailScreen() {
         ) : null}
       </View>
 
-      <ScrollView
+      <KeyboardAwareScrollView
         ref={scrollRef}
         style={styles.form}
         contentContainerStyle={styles.formContent}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="interactive"
+        bottomOffset={ACTION_BAR_HEIGHT + insets.bottom}
       >
         <Text style={[styles.label, { color: colors.textSecondary }]}>Name</Text>
         <TextInput
@@ -208,7 +205,6 @@ export default function CardDetailScreen() {
           style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
           value={notes}
           onChangeText={setNotes}
-          onFocus={handleNotesFocus}
           placeholder="Optional notes"
           placeholderTextColor={colors.textSecondary}
           multiline
@@ -219,7 +215,7 @@ export default function CardDetailScreen() {
           Created {new Date(card.createdAt).toLocaleDateString()}
           {' · '}Updated {new Date(card.updatedAt).toLocaleDateString()}
         </Text>
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
         <Pressable
@@ -241,7 +237,7 @@ export default function CardDetailScreen() {
           <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>Save</Text>
         </Pressable>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

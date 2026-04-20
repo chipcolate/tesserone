@@ -63,7 +63,11 @@ export const useCardsStore = create<CardsState>()(
 
       clearAll: () => set({ cards: {} }),
     }),
-    { name: 'cards', storage: createJSONStorage(() => AsyncStorage) }
+    {
+      name: 'cards',
+      storage: createJSONStorage(() => AsyncStorage),
+      version: 1,
+    }
   )
 );
 
