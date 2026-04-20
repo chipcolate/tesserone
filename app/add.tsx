@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -41,6 +41,17 @@ export default function AddCardScreen() {
   const processingRef = useRef(false);
 
   const [brandResults, setBrandResults] = useState<BrandEntry[]>([]);
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (tab !== 'manual') return;
+    const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
+    return () => clearTimeout(t);
+  }, [tab]);
+
+  const handleNotesFocus = useCallback(() => {
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
+  }, []);
 
   const handleNameChange = useCallback((text: string) => {
     setName(text);
@@ -117,7 +128,7 @@ export default function AddCardScreen() {
       style={[styles.screen, { backgroundColor: colors.bg }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+      <View style={styles.header}>
         <Text style={[typography.cardName, { color: colors.text }]}>Add Card</Text>
       </View>
 
@@ -169,9 +180,11 @@ export default function AddCardScreen() {
         </View>
       ) : (
         <ScrollView
+          ref={scrollRef}
           style={styles.form}
           contentContainerStyle={styles.formContent}
           keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="interactive"
         >
           <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
           <TextInput
@@ -251,6 +264,7 @@ export default function AddCardScreen() {
             style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
             value={notes}
             onChangeText={setNotes}
+            onFocus={handleNotesFocus}
             placeholder="Optional notes"
             placeholderTextColor={colors.textSecondary}
             multiline
@@ -282,6 +296,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingTop: 16,
     paddingBottom: 12,
   },
   tabs: {

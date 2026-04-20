@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -37,6 +37,16 @@ export default function CardDetailScreen() {
   const [brandResults, setBrandResults] = useState<BrandEntry[]>(
     () => (!card?.logoSlug && card?.name) ? searchBrands(card.name) : []
   );
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleNotesFocus = () => {
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
+  };
 
   if (!card) {
     return (
@@ -97,7 +107,7 @@ export default function CardDetailScreen() {
       style={[styles.screen, { backgroundColor: colors.bg }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+      <View style={styles.header}>
         <Text style={[typography.cardName, { color: colors.text }]}>Edit Card</Text>
       </View>
 
@@ -113,9 +123,11 @@ export default function CardDetailScreen() {
       </View>
 
       <ScrollView
+        ref={scrollRef}
         style={styles.form}
         contentContainerStyle={styles.formContent}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
       >
         <Text style={[styles.label, { color: colors.textSecondary }]}>Name</Text>
         <TextInput
@@ -196,6 +208,7 @@ export default function CardDetailScreen() {
           style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
           value={notes}
           onChangeText={setNotes}
+          onFocus={handleNotesFocus}
           placeholder="Optional notes"
           placeholderTextColor={colors.textSecondary}
           multiline
@@ -237,6 +250,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingTop: 16,
     paddingBottom: 12,
   },
   preview: {
