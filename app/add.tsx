@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -41,6 +41,17 @@ export default function AddCardScreen() {
   const processingRef = useRef(false);
 
   const [brandResults, setBrandResults] = useState<BrandEntry[]>([]);
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (tab !== 'manual') return;
+    const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
+    return () => clearTimeout(t);
+  }, [tab]);
+
+  const handleNotesFocus = useCallback(() => {
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
+  }, []);
 
   const handleNameChange = useCallback((text: string) => {
     setName(text);
@@ -169,11 +180,11 @@ export default function AddCardScreen() {
         </View>
       ) : (
         <ScrollView
+          ref={scrollRef}
           style={styles.form}
           contentContainerStyle={styles.formContent}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="interactive"
-          automaticallyAdjustKeyboardInsets
         >
           <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
           <TextInput
@@ -253,6 +264,7 @@ export default function AddCardScreen() {
             style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
             value={notes}
             onChangeText={setNotes}
+            onFocus={handleNotesFocus}
             placeholder="Optional notes"
             placeholderTextColor={colors.textSecondary}
             multiline

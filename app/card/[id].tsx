@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -37,6 +37,16 @@ export default function CardDetailScreen() {
   const [brandResults, setBrandResults] = useState<BrandEntry[]>(
     () => (!card?.logoSlug && card?.name) ? searchBrands(card.name) : []
   );
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleNotesFocus = () => {
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
+  };
 
   if (!card) {
     return (
@@ -113,11 +123,11 @@ export default function CardDetailScreen() {
       </View>
 
       <ScrollView
+        ref={scrollRef}
         style={styles.form}
         contentContainerStyle={styles.formContent}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="interactive"
-        automaticallyAdjustKeyboardInsets
       >
         <Text style={[styles.label, { color: colors.textSecondary }]}>Name</Text>
         <TextInput
@@ -198,6 +208,7 @@ export default function CardDetailScreen() {
           style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
           value={notes}
           onChangeText={setNotes}
+          onFocus={handleNotesFocus}
           placeholder="Optional notes"
           placeholderTextColor={colors.textSecondary}
           multiline
