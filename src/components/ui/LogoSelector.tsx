@@ -4,19 +4,12 @@ import { useTheme, typography, textOnColor } from '../../theme';
 import { getBrandLogo, getBrand, type BrandEntry } from '../../services/logos';
 
 interface LogoSelectorProps {
-  /** Currently selected brand slug. */
   logoSlug?: string;
-  /** Currently selected custom logo URI. */
   customLogoUri?: string;
-  /** Card name (used for initial fallback). */
   cardName: string;
-  /** Card background color. */
   cardColor: string;
-  /** Brand search results to display. */
   brandResults: BrandEntry[];
-  /** Called when a brand is selected from results. */
   onBrandSelect: (brand: BrandEntry) => void;
-  /** Called to clear the current logo. */
   onClear: () => void;
 }
 
@@ -38,7 +31,6 @@ export function LogoSelector({
 
   return (
     <View style={styles.container}>
-      {/* Current logo preview */}
       <View style={styles.previewRow}>
         <View style={[styles.logoPreview, { backgroundColor: cardColor }]}>
           {logoSource ? (
@@ -61,7 +53,6 @@ export function LogoSelector({
         </View>
       </View>
 
-      {/* Brand search results */}
       {brandResults.length > 0 && (
         <View style={[styles.resultsList, { backgroundColor: colors.surface }]}>
           {brandResults.map((b) => (

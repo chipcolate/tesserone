@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   SharedValue,
-  interpolate,
 } from 'react-native-reanimated';
 import { FidelityCard } from '../../types';
 import { CardFace } from './CardFace';
 import { CardBack } from './CardBack';
+import { frontFaceOpacity, backFaceOpacity } from './useCardStack';
 
 interface CardFlipProps {
   card: FidelityCard;
@@ -29,33 +29,23 @@ export const CardFlip = React.memo(function CardFlip({
 }: CardFlipProps) {
   const frontStyle = useAnimatedStyle(() => {
     // Front is visible from 0° to 90°, hidden beyond
-    const opacity = interpolate(
-      flipProgress.value,
-      [0, Math.PI / 2 - 0.01, Math.PI / 2, Math.PI],
-      [1, 1, 0, 0]
-    );
     return {
       transform: [
         { perspective: 1000 },
         { rotateY: `${flipProgress.value}rad` },
       ],
-      opacity,
+      opacity: frontFaceOpacity(flipProgress.value),
     };
   });
 
   const backStyle = useAnimatedStyle(() => {
     // Back is visible from 90° to 180°, hidden before
-    const opacity = interpolate(
-      flipProgress.value,
-      [0, Math.PI / 2, Math.PI / 2 + 0.01, Math.PI],
-      [0, 0, 1, 1]
-    );
     return {
       transform: [
         { perspective: 1000 },
         { rotateY: `${flipProgress.value + Math.PI}rad` },
       ],
-      opacity,
+      opacity: backFaceOpacity(flipProgress.value),
     };
   });
 

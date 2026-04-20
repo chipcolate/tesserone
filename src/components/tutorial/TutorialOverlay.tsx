@@ -45,11 +45,7 @@ export function TutorialOverlay({
       setMounted(true);
       opacity.value = withTiming(1, { duration: FADE_MS, easing: Easing.out(Easing.quad) });
     } else {
-      opacity.value = withTiming(0, { duration: FADE_MS, easing: Easing.out(Easing.quad) }, (finished) => {
-        if (finished) {
-          // unmount after fade-out completes
-        }
-      });
+      opacity.value = withTiming(0, { duration: FADE_MS, easing: Easing.out(Easing.quad) });
       const t = setTimeout(() => setMounted(false), FADE_MS + 30);
       return () => clearTimeout(t);
     }
@@ -70,7 +66,6 @@ export function TutorialOverlay({
       }
     : null;
 
-  // Decide where to place the callout relative to the cutout
   let calloutTop: number | undefined;
   let calloutBottom: number | undefined;
 
@@ -127,7 +122,6 @@ export function TutorialOverlay({
         </Svg>
       </Pressable>
 
-      {/* Callout bubble */}
       <View
         style={[
           styles.callout,

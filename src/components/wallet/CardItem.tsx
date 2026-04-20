@@ -9,20 +9,21 @@ import Animated, {
   withSequence,
   withTiming,
   cancelAnimation,
-  interpolate,
   Easing,
 } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
 import { FidelityCard } from '../../types';
 import { CardFlip } from './CardFlip';
-import { getBrand } from '../../services/logos';
+import { resolveCardColor } from '../../services/logos';
 import { isLightColor } from '../../theme';
 import {
   CARD_STACK,
   SPRING_SELECT,
   SPRING_REORDER,
   CardStackState,
+  frontFaceOpacity,
+  backFaceOpacity,
 } from './useCardStack';
 
 interface CardItemProps {
@@ -180,18 +181,13 @@ export const CardItem = React.memo(function CardItem({
     };
   }, [index, total]);
 
-  const bg = card.color || getBrand(card.logoSlug || '')?.primaryColor || '#333333';
+  const bg = resolveCardColor(card.color, card.logoSlug);
   const handleTint = isLightColor(bg) ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.55)';
 
   const handleFrontStyle = useAnimatedStyle(() => {
     const isSelected = state.selectedCardIndex.value === index;
-    const flipOpacity = interpolate(
-      state.flipProgress.value,
-      [0, Math.PI / 2 - 0.01, Math.PI / 2, Math.PI],
-      [1, 1, 0, 0]
-    );
     return {
-      opacity: isSelected ? flipOpacity : 0,
+      opacity: isSelected ? frontFaceOpacity(state.flipProgress.value) : 0,
       transform: [
         { perspective: 1000 },
         { rotateY: `${isSelected ? state.flipProgress.value : 0}rad` },
@@ -201,13 +197,8 @@ export const CardItem = React.memo(function CardItem({
 
   const handleBackStyle = useAnimatedStyle(() => {
     const isSelected = state.selectedCardIndex.value === index;
-    const flipOpacity = interpolate(
-      state.flipProgress.value,
-      [0, Math.PI / 2, Math.PI / 2 + 0.01, Math.PI],
-      [0, 0, 1, 1]
-    );
     return {
-      opacity: isSelected ? flipOpacity : 0,
+      opacity: isSelected ? backFaceOpacity(state.flipProgress.value) : 0,
       transform: [
         { perspective: 1000 },
         { rotateY: `${(isSelected ? state.flipProgress.value : 0) + Math.PI}rad` },

@@ -73,18 +73,15 @@ export default function HomeScreen() {
     [cardsList, reorderCard]
   );
 
-  // Scrim fade
   const scrimStyle = useAnimatedStyle(() => ({
     opacity: fabProgress.value,
     pointerEvents: fabProgress.value > 0.01 ? 'auto' as const : 'none' as const,
   }));
 
-  // FAB rotation
   const fabIconStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${interpolate(fabProgress.value, [0, 1], [0, 90])}deg` }],
   }));
 
-  // Menu items stagger from bottom
   const menuItem1Style = useAnimatedStyle(() => {
     const visible = fabProgress.value > 0.5;
     return {
@@ -121,7 +118,6 @@ export default function HomeScreen() {
     };
   });
 
-  // ---- Tutorial overlays ----
   const fabRef = useRef<View>(null);
   const reorderItemRef = useRef<View>(null);
   const [fabRect, setFabRect] = useState<TargetRect | null>(null);
@@ -181,12 +177,10 @@ export default function HomeScreen() {
         )}
       </View>
 
-      {/* Scrim */}
       <Animated.View style={[styles.scrim, scrimStyle]}>
         <Pressable style={StyleSheet.absoluteFill} onPress={close} />
       </Animated.View>
 
-      {/* Menu items */}
       <View style={[styles.fabMenu, { bottom: insets.bottom + 80 }]} pointerEvents="box-none">
         <Animated.View style={menuItem3Style}>
           <Pressable
@@ -221,7 +215,6 @@ export default function HomeScreen() {
         </Animated.View>
       </View>
 
-      {/* FAB */}
       <View style={[styles.fabWrap, { paddingBottom: insets.bottom + 8 }]}>
         <Pressable
           ref={fabRef}

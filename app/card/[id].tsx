@@ -15,19 +15,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { useCardsStore } from '../../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor } from '../../src/theme';
-import { BarcodeFormat } from '../../src/types';
-import { searchBrands, getBrandColors, type BrandEntry } from '../../src/services/logos';
+import { BarcodeFormat, BrandEntry } from '../../src/types';
+import { searchBrands, getBrandColors } from '../../src/services/logos';
+import { BARCODE_FORMAT_OPTIONS } from '../../src/services/scanner';
 import { LogoSelector } from '../../src/components/ui/LogoSelector';
-
-const FORMAT_OPTIONS: { value: BarcodeFormat; label: string }[] = [
-  { value: 'EAN13', label: 'EAN-13' },
-  { value: 'EAN8', label: 'EAN-8' },
-  { value: 'CODE128', label: 'Code 128' },
-  { value: 'CODE39', label: 'Code 39' },
-  { value: 'QR', label: 'QR' },
-  { value: 'UPCA', label: 'UPC-A' },
-  { value: 'UPCE', label: 'UPC-E' },
-];
 
 export default function CardDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -43,7 +34,6 @@ export default function CardDetailScreen() {
   const [color, setColor] = useState(card?.color ?? '#42A5F5');
   const [notes, setNotes] = useState(card?.notes ?? '');
   const [logoSlug, setLogoSlug] = useState<string | undefined>(card?.logoSlug);
-  // Pre-populate brand suggestions if no logo is set yet
   const [brandResults, setBrandResults] = useState<BrandEntry[]>(
     () => (!card?.logoSlug && card?.name) ? searchBrands(card.name) : []
   );
@@ -111,7 +101,6 @@ export default function CardDetailScreen() {
         <Text style={[typography.cardName, { color: colors.text }]}>Edit Card</Text>
       </View>
 
-      {/* Card preview */}
       <View style={[styles.preview, { backgroundColor: color }]}>
         <Text style={[typography.title, { color: textOnColor(color) }]} numberOfLines={1}>
           {name || 'Card Name'}
@@ -162,7 +151,7 @@ export default function CardDetailScreen() {
 
         <Text style={[styles.label, { color: colors.textSecondary }]}>Format</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
-          {FORMAT_OPTIONS.map((opt) => (
+          {BARCODE_FORMAT_OPTIONS.map((opt) => (
             <Pressable
               key={opt.value}
               style={[
@@ -219,7 +208,6 @@ export default function CardDetailScreen() {
         </Text>
       </ScrollView>
 
-      {/* Bottom actions */}
       <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
         <Pressable
           style={[styles.actionButton, { backgroundColor: '#7f1d1d' }]}

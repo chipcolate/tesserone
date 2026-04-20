@@ -1,21 +1,15 @@
 import { ImageSourcePropType } from 'react-native';
 import Fuse from 'fuse.js';
-import { Paths, Directory, File } from 'expo-file-system';
-import * as ImagePicker from 'expo-image-picker';
-import brandIndex from '../../data/brand-index.json';
+import brandIndexData from '../../data/brand-index.json';
+import type { BrandEntry } from '../types';
 
-export interface BrandEntry {
-  slug: string;
-  name: string;
-  aliases: string[];
-  alt: string;
-  primaryColor: string;
-  secondaryColor: string;
-  logo: string;
-}
+export type { BrandEntry } from '../types';
 
-// Bundled logo assets — keyed by filename (including extension).
-// Add entries here as you add logos to assets/logos/.
+// Cast the bundled JSON once to our domain type. TS infers a very narrow
+// literal type from the JSON file; this assertion widens strings where
+// needed and aligns the shape with BrandEntry.
+const brandIndex: BrandEntry[] = brandIndexData as BrandEntry[];
+
 const BUNDLED_LOGOS: Record<string, ImageSourcePropType> = {
   'esselunga.png': require('../../assets/logos/esselunga.png'),
   'conad.png': require('../../assets/logos/conad.png'),
@@ -27,112 +21,42 @@ const BUNDLED_LOGOS: Record<string, ImageSourcePropType> = {
   'ovs.png': require('../../assets/logos/ovs.png'),
 };
 
-// Fuse.js for fuzzy search
-const fuse = new Fuse<BrandEntry>(brandIndex as BrandEntry[], {
+const fuse = new Fuse<BrandEntry>(brandIndex, {
   keys: ['name', 'aliases'],
   threshold: 0.3,
   distance: 100,
 });
 
-/**
- * Search the curated brand index by name.
- */
 export function searchBrands(query: string): BrandEntry[] {
   if (!query.trim()) return [];
   return fuse.search(query, { limit: 10 }).map((r) => r.item);
 }
 
-/**
- * Get a brand entry by slug.
- */
 export function getBrand(slug: string): BrandEntry | undefined {
-  return (brandIndex as BrandEntry[]).find((b) => b.slug === slug);
+  return brandIndex.find((b) => b.slug === slug);
 }
 
-/**
- * Get the brand's colors.
- */
 export function getBrandColors(slug: string): { primary: string; secondary: string } | undefined {
   const brand = getBrand(slug);
   if (!brand) return undefined;
   return { primary: brand.primaryColor, secondary: brand.secondaryColor };
 }
 
-/**
- * Get the bundled logo image source for a brand.
- */
 export function getBrandLogo(slug: string): ImageSourcePropType | undefined {
   const brand = getBrand(slug);
   if (!brand) return undefined;
   return BUNDLED_LOGOS[brand.logo];
 }
 
-// --- Custom logo upload ---
-
-const logosDir = new Directory(Paths.document, 'logos');
-
-function ensureLogosDir() {
-  if (!logosDir.exists) {
-    logosDir.create();
-  }
-}
+const FALLBACK_CARD_BG = '#333333';
 
 /**
- * Pick an image from the gallery and save it as a custom logo.
- * Returns the local URI, or null if cancelled.
+ * Resolve the background color for a card:
+ * explicit color → brand primary → fallback dark grey.
  */
-export async function pickCustomLogo(): Promise<string | null> {
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ['images'],
-    allowsEditing: true,
-    aspect: [1, 1],
-    quality: 0.8,
-  });
-
-  if (result.canceled || !result.assets[0]) return null;
-
-  ensureLogosDir();
-  const sourceUri = result.assets[0].uri;
-  const ext = sourceUri.split('.').pop() || 'png';
-  const filename = `custom-${Date.now()}.${ext}`;
-  const dest = new File(logosDir, filename);
-  const source = new File(sourceUri);
-  source.move(dest);
-  return dest.uri;
-}
-
-/**
- * Take a photo and save it as a custom logo.
- * Returns the local URI, or null if cancelled.
- */
-export async function takeCustomLogoPhoto(): Promise<string | null> {
-  const { status } = await ImagePicker.requestCameraPermissionsAsync();
-  if (status !== 'granted') return null;
-
-  const result = await ImagePicker.launchCameraAsync({
-    allowsEditing: true,
-    aspect: [1, 1],
-    quality: 0.8,
-  });
-
-  if (result.canceled || !result.assets[0]) return null;
-
-  ensureLogosDir();
-  const sourceUri = result.assets[0].uri;
-  const ext = sourceUri.split('.').pop() || 'png';
-  const filename = `photo-${Date.now()}.${ext}`;
-  const dest = new File(logosDir, filename);
-  const source = new File(sourceUri);
-  source.move(dest);
-  return dest.uri;
-}
-
-/**
- * Delete a custom logo file.
- */
-export function deleteCustomLogo(uri: string): void {
-  const file = new File(uri);
-  if (file.exists) {
-    file.delete();
-  }
+export function resolveCardColor(
+  color: string | undefined,
+  logoSlug: string | undefined
+): string {
+  return color || getBrand(logoSlug || '')?.primaryColor || FALLBACK_CARD_BG;
 }

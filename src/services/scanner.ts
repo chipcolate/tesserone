@@ -1,8 +1,19 @@
-import { BarcodeFormat } from '../types';
+import { BarcodeFormat, BarcodeFormatOption } from '../types';
 
 /**
- * Map expo-camera barcode type strings to our internal BarcodeFormat.
+ * Selectable barcode format options shown in the add/edit screens.
+ * Order defines UI ordering.
  */
+export const BARCODE_FORMAT_OPTIONS: BarcodeFormatOption[] = [
+  { value: 'EAN13', label: 'EAN-13' },
+  { value: 'EAN8', label: 'EAN-8' },
+  { value: 'CODE128', label: 'Code 128' },
+  { value: 'CODE39', label: 'Code 39' },
+  { value: 'QR', label: 'QR' },
+  { value: 'UPCA', label: 'UPC-A' },
+  { value: 'UPCE', label: 'UPC-E' },
+];
+
 export function mapBarcodeType(type: string): BarcodeFormat {
   const map: Record<string, BarcodeFormat> = {
     qr: 'QR',
@@ -21,9 +32,6 @@ export function mapBarcodeType(type: string): BarcodeFormat {
   return map[type.toLowerCase()] || 'CODE128';
 }
 
-/**
- * Validate a barcode value against its format.
- */
 export function validateBarcode(code: string, format: BarcodeFormat): boolean {
   const c = code?.trim();
   if (!c) return false;
@@ -45,24 +53,8 @@ export function validateBarcode(code: string, format: BarcodeFormat): boolean {
 }
 
 /**
- * Format a barcode for human-readable display.
- */
-export function formatBarcodeForDisplay(code: string, format: BarcodeFormat): string {
-  switch (format) {
-    case 'EAN13':
-      return code.replace(/(\d{1})(\d{6})(\d{6})/, '$1-$2-$3');
-    case 'EAN8':
-      return code.replace(/(\d{4})(\d{4})/, '$1-$2');
-    case 'UPCA':
-      return code.replace(/(\d{1})(\d{5})(\d{5})(\d{1})/, '$1-$2-$3-$4');
-    default:
-      return code;
-  }
-}
-
-/**
  * Fix common scan artifacts. EAN13 codes sometimes scan as 12 digits
- * (missing leading zero), and UPC-A can scan as EAN13.
+ * (missing leading zero).
  */
 export function fixScannedCode(
   code: string,
@@ -70,9 +62,6 @@ export function fixScannedCode(
 ): { code: string; format: BarcodeFormat } {
   if (format === 'EAN13' && /^\d{12}$/.test(code)) {
     return { code: '0' + code, format: 'EAN13' };
-  }
-  if (format === 'EAN13' && code.startsWith('0') && code.length === 13) {
-    // Could be a UPC-A scanned as EAN13 — keep as EAN13, both render fine
   }
   return { code, format };
 }

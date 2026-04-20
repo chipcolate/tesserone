@@ -35,3 +35,20 @@ export interface Settings {
   themeMode: ThemeMode;
   sortMode: SortMode;
 }
+
+/** Shape of each entry in data/brand-index.json. */
+export interface BrandEntry {
+  slug: string;
+  name: string;
+  aliases: string[];
+  alt: string;
+  primaryColor: string;
+  secondaryColor: string;
+  logo: string;
+}
+
+/** A selectable barcode format option shown in format pickers. */
+export interface BarcodeFormatOption {
+  value: BarcodeFormat;
+  label: string;
+}

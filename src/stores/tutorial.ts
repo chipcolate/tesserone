@@ -12,7 +12,7 @@ export type TutorialStepId =
 
 type TutorialState = {
   enabled: boolean;
-  seenSteps: Record<string, boolean>;
+  seenSteps: Partial<Record<TutorialStepId, boolean>>;
   markSeen: (id: TutorialStepId) => void;
   resetAll: () => void;
   setEnabled: (v: boolean) => void;
