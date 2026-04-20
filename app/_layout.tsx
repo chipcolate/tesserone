@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -6,7 +6,10 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as SystemUI from 'expo-system-ui';
+import { useTranslation } from 'react-i18next';
 import { ThemeProvider, useTheme } from '../src/theme';
+import { initI18n } from '../src/i18n';
+import { useSettingsStore } from '../src/stores/settings';
 
 function Inner() {
   const { dark, colors } = useTheme();
@@ -48,6 +51,23 @@ function Inner() {
 }
 
 export default function RootLayout() {
+  const language = useSettingsStore((s) => s.language);
+  const hydrated = useSettingsStore.persist?.hasHydrated?.() ?? true;
+  const [ready, setReady] = useState(hydrated);
+
+  useEffect(() => {
+    if (!ready) {
+      const unsub = useSettingsStore.persist?.onFinishHydration?.(() => setReady(true));
+      return unsub;
+    }
+  }, [ready]);
+
+  useEffect(() => {
+    if (ready) initI18n(language);
+  }, [ready, language]);
+
+  if (!ready) return null;
+
   return (
     <ThemeProvider>
       <Inner />
@@ -56,12 +76,13 @@ export default function RootLayout() {
 }
 
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  const { t } = useTranslation();
   return (
     <View style={styles.errorRoot}>
-      <Text style={styles.errorTitle}>Something went wrong</Text>
+      <Text style={styles.errorTitle}>{t('error.title')}</Text>
       <Text style={styles.errorMessage}>{error.message}</Text>
       <Pressable style={styles.errorButton} onPress={() => retry()}>
-        <Text style={styles.errorButtonText}>Try again</Text>
+        <Text style={styles.errorButtonText}>{t('error.retry')}</Text>
       </Pressable>
     </View>
   );

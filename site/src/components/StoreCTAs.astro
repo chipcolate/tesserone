@@ -1,9 +1,13 @@
 ---
+import { getStrings, type Locale } from "../i18n";
+
 interface Props {
   variant?: "primary" | "secondary";
+  lang: Locale;
 }
 
-const { variant = "primary" } = Astro.props;
+const { variant = "primary", lang } = Astro.props;
+const s = getStrings(lang).stores;
 
 const appStoreUrl = "#";
 const playStoreUrl = "#";
@@ -18,7 +22,7 @@ const cls = `${base} ${variant === "primary" ? primary : secondary}`;
 ---
 
 <div class="flex flex-wrap items-center gap-3">
-  <a href={appStoreUrl} class={cls} aria-label="Download on the App Store">
+  <a href={appStoreUrl} class={cls} aria-label={s.appleAria}>
     <svg
       class="h-6 w-6"
       viewBox="0 0 24 24"
@@ -30,12 +34,12 @@ const cls = `${base} ${variant === "primary" ? primary : secondary}`;
       ></path>
     </svg>
     <span class="flex flex-col text-left leading-tight">
-      <span class="text-xs opacity-80">Download on the</span>
-      <span class="text-base font-semibold">App Store</span>
+      <span class="text-xs opacity-80">{s.appleSup}</span>
+      <span class="text-base font-semibold">{s.appleMain}</span>
     </span>
   </a>
 
-  <a href={playStoreUrl} class={cls} aria-label="Get it on Google Play">
+  <a href={playStoreUrl} class={cls} aria-label={s.googleAria}>
     <svg
       class="h-6 w-6"
       viewBox="0 0 24 24"
@@ -47,8 +51,8 @@ const cls = `${base} ${variant === "primary" ? primary : secondary}`;
       ></path>
     </svg>
     <span class="flex flex-col text-left leading-tight">
-      <span class="text-xs opacity-80">Get it on</span>
-      <span class="text-base font-semibold">Google Play</span>
+      <span class="text-xs opacity-80">{s.googleSup}</span>
+      <span class="text-base font-semibold">{s.googleMain}</span>
     </span>
   </a>
 </div>

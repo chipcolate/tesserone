@@ -6,15 +6,17 @@ import FeatureList from "../components/FeatureList.astro";
 import Backstory from "../components/Backstory.astro";
 import OSSection from "../components/OSSection.astro";
 import Footer from "../components/Footer.astro";
+
+const lang = "en" as const;
 ---
 
-<Layout>
-  <ThemeToggle />
+<Layout lang={lang}>
+  <ThemeToggle lang={lang} />
   <main>
-    <Hero />
-    <FeatureList />
-    <Backstory />
-    <OSSection />
+    <Hero lang={lang} />
+    <FeatureList lang={lang} />
+    <Backstory lang={lang} />
+    <OSSection lang={lang} />
   </main>
-  <Footer />
+  <Footer lang={lang} />
 </Layout>

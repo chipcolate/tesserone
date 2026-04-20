@@ -12,12 +12,14 @@ import { KeyboardAwareScrollView, type KeyboardAwareScrollViewRef } from 'react-
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import { useTranslation } from 'react-i18next';
 import { useCardsStore } from '../../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor } from '../../src/theme';
 import { BarcodeFormat, BrandEntry } from '../../src/types';
 import { searchBrands, getBrandColors } from '../../src/services/logos';
 import { BARCODE_FORMAT_OPTIONS } from '../../src/services/scanner';
 import { LogoSelector } from '../../src/components/ui/LogoSelector';
+import { formatDate } from '../../src/i18n/format';
 
 const ACTION_BAR_HEIGHT = 68;
 
@@ -25,6 +27,7 @@ export default function CardDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const cards = useCardsStore((s) => s.cards);
   const updateCard = useCardsStore((s) => s.updateCard);
   const removeCard = useCardsStore((s) => s.removeCard);
@@ -51,7 +54,7 @@ export default function CardDetailScreen() {
     return (
       <View style={[styles.screen, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
         <Text style={[typography.body, { color: colors.textSecondary, textAlign: 'center', marginTop: 100 }]}>
-          Card not found
+          {t('card.notFound')}
         </Text>
       </View>
     );
@@ -72,7 +75,7 @@ export default function CardDetailScreen() {
 
   const handleSave = () => {
     if (!name.trim()) {
-      Alert.alert('Missing name', 'Card name is required.');
+      Alert.alert(t('card.missingNameTitle'), t('card.missingNameBody'));
       return;
     }
     updateCard(id, {
@@ -88,28 +91,32 @@ export default function CardDetailScreen() {
   };
 
   const handleDelete = () => {
-    Alert.alert('Delete Card', `Remove "${card.name}" from your wallet?`, [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Delete',
-        style: 'destructive',
-        onPress: () => {
-          removeCard(id);
-          router.back();
+    Alert.alert(
+      t('card.deleteConfirmTitle'),
+      t('card.deleteConfirmBody', { name: card.name }),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('common.delete'),
+          style: 'destructive',
+          onPress: () => {
+            removeCard(id);
+            router.back();
+          },
         },
-      },
-    ]);
+      ]
+    );
   };
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.bg }]}>
       <View style={styles.header}>
-        <Text style={[typography.cardName, { color: colors.text }]}>Edit Card</Text>
+        <Text style={[typography.cardName, { color: colors.text }]}>{t('card.title')}</Text>
       </View>
 
       <View style={[styles.preview, { backgroundColor: color }]}>
         <Text style={[typography.title, { color: textOnColor(color) }]} numberOfLines={1}>
-          {name || 'Card Name'}
+          {name || t('card.previewPlaceholder')}
         </Text>
         {code ? (
           <Text style={[typography.barcode, { color: textOnColor(color), opacity: 0.7 }]} numberOfLines={1}>
@@ -126,17 +133,17 @@ export default function CardDetailScreen() {
         keyboardDismissMode="interactive"
         bottomOffset={ACTION_BAR_HEIGHT + insets.bottom}
       >
-        <Text style={[styles.label, { color: colors.textSecondary }]}>Name</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelName')}</Text>
         <TextInput
           style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
           value={name}
           onChangeText={handleNameChange}
-          placeholder="Card name"
+          placeholder={t('card.placeholderName')}
           placeholderTextColor={colors.textSecondary}
           autoCapitalize="words"
         />
 
-        <Text style={[styles.label, { color: colors.textSecondary }]}>Logo</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelLogo')}</Text>
         <LogoSelector
           logoSlug={logoSlug}
           customLogoUri={card.customLogoUri}
@@ -147,18 +154,18 @@ export default function CardDetailScreen() {
           onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
         />
 
-        <Text style={[styles.label, { color: colors.textSecondary }]}>Barcode</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelBarcode')}</Text>
         <TextInput
           style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
           value={code}
           onChangeText={setCode}
-          placeholder="Barcode value"
+          placeholder={t('card.placeholderBarcode')}
           placeholderTextColor={colors.textSecondary}
           autoCapitalize="none"
           autoCorrect={false}
         />
 
-        <Text style={[styles.label, { color: colors.textSecondary }]}>Format</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelFormat')}</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
           {BARCODE_FORMAT_OPTIONS.map((opt) => (
             <Pressable
@@ -184,7 +191,7 @@ export default function CardDetailScreen() {
           ))}
         </ScrollView>
 
-        <Text style={[styles.label, { color: colors.textSecondary }]}>Color</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelColor')}</Text>
         <View style={styles.colorGrid}>
           {CARD_COLORS.map((c) => (
             <Pressable
@@ -200,20 +207,22 @@ export default function CardDetailScreen() {
           ))}
         </View>
 
-        <Text style={[styles.label, { color: colors.textSecondary }]}>Notes</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelNotes')}</Text>
         <TextInput
           style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
           value={notes}
           onChangeText={setNotes}
-          placeholder="Optional notes"
+          placeholder={t('card.placeholderNotes')}
           placeholderTextColor={colors.textSecondary}
           multiline
           textAlignVertical="top"
         />
 
         <Text style={[typography.caption, { color: colors.textSecondary, marginTop: 16 }]}>
-          Created {new Date(card.createdAt).toLocaleDateString()}
-          {' · '}Updated {new Date(card.updatedAt).toLocaleDateString()}
+          {t('card.timestamps', {
+            created: formatDate(card.createdAt),
+            updated: formatDate(card.updatedAt),
+          })}
         </Text>
       </KeyboardAwareScrollView>
 
@@ -222,19 +231,19 @@ export default function CardDetailScreen() {
           style={[styles.actionButton, { backgroundColor: '#7f1d1d' }]}
           onPress={handleDelete}
         >
-          <Text style={[typography.body, { color: '#fff', fontWeight: '600' }]}>Delete</Text>
+          <Text style={[typography.body, { color: '#fff', fontWeight: '600' }]}>{t('common.delete')}</Text>
         </Pressable>
         <Pressable
           style={[styles.actionButton, { backgroundColor: colors.surface }]}
           onPress={() => router.back()}
         >
-          <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>Cancel</Text>
+          <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>{t('common.cancel')}</Text>
         </Pressable>
         <Pressable
           style={[styles.actionButton, { backgroundColor: colors.accent }]}
           onPress={handleSave}
         >
-          <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>Save</Text>
+          <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>{t('common.save')}</Text>
         </Pressable>
       </View>
     </View>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -24,6 +25,7 @@ const SPRING = { damping: 18, stiffness: 260 } as const;
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const cards = useCardsStore((s) => s.cards);
   const reorderCard = useCardsStore((s) => s.reorderCard);
   const sortMode = useSettingsStore((s) => s.sortMode);
@@ -170,7 +172,7 @@ export default function HomeScreen() {
           <Pressable style={styles.empty} onPress={() => router.push('/add')}>
             <Text style={[styles.emptyIcon, { color: colors.textSecondary }]}>+</Text>
             <Text style={[typography.body, { color: colors.textSecondary, textAlign: 'center' }]}>
-              Add your first card
+              {t('home.emptyState')}
             </Text>
           </Pressable>
         ) : (
@@ -189,7 +191,7 @@ export default function HomeScreen() {
             onPress={() => { close(); router.push('/settings'); }}
           >
             <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
-              Settings
+              {t('home.settings')}
             </Text>
           </Pressable>
         </Animated.View>
@@ -200,7 +202,7 @@ export default function HomeScreen() {
             onPress={toggleReorder}
           >
             <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
-              {reorderMode ? 'Done' : 'Reorder'}
+              {reorderMode ? t('home.reorderDone') : t('home.reorder')}
             </Text>
           </Pressable>
         </Animated.View>
@@ -210,7 +212,7 @@ export default function HomeScreen() {
             onPress={() => { close(); router.push('/add'); }}
           >
             <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
-              Add Card
+              {t('home.addCard')}
             </Text>
           </Pressable>
         </Animated.View>
@@ -222,7 +224,7 @@ export default function HomeScreen() {
           onLayout={measureFab}
           style={[styles.fab, { backgroundColor: colors.accent }]}
           onPress={toggle}
-          accessibilityLabel="Menu"
+          accessibilityLabel={t('home.menuAriaLabel')}
           accessibilityRole="button"
         >
           <Animated.Text

@@ -7,6 +7,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import Svg, { Defs, Mask, Rect } from 'react-native-svg';
+import { useTranslation } from 'react-i18next';
 import { useTheme, typography, textOnColor } from '../../theme';
 
 export type TargetRect = { x: number; y: number; width: number; height: number };
@@ -45,6 +46,7 @@ export function TutorialOverlay({
   onDismiss,
 }: Props) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const { width: SCREEN_W, height: SCREEN_H } = useWindowDimensions();
   const opacity = useSharedValue(0);
   const [mounted, setMounted] = useState(visible);
@@ -162,10 +164,10 @@ export function TutorialOverlay({
           onPress={onDismiss}
           style={[styles.button, { backgroundColor: colors.accent }]}
           accessibilityRole="button"
-          accessibilityLabel="Dismiss tutorial tip"
+          accessibilityLabel={t('tutorial.dismissAriaLabel')}
         >
           <Text style={[typography.body, styles.buttonText, { color: textOnColor(colors.accent) }]}>
-            Got it
+            {t('common.gotIt')}
           </Text>
         </Pressable>
       </View>

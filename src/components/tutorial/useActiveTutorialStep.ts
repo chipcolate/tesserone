@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useTutorialStore, TutorialStepId } from '../../stores/tutorial';
 
 export type TutorialContext = {
@@ -15,37 +16,39 @@ export type TutorialStepDef = {
   target: 'fab' | 'reorderItem' | null;
 };
 
-const STEPS: Record<TutorialStepId, Omit<TutorialStepDef, 'id'>> = {
+const STEP_TARGETS: Record<TutorialStepId, TutorialStepDef['target']> = {
+  'home-add-first': 'fab',
+  'home-tap-expand': null,
+  'expanded-tips': null,
+  'home-scroll': null,
+  'home-reorder-hint': 'reorderItem',
+  'reorder-drag': null,
+};
+
+const STEP_KEY: Record<TutorialStepId, { title: string; message: string }> = {
   'home-add-first': {
-    title: 'Add your first card',
-    message: 'Tap the menu button, then choose Add Card to get started.',
-    target: 'fab',
+    title: 'tutorial.homeAddFirstTitle',
+    message: 'tutorial.homeAddFirstMessage',
   },
   'home-tap-expand': {
-    title: 'Open a card',
-    message: 'Tap any card to bring it forward and reveal its barcode.',
-    target: null,
+    title: 'tutorial.homeTapExpandTitle',
+    message: 'tutorial.homeTapExpandMessage',
   },
   'expanded-tips': {
-    title: 'Your card, expanded',
-    message:
-      'Swipe up to send the card back.\nLong-press to edit.\nTap again to close.',
-    target: null,
+    title: 'tutorial.expandedTipsTitle',
+    message: 'tutorial.expandedTipsMessage',
   },
   'home-scroll': {
-    title: 'Browse the stack',
-    message: 'Drag up or down to scroll through your cards.',
-    target: null,
+    title: 'tutorial.homeScrollTitle',
+    message: 'tutorial.homeScrollMessage',
   },
   'home-reorder-hint': {
-    title: 'Rearrange your cards',
-    message: 'Tap Reorder to enter reorder mode, then drag cards to your preferred order.',
-    target: 'reorderItem',
+    title: 'tutorial.homeReorderHintTitle',
+    message: 'tutorial.homeReorderHintMessage',
   },
   'reorder-drag': {
-    title: 'Drag to rearrange',
-    message: 'Long-press a card and drag it to a new spot. Tap Done when you are finished.',
-    target: null,
+    title: 'tutorial.reorderDragTitle',
+    message: 'tutorial.reorderDragMessage',
   },
 };
 
@@ -56,19 +59,23 @@ const STEPS: Record<TutorialStepId, Omit<TutorialStepDef, 'id'>> = {
 export function useActiveTutorialStep(ctx: TutorialContext): TutorialStepDef | null {
   const enabled = useTutorialStore((s) => s.enabled);
   const seenSteps = useTutorialStore((s) => s.seenSteps);
+  const { t } = useTranslation();
 
   if (!enabled) return null;
 
   const seen = (id: TutorialStepId) => !!seenSteps[id];
-  const make = (id: TutorialStepId): TutorialStepDef => ({ id, ...STEPS[id] });
+  const make = (id: TutorialStepId): TutorialStepDef => ({
+    id,
+    title: t(STEP_KEY[id].title),
+    message: t(STEP_KEY[id].message),
+    target: STEP_TARGETS[id],
+  });
 
-  // Highest priority: contextual to the current interaction
   if (ctx.reorderMode && !seen('reorder-drag')) return make('reorder-drag');
   if (ctx.selectedCardIdx >= 0 && !seen('expanded-tips')) return make('expanded-tips');
   if (ctx.fabOpen && ctx.cardCount >= 2 && !seen('home-reorder-hint'))
     return make('home-reorder-hint');
 
-  // Resting home-screen tips: only when no other UI is engaged
   const atRest = !ctx.reorderMode && !ctx.fabOpen && ctx.selectedCardIdx === -1;
   if (atRest) {
     if (ctx.cardCount === 0 && !seen('home-add-first')) return make('home-add-first');

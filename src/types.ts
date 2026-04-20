@@ -31,9 +31,12 @@ export interface FidelityCard {
   updatedAt: string;
 }
 
+export type LanguagePreference = 'system' | 'en' | 'it' | 'fr' | 'es';
+
 export interface Settings {
   themeMode: ThemeMode;
   sortMode: SortMode;
+  language: LanguagePreference;
 }
 
 /** Shape of each entry in data/brand-index.json. */

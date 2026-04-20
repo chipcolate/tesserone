@@ -1,5 +1,13 @@
 ---
 import StoreCTAs from "./StoreCTAs.astro";
+import { getStrings, type Locale } from "../i18n";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const s = getStrings(lang).hero;
 
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
@@ -21,14 +29,14 @@ const base = import.meta.env.BASE_URL.endsWith("/")
           <p
             class="mb-4 text-sm font-medium tracking-widest text-[var(--color-accent)] uppercase"
           >
-            Tesserone
+            {s.eyebrow}
           </p>
           <h1
             class="text-5xl font-bold tracking-tight text-balance sm:text-6xl lg:text-7xl"
           >
-            Your loyalty cards.<br />
-            <span class="text-[var(--color-fg-muted)]">On your phone.</span>
-            <span class="text-[var(--color-accent)]">That's it.</span>
+            {s.headlineLine1}<br />
+            <span class="text-[var(--color-fg-muted)]">{s.headlineLine2}</span>
+            <span class="text-[var(--color-accent)]">{s.headlineLine3}</span>
           </h1>
         </div>
 
@@ -56,12 +64,10 @@ const base = import.meta.env.BASE_URL.endsWith("/")
       <p
         class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-fg-muted)] text-pretty sm:text-xl"
       >
-        A simple loyalty card manager with a familiar card-stack feel. No
-        cloud, no accounts, no tracking. Your cards live on your device — where
-        they belong.
+        {s.subheading}
       </p>
       <div class="mt-10">
-        <StoreCTAs />
+        <StoreCTAs lang={lang} />
       </div>
     </div>
 
