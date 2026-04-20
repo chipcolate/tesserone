@@ -34,9 +34,9 @@ export const CARD_STACK = {
 } as const;
 
 export const SPRING_SELECT = { damping: 25, stiffness: 180 } as const;
-export const SPRING_DISMISS = { damping: 35, stiffness: 200 } as const;
-export const SPRING_BOUNCE = { damping: 20, stiffness: 300 } as const;
-export const SPRING_FLIP = { damping: 26, stiffness: 300 } as const;
+const SPRING_DISMISS = { damping: 35, stiffness: 200 } as const;
+const SPRING_BOUNCE = { damping: 20, stiffness: 300 } as const;
+const SPRING_FLIP = { damping: 26, stiffness: 300 } as const;
 export const SPRING_REORDER = { damping: 20, stiffness: 250 } as const;
 
 const DISMISS_DISTANCE = 100;

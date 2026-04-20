@@ -1,17 +1,17 @@
 // Backgrounds
-export const DARK_BG = '#0A0A0A';
-export const LIGHT_BG = '#FAFAF8';
+const DARK_BG = '#0A0A0A';
+const LIGHT_BG = '#FAFAF8';
 
 // Surface (cards, sheets, overlays)
-export const DARK_SURFACE = '#161616';
-export const LIGHT_SURFACE = '#F0F0ED';
+const DARK_SURFACE = '#161616';
+const LIGHT_SURFACE = '#F0F0ED';
 
 // Text
-export const DARK_TEXT = '#F5F5F5';
-export const LIGHT_TEXT = '#1A1A1A';
+const DARK_TEXT = '#F5F5F5';
+const LIGHT_TEXT = '#1A1A1A';
 
-export const DARK_TEXT_SECONDARY = '#888888';
-export const LIGHT_TEXT_SECONDARY = '#666666';
+const DARK_TEXT_SECONDARY = '#888888';
+const LIGHT_TEXT_SECONDARY = '#666666';
 
 // Default accent (warm neutral, used when no card is selected)
 export const DEFAULT_ACCENT = '#A0917B';

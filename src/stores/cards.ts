@@ -82,22 +82,6 @@ export function getSortedCards(
   }
 }
 
-export function getFilteredCards(
-  cards: Record<CardId, FidelityCard>,
-  query: string,
-  sortMode: SortMode
-): FidelityCard[] {
-  const sorted = getSortedCards(cards, sortMode);
-  if (!query.trim()) return sorted;
-
-  const q = query.toLowerCase();
-  return sorted.filter(
-    (card) =>
-      card.name.toLowerCase().includes(q) ||
-      (card.logoSlug && card.logoSlug.toLowerCase().includes(q))
-  );
-}
-
 export function nextSortIndex(cards: Record<CardId, FidelityCard>): number {
   const values = Object.values(cards);
   if (values.length === 0) return 0;

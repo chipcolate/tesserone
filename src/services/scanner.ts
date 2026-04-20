@@ -45,22 +45,6 @@ export function validateBarcode(code: string, format: BarcodeFormat): boolean {
 }
 
 /**
- * Format a barcode for human-readable display.
- */
-export function formatBarcodeForDisplay(code: string, format: BarcodeFormat): string {
-  switch (format) {
-    case 'EAN13':
-      return code.replace(/(\d{1})(\d{6})(\d{6})/, '$1-$2-$3');
-    case 'EAN8':
-      return code.replace(/(\d{4})(\d{4})/, '$1-$2');
-    case 'UPCA':
-      return code.replace(/(\d{1})(\d{5})(\d{5})(\d{1})/, '$1-$2-$3-$4');
-    default:
-      return code;
-  }
-}
-
-/**
  * Fix common scan artifacts. EAN13 codes sometimes scan as 12 digits
  * (missing leading zero), and UPC-A can scan as EAN13.
  */
