@@ -1,4 +1,4 @@
-import { useSharedValue, withDecay, withSpring, runOnJS } from 'react-native-reanimated';
+import { useSharedValue, withDecay, withSpring, runOnJS, interpolate } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import * as Brightness from 'expo-brightness';
@@ -46,6 +46,24 @@ const RUBBER_BAND_FACTOR = 0.35;
 function rubberBand(offset: number, limit: number, factor: number): number {
   'worklet';
   return limit + (offset - limit) * factor;
+}
+
+/**
+ * Opacity for the front face of a flip (1 at 0, 0 at PI).
+ * Uses a hard 90° cutoff so the front disappears as the back appears.
+ */
+export function frontFaceOpacity(flipProgress: number): number {
+  'worklet';
+  return interpolate(flipProgress, [0, Math.PI / 2 - 0.01, Math.PI / 2, Math.PI], [1, 1, 0, 0]);
+}
+
+/**
+ * Opacity for the back face of a flip (0 at 0, 1 at PI).
+ * Mirror of frontFaceOpacity.
+ */
+export function backFaceOpacity(flipProgress: number): number {
+  'worklet';
+  return interpolate(flipProgress, [0, Math.PI / 2, Math.PI / 2 + 0.01, Math.PI], [0, 0, 1, 1]);
 }
 
 export function stackContentHeight(numCards: number): number {

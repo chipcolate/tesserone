@@ -62,3 +62,16 @@ export function getBrandLogo(slug: string): ImageSourcePropType | undefined {
   if (!brand) return undefined;
   return BUNDLED_LOGOS[brand.logo];
 }
+
+const FALLBACK_CARD_BG = '#333333';
+
+/**
+ * Resolve the background color for a card:
+ * explicit color → brand primary → fallback dark grey.
+ */
+export function resolveCardColor(
+  color: string | undefined,
+  logoSlug: string | undefined
+): string {
+  return color || getBrand(logoSlug || '')?.primaryColor || FALLBACK_CARD_BG;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { FidelityCard } from '../../types';
-import { getBrandLogo, getBrand } from '../../services/logos';
+import { getBrandLogo, resolveCardColor } from '../../services/logos';
 import { textOnColor, typography } from '../../theme';
 
 interface CardFaceProps {
@@ -18,7 +18,7 @@ interface CardFaceProps {
  * via textOnColor() for legibility.
  */
 export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
-  const bg = card.color || getBrand(card.logoSlug || '')?.primaryColor || '#333333';
+  const bg = resolveCardColor(card.color, card.logoSlug);
   const fg = textOnColor(bg);
 
   const bundledLogo = card.logoSlug ? getBrandLogo(card.logoSlug) : undefined;
