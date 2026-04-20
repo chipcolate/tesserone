@@ -12,6 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, typography, textOnColor } from '../src/theme';
 import { useSettingsStore } from '../src/stores/settings';
 import { useCardsStore, getSortedCards } from '../src/stores/cards';
+import { useTutorialStore } from '../src/stores/tutorial';
 import { ThemeMode } from '../src/types';
 import {
   exportCards,
@@ -32,6 +33,7 @@ export default function SettingsScreen() {
   const { colors } = useTheme();
   const { themeMode, setThemeMode, sortMode } = useSettingsStore();
   const { cards, clearAll } = useCardsStore();
+  const resetTutorial = useTutorialStore((s) => s.resetAll);
   const [importing, setImporting] = useState(false);
 
   const cardsList = getSortedCards(cards, sortMode);
@@ -99,6 +101,11 @@ export default function SettingsScreen() {
     }
   };
 
+  const handleReplayTutorial = () => {
+    resetTutorial();
+    Alert.alert('Tutorial Reset', 'Tips will appear again as you use the app.');
+  };
+
   const handleClearAll = () => {
     Alert.alert(
       'Delete All Cards',
@@ -158,6 +165,10 @@ export default function SettingsScreen() {
             <Text style={[typography.body, { color: colors.text }]}>
               {importing ? 'Importing...' : 'Import Cards'}
             </Text>
+          </Pressable>
+          <View style={[styles.divider, { backgroundColor: colors.bg }]} />
+          <Pressable style={styles.row} onPress={handleReplayTutorial}>
+            <Text style={[typography.body, { color: colors.text }]}>Replay Tutorial</Text>
           </Pressable>
           <View style={[styles.divider, { backgroundColor: colors.bg }]} />
           <Pressable style={styles.row} onPress={handleClearAll}>
