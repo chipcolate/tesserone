@@ -48,7 +48,8 @@
         {
           "isSystemBrightnessAllowed": true
         }
-      ]
+      ],
+      "expo-sharing"
     ],
     "extra": {
       "router": {},
