@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="Tesserone logo" width="120" />
+</p>
+
 # Tesserone
 
 A loyalty card manager that feels alive. Cards aren't rows in a database — they're objects you hold, flip, and fan through. Built with wallet-style interactions, spring physics, and haptic feedback.
