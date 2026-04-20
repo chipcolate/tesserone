@@ -128,7 +128,7 @@ export default function AddCardScreen() {
       style={[styles.screen, { backgroundColor: colors.bg }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+      <View style={styles.header}>
         <Text style={[typography.cardName, { color: colors.text }]}>Add Card</Text>
       </View>
 
@@ -296,6 +296,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingTop: 16,
     paddingBottom: 12,
   },
   tabs: {
