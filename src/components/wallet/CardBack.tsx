@@ -63,6 +63,12 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
       </View>
 
       <Text style={[typography.barcode, styles.code]}>{card.code}</Text>
+
+      {card.notes ? (
+        <Text style={[typography.caption, styles.notes]} numberOfLines={3}>
+          {card.notes}
+        </Text>
+      ) : null}
     </View>
   );
 });
@@ -87,6 +93,11 @@ const styles = StyleSheet.create({
   },
   code: {
     color: '#333333',
+  },
+  notes: {
+    color: '#555555',
+    textAlign: 'center',
+    maxWidth: '90%',
   },
   errorText: {
     color: '#999999',

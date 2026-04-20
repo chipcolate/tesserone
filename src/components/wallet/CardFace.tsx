@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { FidelityCard } from '../../types';
 import { getBrandLogo, resolveCardColor } from '../../services/logos';
-import { textOnColor, typography } from '../../theme';
+import { textOnColor } from '../../theme';
 
 interface CardFaceProps {
   card: FidelityCard;
@@ -28,20 +28,10 @@ export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
           />
         </View>
       ) : (
-        <Text style={[styles.initial, { color: fg }]}>
-          {card.name.charAt(0).toUpperCase()}
-        </Text>
-      )}
-      <View>
-        <Text style={[typography.cardName, styles.name, { color: fg }]} numberOfLines={1}>
+        <Text style={[styles.fallbackName, { color: fg }]} numberOfLines={2}>
           {card.name}
         </Text>
-        {card.notes ? (
-          <Text style={[typography.caption, { color: fg, opacity: 0.7, marginTop: 4 }]} numberOfLines={2}>
-            {card.notes}
-          </Text>
-        ) : null}
-      </View>
+      )}
     </View>
   );
 });
@@ -51,7 +41,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 20,
     padding: 20,
-    justifyContent: 'space-between',
     overflow: 'hidden',
   },
   logoWrap: {
@@ -63,12 +52,10 @@ const styles = StyleSheet.create({
     height: 48,
     width: 160,
   },
-  initial: {
-    fontSize: 64,
+  fallbackName: {
+    fontSize: 32,
     fontWeight: '800',
-    lineHeight: 72,
-  },
-  name: {
-    marginTop: 'auto',
+    lineHeight: 38,
+    letterSpacing: -0.5,
   },
 });
