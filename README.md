@@ -42,36 +42,73 @@ EAN-13, EAN-8, Code 128, Code 39, QR, UPC-A, UPC-E, PDF417, Aztec, Data Matrix, 
 
 ### Prerequisites
 
-- macOS (for iOS builds)
+**Common**
+
+- [Bun](https://bun.sh) for package management (npm or yarn work too, but `bun.lock` is the checked-in lockfile)
+- Node.js 20+ (needed for `npx` — some Expo CLI commands shell out to it)
+- `eas-cli` installed globally
+
+**For iOS builds**
+
+- macOS (required — iOS builds don't run on Linux or Windows)
 - Xcode with iOS simulators and command line tools
 - A physical iOS device (Expo Go is not supported)
-- [Bun](https://bun.sh) package manager
-- `eas-cli` installed globally
-- Fastlane (`gem install fastlane`)
 
-### Setup
+**For Android builds**
+
+- Android Studio with the Android SDK and platform tools
+- JDK 17
+- A physical Android device with USB debugging enabled, or a running emulator
+- `adb` on your PATH (comes with Android SDK platform-tools)
+
+### Clone & Install
 
 ```bash
-# Clone and install
 git clone https://github.com/chipcolate/tesserone.git
 cd tesserone
 bun install
+```
 
-# Build and run on a connected iPhone
+### Run on a device
+
+**iOS**
+
+```bash
 npx expo run:ios --device
+```
+
+**Android**
+
+```bash
+npx expo run:android --device
 ```
 
 ### Building for Distribution
 
+**iOS**
+
 ```bash
-# Ad-hoc build (for your provisioned devices)
+# Ad-hoc build for your provisioned devices
 eas build --platform ios --local --profile preview
 
-# Install on device
+# Install the resulting .ipa on a connected device
 xcrun devicectl device install app --device <DEVICE_UUID> <path-to-ipa>
 
-# Production build (for App Store submission)
+# Production build for App Store submission
 eas build --platform ios --local --profile production
+```
+
+**Android**
+
+```bash
+# Preview APK for direct install / sharing with testers
+eas build --platform android --local --profile preview
+
+# Install the APK via adb
+adb install <path-to-apk>
+
+# Production Android App Bundle for Play Store submission
+eas build --platform android --local --profile production
 ```
 
 ## Adding Brand Logos
