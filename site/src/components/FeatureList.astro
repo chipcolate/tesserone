@@ -1,0 +1,96 @@
+---
+const features = [
+  {
+    title: "Local-first",
+    body: "Your cards live on your device. No accounts, no sign-up, no sync required.",
+    icon: "device",
+  },
+  {
+    title: "Zero cloud",
+    body: "There are no servers. There is no backend. We don't have a database you could be in.",
+    icon: "cloud-off",
+  },
+  {
+    title: "Zero tracking",
+    body: "No analytics. No telemetry. No third-party SDKs. The app makes zero network calls.",
+    icon: "shield",
+  },
+  {
+    title: "Instant at checkout",
+    body: "Tap a card to flip it. Screen brightness maxes automatically for reliable scanning.",
+    icon: "flash",
+  },
+  {
+    title: "A familiar card stack",
+    body: "Cards that scroll, expand, and flip exactly like you'd expect. No surprises, no learning curve.",
+    icon: "layers",
+  },
+  {
+    title: "All the formats",
+    body: "EAN-13, CODE-128, QR, Aztec, PDF417, DataMatrix — every barcode your cards come in.",
+    icon: "barcode",
+  },
+  {
+    title: "No lock-in",
+    body: "Export your whole collection to a plain JSON file. Back it up, move it between devices, or share it — it's your data.",
+    icon: "import",
+  },
+  {
+    title: "Open source, forever",
+    body: "Apache 2.0. Read the code. Audit it. Fork it. Build your own. That's the deal.",
+    icon: "code",
+  },
+];
+
+const icons: Record<string, string> = {
+  device:
+    '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/>',
+  "cloud-off":
+    '<path d="M2 2l20 20"/><path d="M5.8 5.8A6 6 0 0 0 9 18h10a4 4 0 0 0 3.8-5.2"/><path d="M9 6a6 6 0 0 1 10.7 3.6"/>',
+  shield: '<path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/>',
+  flash: '<path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>',
+  layers: '<path d="M12 2l10 6-10 6L2 8l10-6z"/><path d="M2 14l10 6 10-6"/>',
+  barcode:
+    '<path d="M4 4v16M7 4v16M10 4v16M13 4v16M16 4v16M19 4v16M22 4v16"/>',
+  import:
+    '<path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/>',
+  code: '<path d="M9 6l-6 6 6 6"/><path d="M15 6l6 6-6 6"/>',
+};
+---
+
+<section id="features" class="px-6 py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl">
+    <div class="mb-16 max-w-2xl">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+        Everything the old app did.<br />
+        <span class="text-[var(--color-fg-muted)]">Nothing it didn't.</span>
+      </h2>
+    </div>
+
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        features.map((f) => (
+          <li class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition hover:border-[var(--color-accent)]">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                set:html={icons[f.icon]}
+              />
+            </div>
+            <h3 class="mb-2 text-lg font-semibold">{f.title}</h3>
+            <p class="text-sm leading-relaxed text-[var(--color-fg-muted)]">
+              {f.body}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
