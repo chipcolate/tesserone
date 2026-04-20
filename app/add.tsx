@@ -172,6 +172,8 @@ export default function AddCardScreen() {
           style={styles.form}
           contentContainerStyle={styles.formContent}
           keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="interactive"
+          automaticallyAdjustKeyboardInsets
         >
           <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
           <TextInput

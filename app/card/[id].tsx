@@ -116,6 +116,8 @@ export default function CardDetailScreen() {
         style={styles.form}
         contentContainerStyle={styles.formContent}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+        automaticallyAdjustKeyboardInsets
       >
         <Text style={[styles.label, { color: colors.textSecondary }]}>Name</Text>
         <TextInput
