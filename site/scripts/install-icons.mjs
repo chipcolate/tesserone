@@ -30,6 +30,9 @@ for (const s of WATCH_SIZES) {
 // README/project logo (was 240x240)
 await render(SVG_LIGHT, 240, `${REPO}/assets/logo.png`);
 
+// Expo splash icon — displayed centered on #0A0A0A per app.json
+await render(SVG_LIGHT, 1024, `${REPO}/assets/splash-icon.png`);
+
 // Expo web favicon (was 48x48, grayscale — upgrade to 64x64 RGBA so it reads)
 await render(SVG_LIGHT, 64, `${REPO}/assets/favicon.png`);
 
@@ -71,4 +74,4 @@ ico.writeUInt32LE(22, 18); // image offset (6 + 16)
 pngData.copy(ico, 22);
 writeFileSync(`${REPO}/site/public/favicon.ico`, ico);
 
-console.log("Generated: watch sizes, logo.png(240), favicon.png(64), site PWA icons, favicon.ico");
+console.log("Generated: watch sizes, logo.png(240), splash-icon.png(1024), favicon.png(64), site PWA icons, favicon.ico");
