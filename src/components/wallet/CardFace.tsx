@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
 import { FidelityCard } from '../../types';
 import { getBrandLogo, resolveCardColor } from '../../services/logos';
 import { textOnColor } from '../../theme';
@@ -23,7 +24,8 @@ export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
           <Image
             source={logoSource}
             style={styles.logo}
-            resizeMode="contain"
+            contentFit="contain"
+            transition={150}
             accessibilityLabel={`${card.name} logo`}
           />
         </View>

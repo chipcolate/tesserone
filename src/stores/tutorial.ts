@@ -28,6 +28,10 @@ export const useTutorialStore = create<TutorialState>()(
       resetAll: () => set({ seenSteps: {} }),
       setEnabled: (enabled) => set({ enabled }),
     }),
-    { name: 'tutorial', storage: createJSONStorage(() => AsyncStorage) }
+    {
+      name: 'tutorial',
+      storage: createJSONStorage(() => AsyncStorage),
+      version: 1,
+    }
   )
 );

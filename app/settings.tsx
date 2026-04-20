@@ -31,8 +31,11 @@ const THEME_OPTIONS: { value: ThemeMode; label: string }[] = [
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
-  const { themeMode, setThemeMode, sortMode } = useSettingsStore();
-  const { cards, clearAll } = useCardsStore();
+  const themeMode = useSettingsStore((s) => s.themeMode);
+  const setThemeMode = useSettingsStore((s) => s.setThemeMode);
+  const sortMode = useSettingsStore((s) => s.sortMode);
+  const cards = useCardsStore((s) => s.cards);
+  const clearAll = useCardsStore((s) => s.clearAll);
   const resetTutorial = useTutorialStore((s) => s.resetAll);
   const [importing, setImporting] = useState(false);
 

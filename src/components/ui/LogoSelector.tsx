@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
 import { useTheme, typography, textOnColor } from '../../theme';
 import { getBrandLogo, getBrand, type BrandEntry } from '../../services/logos';
 
@@ -34,7 +35,7 @@ export function LogoSelector({
       <View style={styles.previewRow}>
         <View style={[styles.logoPreview, { backgroundColor: cardColor }]}>
           {logoSource ? (
-            <Image source={logoSource} style={styles.logoImage} resizeMode="contain" />
+            <Image source={logoSource} style={styles.logoImage} contentFit="contain" transition={150} />
           ) : (
             <Text style={[styles.initial, { color: textOnColor(cardColor) }]}>
               {cardName ? cardName.charAt(0).toUpperCase() : '?'}
