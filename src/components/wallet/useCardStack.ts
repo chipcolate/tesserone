@@ -81,13 +81,11 @@ export function useCardStack() {
   const savedDismissY = useSharedValue(0);
   const flipProgress = useSharedValue(0);
 
-  // Reorder state
   const reorderMode = useSharedValue(0); // 0 = off, 1 = on
   const draggedIndex = useSharedValue(-1);
   const dragTranslateY = useSharedValue(0);
   const dragStartY = useSharedValue(0);
 
-  // --- Scroll / dismiss pan ---
   const panGesture = Gesture.Pan()
     .activeOffsetY([-10, 10])
     .onStart(() => {
@@ -146,10 +144,8 @@ export function useCardStack() {
       }
     });
 
-  // --- Tap: select or flip ---
   const makeTapGesture = (index: number) =>
     Gesture.Tap().onEnd(() => {
-      // No tap actions in reorder mode
       if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         selectedCardIndex.value = index;
@@ -167,7 +163,6 @@ export function useCardStack() {
       }
     });
 
-  // --- Long-press: edit (normal mode) or start drag (reorder mode) ---
   const makeLongPressGesture = (onEdit: () => void) =>
     Gesture.LongPress()
       .minDuration(400)
@@ -181,7 +176,6 @@ export function useCardStack() {
         runOnJS(onEdit)();
       });
 
-  // --- Reorder drag: long-press then pan to reorder ---
   const makeReorderGesture = (index: number, onReorder: (from: number, to: number) => void) =>
     Gesture.Pan()
       .activateAfterLongPress(300)
@@ -198,7 +192,6 @@ export function useCardStack() {
       })
       .onEnd(() => {
         if (draggedIndex.value !== index) return;
-        // Calculate target position based on where card was dropped
         const currentY = dragStartY.value + dragTranslateY.value;
         const targetIndex = Math.round(
           Math.max(0, currentY + scrollOffset.value) / CARD_STACK.STACK_SPACING

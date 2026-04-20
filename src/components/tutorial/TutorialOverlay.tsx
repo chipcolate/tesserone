@@ -66,7 +66,6 @@ export function TutorialOverlay({
       }
     : null;
 
-  // Decide where to place the callout relative to the cutout
   let calloutTop: number | undefined;
   let calloutBottom: number | undefined;
 
@@ -123,7 +122,6 @@ export function TutorialOverlay({
         </Svg>
       </Pressable>
 
-      {/* Callout bubble */}
       <View
         style={[
           styles.callout,

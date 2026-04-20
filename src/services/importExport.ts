@@ -18,8 +18,6 @@ export interface ImportResult {
 
 export type MergeStrategy = 'keepExisting' | 'useImported' | 'keepNewer';
 
-// --- V1 format migration ---
-
 /** Map v1 lowercase format strings to v2 uppercase. */
 const V1_FORMAT_MAP: Record<string, BarcodeFormat> = {
   qr: 'QR', ean13: 'EAN13', ean8: 'EAN8', code128: 'CODE128',
@@ -74,8 +72,6 @@ function migrateCard(card: RawImportedCard, index: number): FidelityCard {
   };
 }
 
-// --- Validation ---
-
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
@@ -117,7 +113,6 @@ function validateImportData(data: unknown): ImportResult {
   if (!rawCards.every(isValidRawCard)) {
     return { success: false, error: 'Invalid card data — missing required fields' };
   }
-  // Migrate cards (handles v1 format)
   const migrated: FidelityCard[] = rawCards.map(migrateCard);
   const settings = narrowSettings(data.settings);
   const version = typeof data.version === 'string' ? data.version : '1.0.0';
@@ -128,8 +123,6 @@ function validateImportData(data: unknown): ImportResult {
     data: { cards: migrated, settings, exportedAt, version },
   };
 }
-
-// --- Merge ---
 
 export function detectConflicts(
   existing: Record<string, FidelityCard>,
@@ -166,8 +159,6 @@ export function mergeCards(
   return result;
 }
 
-// --- Export ---
-
 export async function exportCards(
   cards: FidelityCard[],
   settings: Partial<Settings>
@@ -198,8 +189,6 @@ export async function exportCards(
     return { success: false, error: `Failed to export data: ${detail}` };
   }
 }
-
-// --- Import ---
 
 export async function importCards(): Promise<ImportResult> {
   try {

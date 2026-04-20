@@ -34,7 +34,6 @@ export default function CardDetailScreen() {
   const [color, setColor] = useState(card?.color ?? '#42A5F5');
   const [notes, setNotes] = useState(card?.notes ?? '');
   const [logoSlug, setLogoSlug] = useState<string | undefined>(card?.logoSlug);
-  // Pre-populate brand suggestions if no logo is set yet
   const [brandResults, setBrandResults] = useState<BrandEntry[]>(
     () => (!card?.logoSlug && card?.name) ? searchBrands(card.name) : []
   );
@@ -102,7 +101,6 @@ export default function CardDetailScreen() {
         <Text style={[typography.cardName, { color: colors.text }]}>Edit Card</Text>
       </View>
 
-      {/* Card preview */}
       <View style={[styles.preview, { backgroundColor: color }]}>
         <Text style={[typography.title, { color: textOnColor(color) }]} numberOfLines={1}>
           {name || 'Card Name'}
@@ -210,7 +208,6 @@ export default function CardDetailScreen() {
         </Text>
       </ScrollView>
 
-      {/* Bottom actions */}
       <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
         <Pressable
           style={[styles.actionButton, { backgroundColor: '#7f1d1d' }]}

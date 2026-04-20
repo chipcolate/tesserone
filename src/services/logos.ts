@@ -10,8 +10,6 @@ export type { BrandEntry } from '../types';
 // needed and aligns the shape with BrandEntry.
 const brandIndex: BrandEntry[] = brandIndexData as BrandEntry[];
 
-// Bundled logo assets — keyed by filename (including extension).
-// Add entries here as you add logos to assets/logos/.
 const BUNDLED_LOGOS: Record<string, ImageSourcePropType> = {
   'esselunga.png': require('../../assets/logos/esselunga.png'),
   'conad.png': require('../../assets/logos/conad.png'),
@@ -23,40 +21,27 @@ const BUNDLED_LOGOS: Record<string, ImageSourcePropType> = {
   'ovs.png': require('../../assets/logos/ovs.png'),
 };
 
-// Fuse.js for fuzzy search
 const fuse = new Fuse<BrandEntry>(brandIndex, {
   keys: ['name', 'aliases'],
   threshold: 0.3,
   distance: 100,
 });
 
-/**
- * Search the curated brand index by name.
- */
 export function searchBrands(query: string): BrandEntry[] {
   if (!query.trim()) return [];
   return fuse.search(query, { limit: 10 }).map((r) => r.item);
 }
 
-/**
- * Get a brand entry by slug.
- */
 export function getBrand(slug: string): BrandEntry | undefined {
   return brandIndex.find((b) => b.slug === slug);
 }
 
-/**
- * Get the brand's colors.
- */
 export function getBrandColors(slug: string): { primary: string; secondary: string } | undefined {
   const brand = getBrand(slug);
   if (!brand) return undefined;
   return { primary: brand.primaryColor, secondary: brand.secondaryColor };
 }
 
-/**
- * Get the bundled logo image source for a brand.
- */
 export function getBrandLogo(slug: string): ImageSourcePropType | undefined {
   const brand = getBrand(slug);
   if (!brand) return undefined;

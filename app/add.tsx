@@ -40,7 +40,6 @@ export default function AddCardScreen() {
   const [scanned, setScanned] = useState(false);
   const processingRef = useRef(false);
 
-  // Brand search results driven by name input
   const [brandResults, setBrandResults] = useState<BrandEntry[]>([]);
 
   const handleNameChange = useCallback((text: string) => {
@@ -122,7 +121,6 @@ export default function AddCardScreen() {
         <Text style={[typography.cardName, { color: colors.text }]}>Add Card</Text>
       </View>
 
-      {/* Tab switcher */}
       <View style={[styles.tabs, { backgroundColor: colors.surface }]}>
         <Pressable
           style={[styles.tab, tab === 'scan' && { backgroundColor: colors.accent }]}
@@ -175,7 +173,6 @@ export default function AddCardScreen() {
           contentContainerStyle={styles.formContent}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Name */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
           <TextInput
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
@@ -186,7 +183,6 @@ export default function AddCardScreen() {
             autoCapitalize="words"
           />
 
-          {/* Logo */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Logo</Text>
           <LogoSelector
             logoSlug={logoSlug}
@@ -197,7 +193,6 @@ export default function AddCardScreen() {
             onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
           />
 
-          {/* Barcode */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Barcode</Text>
           <TextInput
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
@@ -209,7 +204,6 @@ export default function AddCardScreen() {
             autoCorrect={false}
           />
 
-          {/* Format picker */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Format</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
             {BARCODE_FORMAT_OPTIONS.map((opt) => (
@@ -236,7 +230,6 @@ export default function AddCardScreen() {
             ))}
           </ScrollView>
 
-          {/* Color picker */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Color</Text>
           <View style={styles.colorGrid}>
             {CARD_COLORS.map((c) => (
@@ -253,7 +246,6 @@ export default function AddCardScreen() {
             ))}
           </View>
 
-          {/* Notes */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Notes</Text>
           <TextInput
             style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
@@ -267,7 +259,6 @@ export default function AddCardScreen() {
         </ScrollView>
       )}
 
-      {/* Bottom action buttons */}
       <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
         <Pressable
           style={[styles.actionButton, { backgroundColor: colors.surface }]}

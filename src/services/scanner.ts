@@ -14,9 +14,6 @@ export const BARCODE_FORMAT_OPTIONS: BarcodeFormatOption[] = [
   { value: 'UPCE', label: 'UPC-E' },
 ];
 
-/**
- * Map expo-camera barcode type strings to our internal BarcodeFormat.
- */
 export function mapBarcodeType(type: string): BarcodeFormat {
   const map: Record<string, BarcodeFormat> = {
     qr: 'QR',
@@ -35,9 +32,6 @@ export function mapBarcodeType(type: string): BarcodeFormat {
   return map[type.toLowerCase()] || 'CODE128';
 }
 
-/**
- * Validate a barcode value against its format.
- */
 export function validateBarcode(code: string, format: BarcodeFormat): boolean {
   const c = code?.trim();
   if (!c) return false;

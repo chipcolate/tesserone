@@ -8,15 +8,6 @@ interface CardFaceProps {
   card: FidelityCard;
 }
 
-/**
- * Front face of a wallet card. Renders:
- *   1. A bundled brand logo (via logoSlug) if available
- *   2. A user-uploaded logo (via customLogoUri) if set
- *   3. A typographic name-initial fallback otherwise
- *
- * The background color is taken from the card. Text/logo colors adapt
- * via textOnColor() for legibility.
- */
 export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
   const bg = resolveCardColor(card.color, card.logoSlug);
   const fg = textOnColor(bg);
