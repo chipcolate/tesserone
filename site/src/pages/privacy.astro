@@ -1,0 +1,148 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import Footer from "../components/Footer.astro";
+
+const effectiveDate = "April 20, 2026";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<Layout
+  title="Privacy Policy — Tesserone"
+  description="Tesserone collects no data. This page explains what that means, in plain language and in the formal terms app stores ask for."
+>
+  <ThemeToggle />
+  <main class="px-6 py-24 sm:py-32">
+    <article class="mx-auto max-w-3xl">
+      <a
+        href={base || "/"}
+        class="mb-8 inline-block text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
+        >&larr; Back to Tesserone</a
+      >
+
+      <h1 class="mb-2 text-4xl font-bold tracking-tight sm:text-5xl">
+        Privacy Policy
+      </h1>
+      <p class="mb-12 text-sm text-[var(--color-fg-muted)]">
+        Effective date: {effectiveDate}
+      </p>
+
+      <div class="space-y-10 text-lg leading-relaxed">
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">In one sentence</h2>
+          <p class="text-[var(--color-fg-muted)]">
+            Tesserone does not collect, transmit, or share any of your data.
+            Everything you enter stays on your device.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">What data we collect</h2>
+          <p class="text-[var(--color-fg-muted)]">
+            <strong class="text-[var(--color-fg)]">None.</strong> Tesserone
+            does not collect any personal information, usage analytics, crash
+            reports, device identifiers, or any other data. There is no
+            account, no sign-up, and no profile. The app does not communicate
+            with any server we operate — because we don't operate any.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">
+            What data the app stores
+          </h2>
+          <p class="text-[var(--color-fg-muted)]">
+            The loyalty cards you add (name, barcode, notes, chosen logo or
+            colour, custom uploaded logos) are stored
+            <strong class="text-[var(--color-fg)]"
+              >locally on your device</strong
+            > using the operating system's standard storage. This data never
+            leaves your device unless you explicitly export it yourself using
+            the Export feature.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">Permissions we request</h2>
+          <ul
+            class="list-disc space-y-3 pl-6 text-[var(--color-fg-muted)] marker:text-[var(--color-accent)]"
+          >
+            <li>
+              <strong class="text-[var(--color-fg)]">Camera</strong> — used
+              only when you tap "Scan" to read a barcode. Frames are processed
+              on-device and are never saved or transmitted.
+            </li>
+            <li>
+              <strong class="text-[var(--color-fg)]">Photo library</strong> —
+              used only when you pick a custom logo image for a card. The
+              image is copied into the app's private storage; no gallery
+              access happens in the background.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">Third parties</h2>
+          <p class="text-[var(--color-fg-muted)]">
+            The app contains
+            <strong class="text-[var(--color-fg)]"
+              >no third-party SDKs, advertising networks, analytics services,
+              or tracking tools</strong
+            >. It makes no network requests in normal use.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">Children's privacy</h2>
+          <p class="text-[var(--color-fg-muted)]">
+            Tesserone does not knowingly collect information from anyone —
+            including children under 13 (or the equivalent minimum age in your
+            jurisdiction). Because we collect no data at all, there is nothing
+            to delete or export on request.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">Your rights (GDPR, CCPA)</h2>
+          <p class="text-[var(--color-fg-muted)]">
+            Regulations such as the GDPR and CCPA give you rights to access,
+            correct, or delete personal data held about you. Chipcolate holds
+            no personal data about Tesserone users, so there is nothing for us
+            to provide or erase. Your data resides entirely on your device,
+            under your control — you can delete a card or uninstall the app at
+            any time to remove it.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">Changes to this policy</h2>
+          <p class="text-[var(--color-fg-muted)]">
+            If this policy changes, we will update the effective date above
+            and note the change in the app's release notes. Because the app's
+            approach is "collect nothing," material changes would only occur
+            alongside a significant redesign.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-4 text-2xl font-semibold">Contact</h2>
+          <p class="text-[var(--color-fg-muted)]">
+            Questions about this policy? The fastest way is to open an issue
+            at
+            <a
+              href="https://github.com/chipcolate/tesserone/issues"
+              class="text-[var(--color-accent)] hover:underline"
+              >github.com/chipcolate/tesserone/issues</a
+            >. If you'd rather reach us by email, write to
+            <a
+              href="mailto:tesserone@chipcolate.com"
+              class="text-[var(--color-accent)] hover:underline"
+              >tesserone@chipcolate.com</a
+            >.
+          </p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

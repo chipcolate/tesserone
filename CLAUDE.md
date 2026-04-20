@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Tesserone is a loyalty card manager app with an Apple Wallet-style card stack interaction. Local-first, zero cloud, open source (MIT). Bundle ID: `com.chipcolate.tesserone`.
+Tesserone is a loyalty card manager app with an Apple Wallet-style card stack interaction. Local-first, zero cloud, open source (Apache 2.0). Bundle ID: `com.chipcolate.tesserone`.
 
 The legacy v1 app ("Cardshive") lives in `legacy/Cardshive/` for data model reference only.
 
