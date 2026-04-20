@@ -14,8 +14,7 @@ Local-first. Zero cloud. Zero bloat. Open source.
 
 ## Features
 
-- **Wallet-style card stack** — scroll, tap to expand, swipe up to dismiss
-- **Card flip** — tap an expanded card to flip it and reveal the barcode
+- **Wallet-style card stack** — scroll, tap to bring a card forward with its barcode, tap again or swipe up to send it back
 - **Brightness boost** — screen brightness maxes out when viewing a barcode, restores when you're done
 - **Barcode scanning** — scan loyalty cards with the camera, or enter details manually
 - **Brand recognition** — type a store name and Tesserone matches it to a curated brand database with logos and colors

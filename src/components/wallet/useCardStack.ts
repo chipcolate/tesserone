@@ -149,17 +149,14 @@ export function useCardStack() {
       if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         selectedCardIndex.value = index;
+        flipProgress.value = withSpring(Math.PI, SPRING_FLIP);
         runOnJS(triggerHaptic)();
+        runOnJS(maxBrightness)();
       } else if (selectedCardIndex.value === index) {
-        const isFlippingToBack = flipProgress.value < Math.PI / 2;
-        const target = isFlippingToBack ? Math.PI : 0;
-        flipProgress.value = withSpring(target, SPRING_FLIP);
+        selectedCardIndex.value = -1;
+        flipProgress.value = withSpring(0, SPRING_FLIP);
         runOnJS(triggerHaptic)();
-        if (isFlippingToBack) {
-          runOnJS(maxBrightness)();
-        } else {
-          runOnJS(restoreBrightness)();
-        }
+        runOnJS(restoreBrightness)();
       }
     });
 

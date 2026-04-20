@@ -58,11 +58,11 @@ Apple Wallet-style card stack. Cards are `<Animated.View>` elements with transfo
 - `useCardStack.ts` — central hook: scroll, select/dismiss, flip, reorder shared values and gesture handlers
 - `CardStack.tsx` — container with scroll pan gesture, layout measurement
 - `CardItem.tsx` — single card: animated positioning, gesture composition, wobble for reorder mode
-- `CardFace.tsx` — front face: brand logo or name-initial fallback, notes
-- `CardBack.tsx` — back face: barcode rendering (EAN13, CODE128, QR, etc.)
+- `CardFace.tsx` — front face: brand logo or full-name fallback
+- `CardBack.tsx` — back face: barcode rendering (EAN13, CODE128, QR, etc.) + notes
 - `CardFlip.tsx` — rotateY flip wrapper with opacity-based face swap
 
-Interactions: vertical scroll with rubber-band overscroll, tap to expand, swipe up to dismiss, tap expanded card to flip (shows barcode + maxes brightness), long-press expanded card to edit, wobble + drag to reorder.
+Interactions: vertical scroll with rubber-band overscroll, tap to expand and auto-flip to the barcode (maxes brightness), tap again or swipe up to dismiss, long-press expanded card to edit, wobble + drag to reorder.
 
 ### State (`src/stores/`)
 - `cards.ts` — card CRUD, reorder, sort (manual/alphabetical/dateCreated), filter by name/logoSlug
@@ -86,9 +86,9 @@ To add a brand: drop PNG in `assets/logos/`, add `require()` in `BUNDLED_LOGOS` 
 
 ## Key Design Decisions
 
-- **Apple Wallet UX** — cards at fixed stack spacing (170px), scroll to browse, tap to expand with mini-stack at bottom, swipe up to dismiss
+- **Apple Wallet UX** — cards at fixed stack spacing (170px), scroll to browse, tap to expand+flip to barcode with mini-stack at bottom, tap or swipe up to dismiss
 - **Springs for transitions, raw values for scroll** — scroll tracking is 1:1 with finger (no spring lag), state transitions (select/dismiss/reorder) use springs
-- **Brightness boost on barcode flip** — saves/restores device brightness automatically
+- **Brightness boost on expand** — saves/restores device brightness automatically when the barcode appears
 - **Reorder mode** — FAB menu toggle, iOS home screen wobble, long-press + drag
 - **Curated logos, not API** — bundled PNGs for offline-first, user upload for anything not in the set
 - **v1 import compatibility** — lowercase format enums auto-migrated, missing fields get defaults

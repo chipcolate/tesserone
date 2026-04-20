@@ -23,13 +23,13 @@ const STEPS: Record<TutorialStepId, Omit<TutorialStepDef, 'id'>> = {
   },
   'home-tap-expand': {
     title: 'Open a card',
-    message: 'Tap any card in the stack to bring it forward and see its details.',
+    message: 'Tap any card to bring it forward and reveal its barcode.',
     target: null,
   },
   'expanded-tips': {
     title: 'Your card, expanded',
     message:
-      'Tap the card again to flip it and reveal the barcode.\nSwipe up to send it back.\nLong-press to edit.',
+      'Swipe up to send the card back.\nLong-press to edit.\nTap again to close.',
     target: null,
   },
   'home-scroll': {
