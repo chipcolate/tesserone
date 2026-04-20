@@ -193,8 +193,9 @@ export async function exportCards(
       });
     }
     return { success: true };
-  } catch {
-    return { success: false, error: 'Failed to export data' };
+  } catch (e) {
+    const detail = e instanceof Error ? e.message : String(e);
+    return { success: false, error: `Failed to export data: ${detail}` };
   }
 }
 
@@ -213,7 +214,8 @@ export async function importCards(): Promise<ImportResult> {
     const content = await file.text();
     const data: unknown = JSON.parse(content);
     return validateImportData(data);
-  } catch {
-    return { success: false, error: 'Failed to read or parse file' };
+  } catch (e) {
+    const detail = e instanceof Error ? e.message : String(e);
+    return { success: false, error: `Failed to read or parse file: ${detail}` };
   }
 }
