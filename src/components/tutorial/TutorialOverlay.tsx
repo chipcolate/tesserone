@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Pressable, StyleSheet, useWindowDimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -22,9 +22,17 @@ type Props = {
   onDismiss: () => void;
 };
 
-const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get('window');
 const FADE_MS = 220;
 const BACKDROP = 'rgba(0,0,0,0.72)';
+
+type FrozenContent = {
+  title?: string;
+  message: string;
+  targetRect?: TargetRect | null;
+  cutoutPadding: number;
+  cutoutRadius: number;
+  arrow: 'top' | 'bottom' | 'auto' | 'none';
+};
 
 export function TutorialOverlay({
   visible,
@@ -37,11 +45,23 @@ export function TutorialOverlay({
   onDismiss,
 }: Props) {
   const { colors } = useTheme();
+  const { width: SCREEN_W, height: SCREEN_H } = useWindowDimensions();
   const opacity = useSharedValue(0);
   const [mounted, setMounted] = useState(visible);
+  // Snapshot content while the tip is visible so the fade-out keeps rendering
+  // the tip the user just dismissed rather than flashing the next (or empty) one.
+  const [content, setContent] = useState<FrozenContent>({
+    title,
+    message,
+    targetRect,
+    cutoutPadding,
+    cutoutRadius,
+    arrow,
+  });
 
   useEffect(() => {
     if (visible) {
+      setContent({ title, message, targetRect, cutoutPadding, cutoutRadius, arrow });
       setMounted(true);
       opacity.value = withTiming(1, { duration: FADE_MS, easing: Easing.out(Easing.quad) });
     } else {
@@ -49,7 +69,7 @@ export function TutorialOverlay({
       const t = setTimeout(() => setMounted(false), FADE_MS + 30);
       return () => clearTimeout(t);
     }
-  }, [visible, opacity]);
+  }, [visible, title, message, targetRect, cutoutPadding, cutoutRadius, arrow, opacity]);
 
   const containerStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
@@ -57,12 +77,12 @@ export function TutorialOverlay({
 
   if (!mounted) return null;
 
-  const cutout = targetRect
+  const cutout = content.targetRect
     ? {
-        x: Math.max(0, targetRect.x - cutoutPadding),
-        y: Math.max(0, targetRect.y - cutoutPadding),
-        width: targetRect.width + cutoutPadding * 2,
-        height: targetRect.height + cutoutPadding * 2,
+        x: Math.max(0, content.targetRect.x - content.cutoutPadding),
+        y: Math.max(0, content.targetRect.y - content.cutoutPadding),
+        width: content.targetRect.width + content.cutoutPadding * 2,
+        height: content.targetRect.height + content.cutoutPadding * 2,
       }
     : null;
 
@@ -72,7 +92,7 @@ export function TutorialOverlay({
   if (cutout) {
     const above = cutout.y;
     const below = SCREEN_H - (cutout.y + cutout.height);
-    const placeBelow = arrow === 'top' || (arrow === 'auto' && below >= above);
+    const placeBelow = content.arrow === 'top' || (content.arrow === 'auto' && below >= above);
     if (placeBelow) {
       calloutTop = cutout.y + cutout.height + 18;
     } else {
@@ -104,8 +124,8 @@ export function TutorialOverlay({
                   y={cutout.y}
                   width={cutout.width}
                   height={cutout.height}
-                  rx={cutoutRadius}
-                  ry={cutoutRadius}
+                  rx={content.cutoutRadius}
+                  ry={content.cutoutRadius}
                   fill="black"
                 />
               )}
@@ -130,13 +150,13 @@ export function TutorialOverlay({
           calloutBottom !== undefined && { bottom: calloutBottom },
         ]}
       >
-        {title && (
+        {content.title && (
           <Text style={[typography.body, styles.title, { color: colors.text }]}>
-            {title}
+            {content.title}
           </Text>
         )}
         <Text style={[typography.body, { color: colors.text, lineHeight: 22 }]}>
-          {message}
+          {content.message}
         </Text>
         <Pressable
           onPress={onDismiss}

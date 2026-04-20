@@ -10,8 +10,8 @@ const LIGHT_TEXT = '#1A1A1A';
 const DARK_TEXT_SECONDARY = '#888888';
 const LIGHT_TEXT_SECONDARY = '#666666';
 
-/** Warm neutral — used when no card is selected. */
-export const DEFAULT_ACCENT = '#A0917B';
+/** Chipcolate brand purple — matches the Tesserone landing site accent. */
+export const DEFAULT_ACCENT = '#6C2DD7';
 
 export const DEFAULT_CARD_COLOR = '#42A5F5';
 

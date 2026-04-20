@@ -1,9 +1,8 @@
+import { useCallback, useRef } from 'react';
 import { useSharedValue, withDecay, withSpring, runOnJS, interpolate } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import * as Brightness from 'expo-brightness';
-
-let savedBrightness: number | null = null;
 
 function triggerHaptic() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -11,18 +10,6 @@ function triggerHaptic() {
 
 function triggerLightHaptic() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-}
-
-async function maxBrightness() {
-  savedBrightness = await Brightness.getBrightnessAsync();
-  await Brightness.setBrightnessAsync(1);
-}
-
-async function restoreBrightness() {
-  if (savedBrightness !== null) {
-    await Brightness.setBrightnessAsync(savedBrightness);
-    savedBrightness = null;
-  }
 }
 
 export const CARD_STACK = {
@@ -72,6 +59,28 @@ export function stackContentHeight(numCards: number): number {
 }
 
 export function useCardStack() {
+  const savedBrightnessRef = useRef<number | null>(null);
+
+  const maxBrightness = useCallback(async () => {
+    try {
+      savedBrightnessRef.current = await Brightness.getBrightnessAsync();
+      await Brightness.setBrightnessAsync(1);
+    } catch {
+      savedBrightnessRef.current = null;
+    }
+  }, []);
+
+  const restoreBrightness = useCallback(async () => {
+    const saved = savedBrightnessRef.current;
+    if (saved === null) return;
+    savedBrightnessRef.current = null;
+    try {
+      await Brightness.setBrightnessAsync(saved);
+    } catch {
+      // already cleared; next maxBrightness call will re-capture
+    }
+  }, []);
+
   const scrollOffset = useSharedValue(0);
   const savedOffset = useSharedValue(0);
   const maxScroll = useSharedValue(0);

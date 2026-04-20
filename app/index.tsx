@@ -24,8 +24,9 @@ const SPRING = { damping: 18, stiffness: 260 } as const;
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
-  const { cards, reorderCard } = useCardsStore();
-  const { sortMode } = useSettingsStore();
+  const cards = useCardsStore((s) => s.cards);
+  const reorderCard = useCardsStore((s) => s.reorderCard);
+  const sortMode = useSettingsStore((s) => s.sortMode);
   const stackState = useCardStack();
   const [reorderMode, setReorderMode] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);

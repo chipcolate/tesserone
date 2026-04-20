@@ -25,9 +25,9 @@
         "backgroundColor": "#0A0A0A"
       },
       "package": "com.chipcolate.tesserone",
+      "softwareKeyboardLayoutMode": "resize",
       "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.WRITE_SETTINGS"
+        "android.permission.CAMERA"
       ],
       "blockedPermissions": [
         "android.permission.RECORD_AUDIO"
@@ -35,6 +35,12 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-system-ui",
+        {
+          "backgroundColor": "#0A0A0A"
+        }
+      ],
       [
         "expo-camera",
         {
@@ -49,8 +55,12 @@
           "isSystemBrightnessAllowed": true
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      "expo-image"
     ],
+    "experiments": {
+      "typedRoutes": true
+    },
     "extra": {
       "router": {},
       "eas": {

@@ -7,9 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
+import { KeyboardAwareScrollView, type KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
@@ -24,10 +23,13 @@ import { LogoSelector } from '../src/components/ui/LogoSelector';
 
 type Tab = 'scan' | 'manual';
 
+const ACTION_BAR_HEIGHT = 68;
+
 export default function AddCardScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
-  const { cards, addCard } = useCardsStore();
+  const cards = useCardsStore((s) => s.cards);
+  const addCard = useCardsStore((s) => s.addCard);
   const [permission, requestPermission] = useCameraPermissions();
 
   const [tab, setTab] = useState<Tab>('manual');
@@ -41,17 +43,13 @@ export default function AddCardScreen() {
   const processingRef = useRef(false);
 
   const [brandResults, setBrandResults] = useState<BrandEntry[]>([]);
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
 
   useEffect(() => {
     if (tab !== 'manual') return;
     const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
     return () => clearTimeout(t);
   }, [tab]);
-
-  const handleNotesFocus = useCallback(() => {
-    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
-  }, []);
 
   const handleNameChange = useCallback((text: string) => {
     setName(text);
@@ -124,10 +122,7 @@ export default function AddCardScreen() {
   }, [name, code, format, color, logoSlug, notes, cards, addCard]);
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.screen, { backgroundColor: colors.bg }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <View style={[styles.screen, { backgroundColor: colors.bg }]}>
       <View style={styles.header}>
         <Text style={[typography.cardName, { color: colors.text }]}>Add Card</Text>
       </View>
@@ -179,12 +174,13 @@ export default function AddCardScreen() {
           </View>
         </View>
       ) : (
-        <ScrollView
+        <KeyboardAwareScrollView
           ref={scrollRef}
           style={styles.form}
           contentContainerStyle={styles.formContent}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="interactive"
+          bottomOffset={ACTION_BAR_HEIGHT + insets.bottom}
         >
           <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
           <TextInput
@@ -264,13 +260,12 @@ export default function AddCardScreen() {
             style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
             value={notes}
             onChangeText={setNotes}
-            onFocus={handleNotesFocus}
             placeholder="Optional notes"
             placeholderTextColor={colors.textSecondary}
             multiline
             textAlignVertical="top"
           />
-        </ScrollView>
+        </KeyboardAwareScrollView>
       )}
 
       <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
@@ -287,7 +282,7 @@ export default function AddCardScreen() {
           <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>Save Card</Text>
         </Pressable>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
