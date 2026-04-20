@@ -9,12 +9,15 @@ import Animated, {
   withSequence,
   withTiming,
   cancelAnimation,
+  interpolate,
   Easing,
 } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
 import { FidelityCard } from '../../types';
 import { CardFlip } from './CardFlip';
+import { getBrand } from '../../services/logos';
+import { isLightColor } from '../../theme';
 import {
   CARD_STACK,
   SPRING_SELECT,
@@ -177,16 +180,50 @@ export const CardItem = React.memo(function CardItem({
     };
   }, [index, total]);
 
-  const handleStyle = useAnimatedStyle(() => ({
-    opacity: state.selectedCardIndex.value === index ? 1 : 0,
-  }), [index]);
+  const bg = card.color || getBrand(card.logoSlug || '')?.primaryColor || '#333333';
+  const handleTint = isLightColor(bg) ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.55)';
+
+  const handleFrontStyle = useAnimatedStyle(() => {
+    const isSelected = state.selectedCardIndex.value === index;
+    const flipOpacity = interpolate(
+      state.flipProgress.value,
+      [0, Math.PI / 2 - 0.01, Math.PI / 2, Math.PI],
+      [1, 1, 0, 0]
+    );
+    return {
+      opacity: isSelected ? flipOpacity : 0,
+      transform: [
+        { perspective: 1000 },
+        { rotateY: `${isSelected ? state.flipProgress.value : 0}rad` },
+      ],
+    };
+  }, [index]);
+
+  const handleBackStyle = useAnimatedStyle(() => {
+    const isSelected = state.selectedCardIndex.value === index;
+    const flipOpacity = interpolate(
+      state.flipProgress.value,
+      [0, Math.PI / 2, Math.PI / 2 + 0.01, Math.PI],
+      [0, 0, 1, 1]
+    );
+    return {
+      opacity: isSelected ? flipOpacity : 0,
+      transform: [
+        { perspective: 1000 },
+        { rotateY: `${(isSelected ? state.flipProgress.value : 0) + Math.PI}rad` },
+      ],
+    };
+  }, [index]);
 
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.item, animatedStyle]}>
         <CardFlip card={card} flipProgress={effectiveFlip} />
-        <Animated.View style={[styles.handleWrap, handleStyle]} pointerEvents="none">
-          <View style={styles.handle} />
+        <Animated.View style={[styles.handleWrap, handleFrontStyle]} pointerEvents="none">
+          <View style={[styles.handle, { backgroundColor: handleTint }]} />
+        </Animated.View>
+        <Animated.View style={[styles.handleWrap, handleBackStyle]} pointerEvents="none">
+          <View style={[styles.handle, { backgroundColor: 'rgba(0,0,0,0.35)' }]} />
         </Animated.View>
       </Animated.View>
     </GestureDetector>
@@ -224,6 +261,5 @@ const styles = StyleSheet.create({
     width: 36,
     height: 5,
     borderRadius: 2.5,
-    backgroundColor: 'rgba(255,255,255,0.4)',
   },
 });
