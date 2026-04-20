@@ -10,6 +10,8 @@ Local-first. Zero cloud. Zero bloat. Open source.
 
 > Tesserone is an independent project. It is not affiliated with, endorsed by, or sponsored by any of the brands, merchants, or platform owners referenced in the app or its source. See [Trademarks & Attribution](#trademarks--attribution) for details.
 
+> Tesserone is a side project, maintained on a best-effort basis by the [Chipcolate](https://chipcolate.com) team. Issues and pull requests are welcome and will be reviewed as time allows.
+
 ## Features
 
 - **Wallet-style card stack** — scroll, tap to expand, swipe up to dismiss
@@ -168,4 +170,4 @@ Tesserone is an independent, open-source project. It is not affiliated with, end
 
 ## Author
 
-[Chipcolate](https://github.com/chipcolate)
+[Chipcolate](https://chipcolate.com)
