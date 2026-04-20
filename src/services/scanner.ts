@@ -46,7 +46,7 @@ export function validateBarcode(code: string, format: BarcodeFormat): boolean {
 
 /**
  * Fix common scan artifacts. EAN13 codes sometimes scan as 12 digits
- * (missing leading zero), and UPC-A can scan as EAN13.
+ * (missing leading zero).
  */
 export function fixScannedCode(
   code: string,
@@ -54,9 +54,6 @@ export function fixScannedCode(
 ): { code: string; format: BarcodeFormat } {
   if (format === 'EAN13' && /^\d{12}$/.test(code)) {
     return { code: '0' + code, format: 'EAN13' };
-  }
-  if (format === 'EAN13' && code.startsWith('0') && code.length === 13) {
-    // Could be a UPC-A scanned as EAN13 — keep as EAN13, both render fine
   }
   return { code, format };
 }
