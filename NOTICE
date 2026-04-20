@@ -1,0 +1,35 @@
+Tesserone
+Copyright 2026 Chipcolate
+
+This product includes software developed by Chipcolate
+(https://github.com/chipcolate).
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License in the accompanying LICENSE file or at
+http://www.apache.org/licenses/LICENSE-2.0.
+
+------------------------------------------------------------------------
+Trademarks
+------------------------------------------------------------------------
+
+Tesserone is an independent project. It is not affiliated with, endorsed
+by, or sponsored by any of the brands, merchants, or platform owners
+referenced in the app or its source.
+
+All third-party brand names, logos, and trademarks — including merchant
+logos bundled under `assets/logos/` and indexed in `data/brand-index.json`,
+as well as any platform, framework, or tool names mentioned for
+descriptive purposes — are the property of their respective owners. Any
+references are descriptive (nominative fair use) and do not imply
+endorsement, affiliation, or partnership.
+
+Bundled merchant logos are included solely to help end users visually
+identify the merchant that issued a loyalty card.
+
+Rights holders who would like a logo or brand entry removed from the
+bundled set may open an issue on the project repository and the asset
+will be removed promptly.
+
+End users who upload custom logos via the app are solely responsible for
+ensuring they have the right to use those images.

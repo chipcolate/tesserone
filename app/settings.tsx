@@ -184,6 +184,12 @@ export default function SettingsScreen() {
               The loyalty card manager that feels alive.{'\n'}Open source · Made by Chipcolate
             </Text>
           </View>
+          <View style={[styles.divider, { backgroundColor: colors.bg }]} />
+          <View style={styles.row}>
+            <Text style={[typography.caption, { color: colors.textSecondary, flex: 1 }]}>
+              Not affiliated with any of the brands or merchants shown in the app. Brand names and logos are trademarks of their respective owners.
+            </Text>
+          </View>
         </View>
       </ScrollView>
 
