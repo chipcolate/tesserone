@@ -1,18 +1,23 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
+  useAnimatedReaction,
   withSpring,
   interpolate,
+  runOnJS,
   Extrapolation,
 } from 'react-native-reanimated';
 import { useCardsStore, getSortedCards } from '../src/stores/cards';
 import { useSettingsStore } from '../src/stores/settings';
 import { useTheme, typography, textOnColor } from '../src/theme';
 import { CardStack, useCardStack } from '../src/components/wallet/CardStack';
+import { TutorialOverlay, type TargetRect } from '../src/components/tutorial/TutorialOverlay';
+import { useActiveTutorialStep } from '../src/components/tutorial/useActiveTutorialStep';
+import { useTutorialStore } from '../src/stores/tutorial';
 
 const SPRING = { damping: 18, stiffness: 260 } as const;
 
@@ -23,24 +28,34 @@ export default function HomeScreen() {
   const { sortMode } = useSettingsStore();
   const stackState = useCardStack();
   const [reorderMode, setReorderMode] = useState(false);
+  const [fabOpen, setFabOpen] = useState(false);
+  const [selectedCardIdx, setSelectedCardIdx] = useState(-1);
 
   // Sync React state to shared value so gesture worklets can read it
   useEffect(() => {
     stackState.reorderMode.value = reorderMode ? 1 : 0;
   }, [reorderMode, stackState.reorderMode]);
 
+  // Mirror selectedCardIndex shared value to React state for tutorial gating
+  useAnimatedReaction(
+    () => stackState.selectedCardIndex.value,
+    (curr, prev) => {
+      if (curr !== prev) runOnJS(setSelectedCardIdx)(curr);
+    }
+  );
+
   // 0 = closed, 1 = open
   const fabProgress = useSharedValue(0);
 
   const toggle = useCallback(() => {
-    fabProgress.value = withSpring(
-      fabProgress.value < 0.5 ? 1 : 0,
-      SPRING
-    );
+    const opening = fabProgress.value < 0.5;
+    fabProgress.value = withSpring(opening ? 1 : 0, SPRING);
+    setFabOpen(opening);
   }, [fabProgress]);
 
   const close = useCallback(() => {
     fabProgress.value = withSpring(0, SPRING);
+    setFabOpen(false);
   }, [fabProgress]);
 
   const cardsList = getSortedCards(cards, sortMode);
@@ -106,6 +121,47 @@ export default function HomeScreen() {
     };
   });
 
+  // ---- Tutorial overlays ----
+  const fabRef = useRef<View>(null);
+  const reorderItemRef = useRef<View>(null);
+  const [fabRect, setFabRect] = useState<TargetRect | null>(null);
+  const [reorderItemRect, setReorderItemRect] = useState<TargetRect | null>(null);
+  const markSeen = useTutorialStore((s) => s.markSeen);
+
+  const measureFab = useCallback(() => {
+    fabRef.current?.measureInWindow((x, y, width, height) => {
+      setFabRect({ x, y, width, height });
+    });
+  }, []);
+
+  // Re-measure the Reorder menu item once the FAB animation settles
+  useEffect(() => {
+    if (!fabOpen) return;
+    const t = setTimeout(() => {
+      reorderItemRef.current?.measureInWindow((x, y, width, height) => {
+        setReorderItemRect({ x, y, width, height });
+      });
+    }, 280);
+    return () => clearTimeout(t);
+  }, [fabOpen]);
+
+  const activeStep = useActiveTutorialStep({
+    cardCount: cardsList.length,
+    selectedCardIdx,
+    fabOpen,
+    reorderMode,
+  });
+
+  const targetRect: TargetRect | null =
+    activeStep?.target === 'fab'
+      ? fabRect
+      : activeStep?.target === 'reorderItem'
+      ? reorderItemRect
+      : null;
+
+  // FAB cutout is circular; menu items are pill-shaped
+  const cutoutRadius = activeStep?.target === 'fab' ? 28 : 14;
+
   return (
     <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
       <View style={styles.header}>
@@ -144,6 +200,7 @@ export default function HomeScreen() {
         </Animated.View>
         <Animated.View style={menuItem2Style}>
           <Pressable
+            ref={reorderItemRef}
             style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
             onPress={toggleReorder}
           >
@@ -167,6 +224,8 @@ export default function HomeScreen() {
       {/* FAB */}
       <View style={[styles.fabWrap, { paddingBottom: insets.bottom + 8 }]}>
         <Pressable
+          ref={fabRef}
+          onLayout={measureFab}
           style={[styles.fab, { backgroundColor: colors.accent }]}
           onPress={toggle}
           accessibilityLabel="Menu"
@@ -179,6 +238,17 @@ export default function HomeScreen() {
           </Animated.Text>
         </Pressable>
       </View>
+
+      <TutorialOverlay
+        visible={!!activeStep}
+        title={activeStep?.title}
+        message={activeStep?.message ?? ''}
+        targetRect={targetRect}
+        cutoutRadius={cutoutRadius}
+        onDismiss={() => {
+          if (activeStep) markSeen(activeStep.id);
+        }}
+      />
     </View>
   );
 }
