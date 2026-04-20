@@ -12,26 +12,17 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
 import { useCardsStore, nextSortIndex } from '../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } from '../src/theme';
 import { BarcodeFormat, FidelityCard } from '../src/types';
 import * as Haptics from 'expo-haptics';
-import { mapBarcodeType, validateBarcode, fixScannedCode } from '../src/services/scanner';
-import { searchBrands, getBrandColors, type BrandEntry } from '../src/services/logos';
+import { mapBarcodeType, validateBarcode, fixScannedCode, BARCODE_FORMAT_OPTIONS } from '../src/services/scanner';
+import { searchBrands, getBrandColors } from '../src/services/logos';
+import type { BrandEntry } from '../src/types';
 import { LogoSelector } from '../src/components/ui/LogoSelector';
 
 type Tab = 'scan' | 'manual';
-
-const FORMAT_OPTIONS: { value: BarcodeFormat; label: string }[] = [
-  { value: 'EAN13', label: 'EAN-13' },
-  { value: 'EAN8', label: 'EAN-8' },
-  { value: 'CODE128', label: 'Code 128' },
-  { value: 'CODE39', label: 'Code 39' },
-  { value: 'QR', label: 'QR' },
-  { value: 'UPCA', label: 'UPC-A' },
-  { value: 'UPCE', label: 'UPC-E' },
-];
 
 export default function AddCardScreen() {
   const insets = useSafeAreaInsets();
@@ -49,7 +40,6 @@ export default function AddCardScreen() {
   const [scanned, setScanned] = useState(false);
   const processingRef = useRef(false);
 
-  // Brand search results driven by name input
   const [brandResults, setBrandResults] = useState<BrandEntry[]>([]);
 
   const handleNameChange = useCallback((text: string) => {
@@ -66,7 +56,7 @@ export default function AddCardScreen() {
   }, []);
 
   const handleBarCodeScanned = useCallback(
-    ({ type, data }: { type: string; data: string }) => {
+    ({ type, data }: BarcodeScanningResult) => {
       if (processingRef.current) return;
       processingRef.current = true;
       setScanned(true);
@@ -131,7 +121,6 @@ export default function AddCardScreen() {
         <Text style={[typography.cardName, { color: colors.text }]}>Add Card</Text>
       </View>
 
-      {/* Tab switcher */}
       <View style={[styles.tabs, { backgroundColor: colors.surface }]}>
         <Pressable
           style={[styles.tab, tab === 'scan' && { backgroundColor: colors.accent }]}
@@ -184,7 +173,6 @@ export default function AddCardScreen() {
           contentContainerStyle={styles.formContent}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Name */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
           <TextInput
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
@@ -195,7 +183,6 @@ export default function AddCardScreen() {
             autoCapitalize="words"
           />
 
-          {/* Logo */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Logo</Text>
           <LogoSelector
             logoSlug={logoSlug}
@@ -206,7 +193,6 @@ export default function AddCardScreen() {
             onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
           />
 
-          {/* Barcode */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Barcode</Text>
           <TextInput
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
@@ -218,10 +204,9 @@ export default function AddCardScreen() {
             autoCorrect={false}
           />
 
-          {/* Format picker */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Format</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
-            {FORMAT_OPTIONS.map((opt) => (
+            {BARCODE_FORMAT_OPTIONS.map((opt) => (
               <Pressable
                 key={opt.value}
                 style={[
@@ -245,7 +230,6 @@ export default function AddCardScreen() {
             ))}
           </ScrollView>
 
-          {/* Color picker */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Color</Text>
           <View style={styles.colorGrid}>
             {CARD_COLORS.map((c) => (
@@ -262,7 +246,6 @@ export default function AddCardScreen() {
             ))}
           </View>
 
-          {/* Notes */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Notes</Text>
           <TextInput
             style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
@@ -276,7 +259,6 @@ export default function AddCardScreen() {
         </ScrollView>
       )}
 
-      {/* Bottom action buttons */}
       <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
         <Pressable
           style={[styles.actionButton, { backgroundColor: colors.surface }]}

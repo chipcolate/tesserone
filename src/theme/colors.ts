@@ -1,25 +1,20 @@
-// Backgrounds
-export const DARK_BG = '#0A0A0A';
-export const LIGHT_BG = '#FAFAF8';
+const DARK_BG = '#0A0A0A';
+const LIGHT_BG = '#FAFAF8';
 
-// Surface (cards, sheets, overlays)
-export const DARK_SURFACE = '#161616';
-export const LIGHT_SURFACE = '#F0F0ED';
+const DARK_SURFACE = '#161616';
+const LIGHT_SURFACE = '#F0F0ED';
 
-// Text
-export const DARK_TEXT = '#F5F5F5';
-export const LIGHT_TEXT = '#1A1A1A';
+const DARK_TEXT = '#F5F5F5';
+const LIGHT_TEXT = '#1A1A1A';
 
-export const DARK_TEXT_SECONDARY = '#888888';
-export const LIGHT_TEXT_SECONDARY = '#666666';
+const DARK_TEXT_SECONDARY = '#888888';
+const LIGHT_TEXT_SECONDARY = '#666666';
 
-// Default accent (warm neutral, used when no card is selected)
+/** Warm neutral — used when no card is selected. */
 export const DEFAULT_ACCENT = '#A0917B';
 
-// Default card color
 export const DEFAULT_CARD_COLOR = '#42A5F5';
 
-// 24 card colors grouped by hue
 export const CARD_COLORS = [
   // Reds
   '#EF5350', '#D32F2F',
@@ -51,10 +46,7 @@ export const CARD_COLORS = [
 
 export type CardColor = (typeof CARD_COLORS)[number];
 
-/**
- * Returns true if the hex color is light (use dark text on it).
- * Uses the W3C perceived brightness formula.
- */
+/** W3C perceived brightness — true means use dark text on this background. */
 export function isLightColor(hex: string): boolean {
   const c = hex.replace('#', '');
   const r = parseInt(c.substring(0, 2), 16);
@@ -63,9 +55,6 @@ export function isLightColor(hex: string): boolean {
   return (r * 299 + g * 587 + b * 114) / 1000 > 155;
 }
 
-/**
- * Returns appropriate text color for a given background.
- */
 export function textOnColor(hex: string): string {
   return isLightColor(hex) ? '#000000' : '#FFFFFF';
 }

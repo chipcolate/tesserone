@@ -18,8 +18,6 @@ export interface ImportResult {
 
 export type MergeStrategy = 'keepExisting' | 'useImported' | 'keepNewer';
 
-// --- V1 format migration ---
-
 /** Map v1 lowercase format strings to v2 uppercase. */
 const V1_FORMAT_MAP: Record<string, BarcodeFormat> = {
   qr: 'QR', ean13: 'EAN13', ean8: 'EAN8', code128: 'CODE128',
@@ -27,45 +25,104 @@ const V1_FORMAT_MAP: Record<string, BarcodeFormat> = {
   aztec: 'AZTEC', datamatrix: 'DATAMATRIX', itf: 'ITF14', unknown: 'CODE128',
 };
 
-function migrateCard(card: any, index: number): FidelityCard {
+const VALID_FORMATS: readonly BarcodeFormat[] = [
+  'QR', 'EAN13', 'EAN8', 'CODE128', 'CODE39',
+  'UPCA', 'UPCE', 'PDF417', 'AZTEC', 'DATAMATRIX', 'ITF14',
+];
+
+function isBarcodeFormat(value: string): value is BarcodeFormat {
+  return (VALID_FORMATS as readonly string[]).includes(value);
+}
+
+function normalizeFormat(input: string): BarcodeFormat {
+  const mapped = V1_FORMAT_MAP[input];
+  if (mapped) return mapped;
+  return isBarcodeFormat(input) ? input : 'CODE128';
+}
+
+/** Loose shape of a card coming in from an untrusted import file. */
+type RawImportedCard = {
+  id: string;
+  name: string;
+  code: string;
+  format: string;
+  color?: string;
+  logoSlug?: string;
+  customLogoUri?: string;
+  notes?: string;
+  sortIndex?: number;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+function migrateCard(card: RawImportedCard, index: number): FidelityCard {
+  const now = new Date().toISOString();
   return {
     id: card.id,
     name: card.name,
     code: card.code,
-    format: V1_FORMAT_MAP[card.format] ?? card.format,
+    format: normalizeFormat(card.format),
     color: card.color,
     logoSlug: card.logoSlug,
     customLogoUri: card.customLogoUri,
     notes: card.notes,
     sortIndex: card.sortIndex ?? index,
-    createdAt: card.createdAt,
-    updatedAt: card.updatedAt,
+    createdAt: card.createdAt ?? now,
+    updatedAt: card.updatedAt ?? now,
   };
 }
 
-// --- Validation ---
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
 
-function validateImportData(data: any): ImportResult {
-  if (!data || typeof data !== 'object') {
+function isValidRawCard(value: unknown): value is RawImportedCard {
+  if (!isObject(value)) return false;
+  return (
+    typeof value.id === 'string' &&
+    typeof value.name === 'string' &&
+    typeof value.code === 'string' &&
+    typeof value.format === 'string'
+  );
+}
+
+function narrowSettings(value: unknown): Partial<Settings> {
+  if (!isObject(value)) return {};
+  const out: Partial<Settings> = {};
+  if (value.themeMode === 'system' || value.themeMode === 'light' || value.themeMode === 'dark') {
+    out.themeMode = value.themeMode;
+  }
+  if (
+    value.sortMode === 'manual' ||
+    value.sortMode === 'alphabetical' ||
+    value.sortMode === 'dateCreated'
+  ) {
+    out.sortMode = value.sortMode;
+  }
+  return out;
+}
+
+function validateImportData(data: unknown): ImportResult {
+  if (!isObject(data)) {
     return { success: false, error: 'Invalid file format' };
   }
-  if (!Array.isArray(data.cards)) {
+  const rawCards: unknown = data.cards;
+  if (!Array.isArray(rawCards)) {
     return { success: false, error: 'Missing or invalid cards array' };
   }
-  for (const card of data.cards) {
-    if (!card.id || !card.name || !card.code || !card.format) {
-      return { success: false, error: 'Invalid card data — missing required fields' };
-    }
+  if (!rawCards.every(isValidRawCard)) {
+    return { success: false, error: 'Invalid card data — missing required fields' };
   }
-  // Migrate cards (handles v1 format)
-  const migrated: FidelityCard[] = data.cards.map(migrateCard);
+  const migrated: FidelityCard[] = rawCards.map(migrateCard);
+  const settings = narrowSettings(data.settings);
+  const version = typeof data.version === 'string' ? data.version : '1.0.0';
+  const exportedAt =
+    typeof data.exportedAt === 'string' ? data.exportedAt : new Date().toISOString();
   return {
     success: true,
-    data: { ...data, cards: migrated, version: data.version ?? '1.0.0' },
+    data: { cards: migrated, settings, exportedAt, version },
   };
 }
-
-// --- Merge ---
 
 export function detectConflicts(
   existing: Record<string, FidelityCard>,
@@ -102,8 +159,6 @@ export function mergeCards(
   return result;
 }
 
-// --- Export ---
-
 export async function exportCards(
   cards: FidelityCard[],
   settings: Partial<Settings>
@@ -129,12 +184,11 @@ export async function exportCards(
       });
     }
     return { success: true };
-  } catch {
-    return { success: false, error: 'Failed to export data' };
+  } catch (e) {
+    const detail = e instanceof Error ? e.message : String(e);
+    return { success: false, error: `Failed to export data: ${detail}` };
   }
 }
-
-// --- Import ---
 
 export async function importCards(): Promise<ImportResult> {
   try {
@@ -147,9 +201,10 @@ export async function importCards(): Promise<ImportResult> {
     }
     const file = new File(result.assets[0].uri);
     const content = await file.text();
-    const data = JSON.parse(content);
+    const data: unknown = JSON.parse(content);
     return validateImportData(data);
-  } catch {
-    return { success: false, error: 'Failed to read or parse file' };
+  } catch (e) {
+    const detail = e instanceof Error ? e.message : String(e);
+    return { success: false, error: `Failed to read or parse file: ${detail}` };
   }
 }

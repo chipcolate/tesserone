@@ -1,4 +1,4 @@
-import { useSharedValue, withDecay, withSpring, runOnJS } from 'react-native-reanimated';
+import { useSharedValue, withDecay, withSpring, runOnJS, interpolate } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import * as Brightness from 'expo-brightness';
@@ -34,9 +34,9 @@ export const CARD_STACK = {
 } as const;
 
 export const SPRING_SELECT = { damping: 25, stiffness: 180 } as const;
-export const SPRING_DISMISS = { damping: 35, stiffness: 200 } as const;
-export const SPRING_BOUNCE = { damping: 20, stiffness: 300 } as const;
-export const SPRING_FLIP = { damping: 26, stiffness: 300 } as const;
+const SPRING_DISMISS = { damping: 35, stiffness: 200 } as const;
+const SPRING_BOUNCE = { damping: 20, stiffness: 300 } as const;
+const SPRING_FLIP = { damping: 26, stiffness: 300 } as const;
 export const SPRING_REORDER = { damping: 20, stiffness: 250 } as const;
 
 const DISMISS_DISTANCE = 100;
@@ -46,6 +46,24 @@ const RUBBER_BAND_FACTOR = 0.35;
 function rubberBand(offset: number, limit: number, factor: number): number {
   'worklet';
   return limit + (offset - limit) * factor;
+}
+
+/**
+ * Opacity for the front face of a flip (1 at 0, 0 at PI).
+ * Uses a hard 90° cutoff so the front disappears as the back appears.
+ */
+export function frontFaceOpacity(flipProgress: number): number {
+  'worklet';
+  return interpolate(flipProgress, [0, Math.PI / 2 - 0.01, Math.PI / 2, Math.PI], [1, 1, 0, 0]);
+}
+
+/**
+ * Opacity for the back face of a flip (0 at 0, 1 at PI).
+ * Mirror of frontFaceOpacity.
+ */
+export function backFaceOpacity(flipProgress: number): number {
+  'worklet';
+  return interpolate(flipProgress, [0, Math.PI / 2, Math.PI / 2 + 0.01, Math.PI], [0, 0, 1, 1]);
 }
 
 export function stackContentHeight(numCards: number): number {
@@ -63,13 +81,11 @@ export function useCardStack() {
   const savedDismissY = useSharedValue(0);
   const flipProgress = useSharedValue(0);
 
-  // Reorder state
   const reorderMode = useSharedValue(0); // 0 = off, 1 = on
   const draggedIndex = useSharedValue(-1);
   const dragTranslateY = useSharedValue(0);
   const dragStartY = useSharedValue(0);
 
-  // --- Scroll / dismiss pan ---
   const panGesture = Gesture.Pan()
     .activeOffsetY([-10, 10])
     .onStart(() => {
@@ -128,10 +144,8 @@ export function useCardStack() {
       }
     });
 
-  // --- Tap: select or flip ---
   const makeTapGesture = (index: number) =>
     Gesture.Tap().onEnd(() => {
-      // No tap actions in reorder mode
       if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         selectedCardIndex.value = index;
@@ -149,7 +163,6 @@ export function useCardStack() {
       }
     });
 
-  // --- Long-press: edit (normal mode) or start drag (reorder mode) ---
   const makeLongPressGesture = (onEdit: () => void) =>
     Gesture.LongPress()
       .minDuration(400)
@@ -163,7 +176,6 @@ export function useCardStack() {
         runOnJS(onEdit)();
       });
 
-  // --- Reorder drag: long-press then pan to reorder ---
   const makeReorderGesture = (index: number, onReorder: (from: number, to: number) => void) =>
     Gesture.Pan()
       .activateAfterLongPress(300)
@@ -180,7 +192,6 @@ export function useCardStack() {
       })
       .onEnd(() => {
         if (draggedIndex.value !== index) return;
-        // Calculate target position based on where card was dropped
         const currentY = dragStartY.value + dragTranslateY.value;
         const targetIndex = Math.round(
           Math.max(0, currentY + scrollOffset.value) / CARD_STACK.STACK_SPACING

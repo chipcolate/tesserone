@@ -1,24 +1,15 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { FidelityCard } from '../../types';
-import { getBrandLogo, getBrand } from '../../services/logos';
+import { getBrandLogo, resolveCardColor } from '../../services/logos';
 import { textOnColor, typography } from '../../theme';
 
 interface CardFaceProps {
   card: FidelityCard;
 }
 
-/**
- * Front face of a wallet card. Renders:
- *   1. A bundled brand logo (via logoSlug) if available
- *   2. A user-uploaded logo (via customLogoUri) if set
- *   3. A typographic name-initial fallback otherwise
- *
- * The background color is taken from the card. Text/logo colors adapt
- * via textOnColor() for legibility.
- */
 export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
-  const bg = card.color || getBrand(card.logoSlug || '')?.primaryColor || '#333333';
+  const bg = resolveCardColor(card.color, card.logoSlug);
   const fg = textOnColor(bg);
 
   const bundledLogo = card.logoSlug ? getBrandLogo(card.logoSlug) : undefined;

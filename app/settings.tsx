@@ -60,12 +60,10 @@ export default function SettingsScreen() {
       const conflicts = detectConflicts(cards, imported.cards);
 
       if (conflicts === 0) {
-        // No conflicts — merge directly
         const merged = mergeCards(cards, imported.cards);
         useCardsStore.setState({ cards: merged });
         Alert.alert('Import Complete', `${imported.cards.length} card(s) imported.`);
       } else {
-        // Has conflicts — ask for strategy
         Alert.alert(
           'Conflicts Found',
           `${conflicts} card(s) already exist. How should we handle them?`,
@@ -124,7 +122,6 @@ export default function SettingsScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Theme */}
         <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>Theme</Text>
         <View style={[styles.segmented, { backgroundColor: colors.surface }]}>
           {THEME_OPTIONS.map((opt) => (
@@ -151,7 +148,6 @@ export default function SettingsScreen() {
           ))}
         </View>
 
-        {/* Data */}
         <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>Data</Text>
         <View style={[styles.card, { backgroundColor: colors.surface }]}>
           <Pressable style={styles.row} onPress={handleExport}>
@@ -176,7 +172,6 @@ export default function SettingsScreen() {
           </Pressable>
         </View>
 
-        {/* About */}
         <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>About</Text>
         <View style={[styles.card, { backgroundColor: colors.surface }]}>
           <View style={styles.row}>
