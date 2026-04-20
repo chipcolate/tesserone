@@ -1,16 +1,9 @@
 import { ImageSourcePropType } from 'react-native';
 import Fuse from 'fuse.js';
 import brandIndex from '../../data/brand-index.json';
+import type { BrandEntry } from '../types';
 
-export interface BrandEntry {
-  slug: string;
-  name: string;
-  aliases: string[];
-  alt: string;
-  primaryColor: string;
-  secondaryColor: string;
-  logo: string;
-}
+export type { BrandEntry } from '../types';
 
 // Bundled logo assets — keyed by filename (including extension).
 // Add entries here as you add logos to assets/logos/.

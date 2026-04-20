@@ -17,21 +17,12 @@ import { useCardsStore, nextSortIndex } from '../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } from '../src/theme';
 import { BarcodeFormat, FidelityCard } from '../src/types';
 import * as Haptics from 'expo-haptics';
-import { mapBarcodeType, validateBarcode, fixScannedCode } from '../src/services/scanner';
-import { searchBrands, getBrandColors, type BrandEntry } from '../src/services/logos';
+import { mapBarcodeType, validateBarcode, fixScannedCode, BARCODE_FORMAT_OPTIONS } from '../src/services/scanner';
+import { searchBrands, getBrandColors } from '../src/services/logos';
+import type { BrandEntry } from '../src/types';
 import { LogoSelector } from '../src/components/ui/LogoSelector';
 
 type Tab = 'scan' | 'manual';
-
-const FORMAT_OPTIONS: { value: BarcodeFormat; label: string }[] = [
-  { value: 'EAN13', label: 'EAN-13' },
-  { value: 'EAN8', label: 'EAN-8' },
-  { value: 'CODE128', label: 'Code 128' },
-  { value: 'CODE39', label: 'Code 39' },
-  { value: 'QR', label: 'QR' },
-  { value: 'UPCA', label: 'UPC-A' },
-  { value: 'UPCE', label: 'UPC-E' },
-];
 
 export default function AddCardScreen() {
   const insets = useSafeAreaInsets();
@@ -221,7 +212,7 @@ export default function AddCardScreen() {
           {/* Format picker */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>Format</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
-            {FORMAT_OPTIONS.map((opt) => (
+            {BARCODE_FORMAT_OPTIONS.map((opt) => (
               <Pressable
                 key={opt.value}
                 style={[

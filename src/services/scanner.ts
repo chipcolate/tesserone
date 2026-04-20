@@ -1,4 +1,18 @@
-import { BarcodeFormat } from '../types';
+import { BarcodeFormat, BarcodeFormatOption } from '../types';
+
+/**
+ * Selectable barcode format options shown in the add/edit screens.
+ * Order defines UI ordering.
+ */
+export const BARCODE_FORMAT_OPTIONS: BarcodeFormatOption[] = [
+  { value: 'EAN13', label: 'EAN-13' },
+  { value: 'EAN8', label: 'EAN-8' },
+  { value: 'CODE128', label: 'Code 128' },
+  { value: 'CODE39', label: 'Code 39' },
+  { value: 'QR', label: 'QR' },
+  { value: 'UPCA', label: 'UPC-A' },
+  { value: 'UPCE', label: 'UPC-E' },
+];
 
 /**
  * Map expo-camera barcode type strings to our internal BarcodeFormat.
