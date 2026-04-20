@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
 import { useCardsStore, nextSortIndex } from '../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } from '../src/theme';
 import { BarcodeFormat, FidelityCard } from '../src/types';
@@ -57,7 +57,7 @@ export default function AddCardScreen() {
   }, []);
 
   const handleBarCodeScanned = useCallback(
-    ({ type, data }: { type: string; data: string }) => {
+    ({ type, data }: BarcodeScanningResult) => {
       if (processingRef.current) return;
       processingRef.current = true;
       setScanned(true);

@@ -1,9 +1,14 @@
 import { ImageSourcePropType } from 'react-native';
 import Fuse from 'fuse.js';
-import brandIndex from '../../data/brand-index.json';
+import brandIndexData from '../../data/brand-index.json';
 import type { BrandEntry } from '../types';
 
 export type { BrandEntry } from '../types';
+
+// Cast the bundled JSON once to our domain type. TS infers a very narrow
+// literal type from the JSON file; this assertion widens strings where
+// needed and aligns the shape with BrandEntry.
+const brandIndex: BrandEntry[] = brandIndexData as BrandEntry[];
 
 // Bundled logo assets — keyed by filename (including extension).
 // Add entries here as you add logos to assets/logos/.
@@ -19,7 +24,7 @@ const BUNDLED_LOGOS: Record<string, ImageSourcePropType> = {
 };
 
 // Fuse.js for fuzzy search
-const fuse = new Fuse<BrandEntry>(brandIndex as BrandEntry[], {
+const fuse = new Fuse<BrandEntry>(brandIndex, {
   keys: ['name', 'aliases'],
   threshold: 0.3,
   distance: 100,
@@ -37,7 +42,7 @@ export function searchBrands(query: string): BrandEntry[] {
  * Get a brand entry by slug.
  */
 export function getBrand(slug: string): BrandEntry | undefined {
-  return (brandIndex as BrandEntry[]).find((b) => b.slug === slug);
+  return brandIndex.find((b) => b.slug === slug);
 }
 
 /**
