@@ -1,4 +1,4 @@
-export const SITE_LOCALES = ['en', 'it', 'fr', 'es'] as const;
+export const SITE_LOCALES = ['en', 'it', 'fr', 'es', 'de'] as const;
 export type Locale = (typeof SITE_LOCALES)[number];
 
 export const DEFAULT_LOCALE: Locale = 'en';
@@ -8,6 +8,7 @@ export const LOCALE_LABELS: Record<Locale, string> = {
   it: 'Italiano',
   fr: 'Français',
   es: 'Español',
+  de: 'Deutsch',
 };
 
 export type PrivacySection = {

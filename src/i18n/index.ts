@@ -5,6 +5,7 @@ import { en } from './locales/en';
 import { it } from './locales/it';
 import { fr } from './locales/fr';
 import { es } from './locales/es';
+import { de } from './locales/de';
 import {
   APP_LANGUAGES,
   DEFAULT_LANGUAGE,
@@ -21,6 +22,7 @@ const resources = {
   it: { translation: it },
   fr: { translation: fr },
   es: { translation: es },
+  de: { translation: de },
 };
 
 export function getDeviceLanguage(): AppLanguage {

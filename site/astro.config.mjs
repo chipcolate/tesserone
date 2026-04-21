@@ -9,7 +9,7 @@ export default defineConfig({
   base: '/tesserone',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'it', 'fr', 'es'],
+    locales: ['en', 'it', 'fr', 'es', 'de'],
     routing: {
       prefixDefaultLocale: false,
     },

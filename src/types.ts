@@ -31,7 +31,7 @@ export interface FidelityCard {
   updatedAt: string;
 }
 
-export type LanguagePreference = 'system' | 'en' | 'it' | 'fr' | 'es';
+export type LanguagePreference = 'system' | 'en' | 'it' | 'fr' | 'es' | 'de';
 
 export interface Settings {
   themeMode: ThemeMode;

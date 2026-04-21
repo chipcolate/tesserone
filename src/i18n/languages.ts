@@ -1,4 +1,4 @@
-export const APP_LANGUAGES = ['en', 'it', 'fr', 'es'] as const;
+export const APP_LANGUAGES = ['en', 'it', 'fr', 'es', 'de'] as const;
 export type AppLanguage = (typeof APP_LANGUAGES)[number];
 export type LanguagePreference = 'system' | AppLanguage;
 
@@ -7,6 +7,7 @@ export const LANGUAGE_LABELS: Record<AppLanguage, string> = {
   it: 'Italiano',
   fr: 'Français',
   es: 'Español',
+  de: 'Deutsch',
 };
 
 export const DEFAULT_LANGUAGE: AppLanguage = 'en';

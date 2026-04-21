@@ -2,12 +2,13 @@ import { en } from './en';
 import { it } from './it';
 import { fr } from './fr';
 import { es } from './es';
+import { de } from './de';
 import { DEFAULT_LOCALE, SITE_LOCALES, type Locale, type Strings } from './types';
 
 export { DEFAULT_LOCALE, SITE_LOCALES, LOCALE_LABELS } from './types';
 export type { Locale, Strings } from './types';
 
-const STRINGS: Record<Locale, Strings> = { en, it, fr, es };
+const STRINGS: Record<Locale, Strings> = { en, it, fr, es, de };
 
 export function getStrings(locale: Locale | string | undefined): Strings {
   if (locale && (SITE_LOCALES as readonly string[]).includes(locale)) {

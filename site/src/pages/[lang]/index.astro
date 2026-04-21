@@ -9,7 +9,12 @@ import Footer from "../../components/Footer.astro";
 import type { Locale } from "../../i18n";
 
 export function getStaticPaths() {
-  return [{ params: { lang: "it" } }, { params: { lang: "fr" } }, { params: { lang: "es" } }];
+  return [
+    { params: { lang: "it" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "es" } },
+    { params: { lang: "de" } },
+  ];
 }
 
 const { lang } = Astro.params as { lang: Locale };
