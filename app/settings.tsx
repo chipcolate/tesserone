@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
+  Modal,
 } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -39,6 +40,7 @@ export default function SettingsScreen() {
   const clearAll = useCardsStore((s) => s.clearAll);
   const resetTutorial = useTutorialStore((s) => s.resetAll);
   const [importing, setImporting] = useState(false);
+  const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
 
   const cardsList = getSortedCards(cards, sortMode);
 
@@ -172,19 +174,12 @@ export default function SettingsScreen() {
           {t('settings.sectionLanguage')}
         </Text>
         <View style={[styles.card, { backgroundColor: colors.surface }]}>
-          {LANGUAGE_VALUES.map((pref, idx) => (
-            <React.Fragment key={pref}>
-              {idx > 0 ? <View style={[styles.divider, { backgroundColor: colors.bg }]} /> : null}
-              <Pressable style={styles.row} onPress={() => setLanguage(pref)}>
-                <Text style={[typography.body, { color: colors.text }]}>{languageLabel(pref)}</Text>
-                {language === pref ? (
-                  <Text style={[typography.body, { color: colors.accent, fontWeight: '700' }]}>
-                    ✓
-                  </Text>
-                ) : null}
-              </Pressable>
-            </React.Fragment>
-          ))}
+          <Pressable style={styles.row} onPress={() => setLanguagePickerOpen(true)}>
+            <Text style={[typography.body, { color: colors.text }]}>
+              {languageLabel(language)}
+            </Text>
+            <Text style={[typography.body, { color: colors.textSecondary }]}>›</Text>
+          </Pressable>
         </View>
 
         <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>
@@ -254,6 +249,48 @@ export default function SettingsScreen() {
           </Text>
         </Pressable>
       </View>
+
+      <Modal
+        visible={languagePickerOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setLanguagePickerOpen(false)}
+      >
+        <Pressable style={styles.sheetBackdrop} onPress={() => setLanguagePickerOpen(false)}>
+          <Pressable
+            style={[
+              styles.sheet,
+              { backgroundColor: colors.surface, paddingBottom: insets.bottom + 12 },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={[styles.sheetTitle, { color: colors.textSecondary }]}>
+              {t('settings.sectionLanguage')}
+            </Text>
+            {LANGUAGE_VALUES.map((pref, idx) => (
+              <React.Fragment key={pref}>
+                {idx > 0 ? <View style={[styles.divider, { backgroundColor: colors.bg }]} /> : null}
+                <Pressable
+                  style={styles.row}
+                  onPress={() => {
+                    setLanguage(pref);
+                    setLanguagePickerOpen(false);
+                  }}
+                >
+                  <Text style={[typography.body, { color: colors.text }]}>
+                    {languageLabel(pref)}
+                  </Text>
+                  {language === pref ? (
+                    <Text style={[typography.body, { color: colors.accent, fontWeight: '700' }]}>
+                      ✓
+                    </Text>
+                  ) : null}
+                </Pressable>
+              </React.Fragment>
+            ))}
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -310,5 +347,24 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
+  },
+  sheetBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'flex-end',
+  },
+  sheet: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 12,
+    paddingHorizontal: 8,
+  },
+  sheetTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
 });
