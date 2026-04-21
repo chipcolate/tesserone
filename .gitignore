@@ -45,6 +45,9 @@ yarn-error.*
 *.apk
 *.aab
 
+# screenshot output (binary artifacts; don't commit)
+/screenshots/
+
 # local working state (Claude Code harness, internal planning)
 .claude/
 PLAN.md
