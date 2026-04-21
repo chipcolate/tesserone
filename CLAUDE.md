@@ -25,8 +25,8 @@ Custom UI components throughout (no react-native-paper or third-party UI kits).
 **Landing site (`site/`)**
 
 - **Astro 6** + **Tailwind CSS 4**
-- Astro i18n with en/it/fr/es/de; default locale (en) lives at `/tesserone/`
-- Deployed to GitHub Pages via `.github/workflows/deploy-site.yml` on pushes touching `site/**`
+- Astro i18n with en/it/fr/es/de; default locale (en) lives at `/`
+- Deployed to GitHub Pages (custom domain `tesserone.com`) via `.github/workflows/deploy-site.yml` on pushes touching `site/**`
 
 ## Build & Run
 
@@ -58,7 +58,7 @@ eas build --platform android --local --profile production
 ```bash
 cd site
 bun install
-bun run dev     # local preview at http://localhost:4321/tesserone/
+bun run dev     # local preview at http://localhost:4321/
 bun run build   # static output to site/dist/
 ```
 
@@ -133,7 +133,8 @@ To add a brand: drop PNG in `assets/logos/`, add `require()` in the `BUNDLED_LOG
 - `src/pages/index.astro`, `privacy.astro`, `[lang]/…` — routes
 - `src/components/` — section components (Hero, FeatureList, Backstory, OSSection, StoreCTAs, Footer, ThemeToggle)
 - `src/i18n/{en,it,fr,es,de}.ts` — per-language strings
-- `astro.config.mjs` — `site: 'https://chipcolate.github.io'`, `base: '/tesserone'`, i18n locales, default locale `en` has no URL prefix
+- `astro.config.mjs` — `site: 'https://tesserone.com'`, i18n locales, default locale `en` has no URL prefix
+- `public/CNAME` — custom-domain marker for GitHub Pages (must match `site` hostname)
 
 ### Store Listing Copy (`store/`)
 
