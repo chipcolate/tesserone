@@ -5,8 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://chipcolate.github.io',
-  base: '/tesserone',
+  site: 'https://tesserone.com',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'it', 'fr', 'es', 'de'],
