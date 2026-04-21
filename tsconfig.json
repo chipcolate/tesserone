@@ -16,7 +16,6 @@
     "expo-env.d.ts"
   ],
   "exclude": [
-    "legacy/**",
     "node_modules/**"
   ]
 }

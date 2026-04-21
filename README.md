@@ -152,7 +152,7 @@ Cards are stored locally via AsyncStorage and can be exported as JSON:
 }
 ```
 
-Import supports v1 (Cardshive) format — lowercase barcode formats are auto-migrated.
+Import is tolerant of older export shapes — lowercase barcode enums are normalized and missing fields get sensible defaults.
 
 ## License
 

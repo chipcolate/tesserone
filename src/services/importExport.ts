@@ -18,8 +18,7 @@ export interface ImportResult {
 
 export type MergeStrategy = 'keepExisting' | 'useImported' | 'keepNewer';
 
-/** Map v1 lowercase format strings to v2 uppercase. */
-const V1_FORMAT_MAP: Record<string, BarcodeFormat> = {
+const LOWERCASE_FORMAT_MAP: Record<string, BarcodeFormat> = {
   qr: 'QR', ean13: 'EAN13', ean8: 'EAN8', code128: 'CODE128',
   code39: 'CODE39', upcA: 'UPCA', upcE: 'UPCE', pdf417: 'PDF417',
   aztec: 'AZTEC', datamatrix: 'DATAMATRIX', itf: 'ITF14', unknown: 'CODE128',
@@ -35,7 +34,7 @@ function isBarcodeFormat(value: string): value is BarcodeFormat {
 }
 
 function normalizeFormat(input: string): BarcodeFormat {
-  const mapped = V1_FORMAT_MAP[input];
+  const mapped = LOWERCASE_FORMAT_MAP[input];
   if (mapped) return mapped;
   return isBarcodeFormat(input) ? input : 'CODE128';
 }
