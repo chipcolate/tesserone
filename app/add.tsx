@@ -12,6 +12,7 @@ import { KeyboardAwareScrollView, type KeyboardAwareScrollViewRef } from 'react-
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
+import { useTranslation } from 'react-i18next';
 import { useCardsStore, nextSortIndex } from '../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } from '../src/theme';
 import { BarcodeFormat, FidelityCard } from '../src/types';
@@ -28,6 +29,7 @@ const ACTION_BAR_HEIGHT = 68;
 export default function AddCardScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const cards = useCardsStore((s) => s.cards);
   const addCard = useCardsStore((s) => s.addCard);
   const [permission, requestPermission] = useCameraPermissions();
@@ -91,15 +93,15 @@ export default function AddCardScreen() {
 
   const handleSave = useCallback(() => {
     if (!name.trim()) {
-      Alert.alert('Missing name', 'Please enter a card name.');
+      Alert.alert(t('add.missingNameTitle'), t('add.missingNameBody'));
       return;
     }
     if (!code.trim()) {
-      Alert.alert('Missing code', 'Please enter or scan a barcode.');
+      Alert.alert(t('add.missingCodeTitle'), t('add.missingCodeBody'));
       return;
     }
     if (!validateBarcode(code.trim(), format)) {
-      Alert.alert('Invalid barcode', `The code doesn't match the ${format} format.`);
+      Alert.alert(t('add.invalidBarcodeTitle'), t('add.invalidBarcodeBody', { format }));
       return;
     }
 
@@ -119,12 +121,12 @@ export default function AddCardScreen() {
     addCard(card);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
-  }, [name, code, format, color, logoSlug, notes, cards, addCard]);
+  }, [name, code, format, color, logoSlug, notes, cards, addCard, t]);
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.bg }]}>
       <View style={styles.header}>
-        <Text style={[typography.cardName, { color: colors.text }]}>Add Card</Text>
+        <Text style={[typography.cardName, { color: colors.text }]}>{t('add.title')}</Text>
       </View>
 
       <View style={[styles.tabs, { backgroundColor: colors.surface }]}>
@@ -138,7 +140,7 @@ export default function AddCardScreen() {
               { color: tab === 'scan' ? textOnColor(colors.accent) : colors.text },
             ]}
           >
-            Scan
+            {t('add.tabScan')}
           </Text>
         </Pressable>
         <Pressable
@@ -151,7 +153,7 @@ export default function AddCardScreen() {
               { color: tab === 'manual' ? textOnColor(colors.accent) : colors.text },
             ]}
           >
-            Manual
+            {t('add.tabManual')}
           </Text>
         </Pressable>
       </View>
@@ -170,7 +172,7 @@ export default function AddCardScreen() {
           />
           <View style={styles.scanOverlay}>
             <View style={styles.viewfinder} />
-            <Text style={styles.scanHint}>Point at a barcode</Text>
+            <Text style={styles.scanHint}>{t('add.scanHint')}</Text>
           </View>
         </View>
       ) : (
@@ -182,17 +184,17 @@ export default function AddCardScreen() {
           keyboardDismissMode="interactive"
           bottomOffset={ACTION_BAR_HEIGHT + insets.bottom}
         >
-          <Text style={[styles.label, { color: colors.textSecondary }]}>Card Name</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelName')}</Text>
           <TextInput
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
             value={name}
             onChangeText={handleNameChange}
-            placeholder="e.g. Esselunga, IKEA"
+            placeholder={t('add.placeholderName')}
             placeholderTextColor={colors.textSecondary}
             autoCapitalize="words"
           />
 
-          <Text style={[styles.label, { color: colors.textSecondary }]}>Logo</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelLogo')}</Text>
           <LogoSelector
             logoSlug={logoSlug}
             cardName={name}
@@ -202,18 +204,18 @@ export default function AddCardScreen() {
             onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
           />
 
-          <Text style={[styles.label, { color: colors.textSecondary }]}>Barcode</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelBarcode')}</Text>
           <TextInput
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
             value={code}
             onChangeText={setCode}
-            placeholder="Enter barcode number"
+            placeholder={t('add.placeholderBarcode')}
             placeholderTextColor={colors.textSecondary}
             autoCapitalize="none"
             autoCorrect={false}
           />
 
-          <Text style={[styles.label, { color: colors.textSecondary }]}>Format</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelFormat')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
             {BARCODE_FORMAT_OPTIONS.map((opt) => (
               <Pressable
@@ -239,7 +241,7 @@ export default function AddCardScreen() {
             ))}
           </ScrollView>
 
-          <Text style={[styles.label, { color: colors.textSecondary }]}>Color</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelColor')}</Text>
           <View style={styles.colorGrid}>
             {CARD_COLORS.map((c) => (
               <Pressable
@@ -255,12 +257,12 @@ export default function AddCardScreen() {
             ))}
           </View>
 
-          <Text style={[styles.label, { color: colors.textSecondary }]}>Notes</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelNotes')}</Text>
           <TextInput
             style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
             value={notes}
             onChangeText={setNotes}
-            placeholder="Optional notes"
+            placeholder={t('add.placeholderNotes')}
             placeholderTextColor={colors.textSecondary}
             multiline
             textAlignVertical="top"
@@ -273,13 +275,13 @@ export default function AddCardScreen() {
           style={[styles.actionButton, { backgroundColor: colors.surface }]}
           onPress={() => router.back()}
         >
-          <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>Cancel</Text>
+          <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>{t('common.cancel')}</Text>
         </Pressable>
         <Pressable
           style={[styles.actionButton, { backgroundColor: colors.accent }]}
           onPress={handleSave}
         >
-          <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>Save Card</Text>
+          <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>{t('add.save')}</Text>
         </Pressable>
       </View>
     </View>

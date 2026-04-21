@@ -1,6 +1,22 @@
 ---
+import {
+  SITE_LOCALES,
+  LOCALE_LABELS,
+  getStrings,
+  localeUrl,
+  type Locale,
+} from "../i18n";
+
+interface Props {
+  lang: Locale;
+  /** Current page path, without the locale prefix (e.g. "privacy" or ""). */
+  path?: string;
+}
+
+const { lang, path = "" } = Astro.props;
+const s = getStrings(lang).footer;
 const year = new Date().getFullYear();
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <footer
@@ -15,21 +31,57 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         href="https://chipcolate.com"
         class="font-medium text-[var(--color-fg)] hover:text-[var(--color-accent)]"
         >Chipcolate</a
-      >. Apache 2.0 licensed.
+      >. {s.copyright}
     </p>
-    <nav class="flex flex-wrap gap-6">
+    <nav class="flex flex-wrap items-center gap-6">
       <a
-        href={`${base}/privacy`}
-        class="hover:text-[var(--color-accent)]">Privacy</a
+        href={localeUrl(baseUrl, lang, "privacy")}
+        class="hover:text-[var(--color-accent)]">{s.privacy}</a
       >
       <a
         href="https://github.com/chipcolate/tesserone"
-        class="hover:text-[var(--color-accent)]">GitHub</a
+        class="hover:text-[var(--color-accent)]">{s.github}</a
       >
       <a
         href="https://github.com/chipcolate/tesserone/issues"
-        class="hover:text-[var(--color-accent)]">Issues</a
+        class="hover:text-[var(--color-accent)]">{s.issues}</a
       >
+      <label class="flex items-center gap-2">
+        <span class="sr-only">{s.languageLabel}</span>
+        <select
+          id="locale-switcher"
+          data-base={baseUrl}
+          data-path={path}
+          class="rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-2 py-1 text-[var(--color-fg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+        >
+          {
+            SITE_LOCALES.map((loc) => (
+              <option value={loc} selected={loc === lang}>
+                {LOCALE_LABELS[loc]}
+              </option>
+            ))
+          }
+        </select>
+      </label>
     </nav>
   </div>
 </footer>
+
+<script>
+  const select = document.getElementById(
+    "locale-switcher",
+  ) as HTMLSelectElement | null;
+  if (select) {
+    const base = select.dataset.base ?? "/";
+    const path = select.dataset.path ?? "";
+    const defaultLocale = "en";
+    select.addEventListener("change", () => {
+      const loc = select.value;
+      const trimmedBase = base.endsWith("/") ? base.slice(0, -1) : base;
+      const prefix = loc === defaultLocale ? "" : `/${loc}`;
+      const suffix = path ? `/${path.replace(/^\//, "")}` : "";
+      const target = `${trimmedBase}${prefix}${suffix}` || "/";
+      window.location.href = target;
+    });
+  }
+</script>

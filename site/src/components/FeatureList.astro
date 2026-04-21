@@ -1,45 +1,22 @@
 ---
-const features = [
-  {
-    title: "Local-first",
-    body: "Your cards live on your device. No accounts, no sign-up, no sync required.",
-    icon: "device",
-  },
-  {
-    title: "Zero cloud",
-    body: "There are no servers. There is no backend. We don't have a database you could be in.",
-    icon: "cloud-off",
-  },
-  {
-    title: "Zero tracking",
-    body: "No analytics. No telemetry. No third-party SDKs. The app makes zero network calls.",
-    icon: "shield",
-  },
-  {
-    title: "Instant at checkout",
-    body: "Tap a card to flip it. Screen brightness maxes automatically for reliable scanning.",
-    icon: "flash",
-  },
-  {
-    title: "A familiar card stack",
-    body: "Cards that scroll, expand, and flip exactly like you'd expect. No surprises, no learning curve.",
-    icon: "layers",
-  },
-  {
-    title: "All the formats",
-    body: "EAN-13, CODE-128, QR, Aztec, PDF417, DataMatrix — every barcode your cards come in.",
-    icon: "barcode",
-  },
-  {
-    title: "No lock-in",
-    body: "Export your whole collection to a plain JSON file. Back it up, move it between devices, or share it — it's your data.",
-    icon: "import",
-  },
-  {
-    title: "Open source, forever",
-    body: "Apache 2.0. Read the code. Audit it. Fork it. Build your own. That's the deal.",
-    icon: "code",
-  },
+import { getStrings, type Locale } from "../i18n";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const s = getStrings(lang).features;
+
+const items = [
+  { key: "localFirst" as const, icon: "device" },
+  { key: "zeroCloud" as const, icon: "cloud-off" },
+  { key: "zeroTracking" as const, icon: "shield" },
+  { key: "instantCheckout" as const, icon: "flash" },
+  { key: "familiarStack" as const, icon: "layers" },
+  { key: "allFormats" as const, icon: "barcode" },
+  { key: "noLockIn" as const, icon: "import" },
+  { key: "openSource" as const, icon: "code" },
 ];
 
 const icons: Record<string, string> = {
@@ -62,14 +39,14 @@ const icons: Record<string, string> = {
   <div class="mx-auto max-w-6xl">
     <div class="mb-16 max-w-2xl">
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
-        Everything the classics did.<br />
-        <span class="text-[var(--color-fg-muted)]">Nothing they got wrong.</span>
+        {s.headingLine1}<br />
+        <span class="text-[var(--color-fg-muted)]">{s.headingLine2}</span>
       </h2>
     </div>
 
     <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {
-        features.map((f) => (
+        items.map((f) => (
           <li class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition hover:border-[var(--color-accent)]">
             <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
               <svg
@@ -84,9 +61,9 @@ const icons: Record<string, string> = {
                 set:html={icons[f.icon]}
               />
             </div>
-            <h3 class="mb-2 text-lg font-semibold">{f.title}</h3>
+            <h3 class="mb-2 text-lg font-semibold">{s.items[f.key].title}</h3>
             <p class="text-sm leading-relaxed text-[var(--color-fg-muted)]">
-              {f.body}
+              {s.items[f.key].body}
             </p>
           </li>
         ))

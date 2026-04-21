@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
+import { useTranslation } from 'react-i18next';
 import { useTheme, typography, textOnColor } from '../../theme';
 import { getBrandLogo, getBrand, type BrandEntry } from '../../services/logos';
 
@@ -24,6 +25,7 @@ export function LogoSelector({
   onClear,
 }: LogoSelectorProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const bundledLogo = logoSlug ? getBrandLogo(logoSlug) : undefined;
   const customLogo = customLogoUri ? { uri: customLogoUri } : undefined;
@@ -44,11 +46,11 @@ export function LogoSelector({
         </View>
         <View style={styles.previewInfo}>
           <Text style={[typography.label, { color: colors.text }]} numberOfLines={1}>
-            {brand?.name ?? (customLogoUri ? 'Custom logo' : 'No logo')}
+            {brand?.name ?? (customLogoUri ? t('logoSelector.customLogo') : t('logoSelector.noLogo'))}
           </Text>
           {(logoSlug || customLogoUri) && (
             <Pressable onPress={onClear} hitSlop={8}>
-              <Text style={[typography.caption, { color: '#EF5350' }]}>Remove</Text>
+              <Text style={[typography.caption, { color: '#EF5350' }]}>{t('common.remove')}</Text>
             </Pressable>
           )}
         </View>

@@ -1,0 +1,32 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
+import Hero from "../../components/Hero.astro";
+import FeatureList from "../../components/FeatureList.astro";
+import Backstory from "../../components/Backstory.astro";
+import OSSection from "../../components/OSSection.astro";
+import Footer from "../../components/Footer.astro";
+import type { Locale } from "../../i18n";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: "it" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "es" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Locale };
+---
+
+<Layout lang={lang}>
+  <ThemeToggle lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <FeatureList lang={lang} />
+    <Backstory lang={lang} />
+    <OSSection lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

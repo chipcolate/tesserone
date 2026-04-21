@@ -1,11 +1,21 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import ThemeToggle from "../components/ThemeToggle.astro";
-import Footer from "../components/Footer.astro";
-import { getStrings, localeUrl } from "../i18n";
+import Layout from "../../layouts/Layout.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
+import Footer from "../../components/Footer.astro";
+import { getStrings, localeUrl, type Locale } from "../../i18n";
 
-const lang = "en" as const;
-const s = getStrings(lang).privacy;
+export function getStaticPaths() {
+  return [
+    { params: { lang: "it" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "es" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const strings = getStrings(lang);
+const s = strings.privacy;
 const baseUrl = import.meta.env.BASE_URL;
 const backHref = localeUrl(baseUrl, lang, "");
 
@@ -22,7 +32,7 @@ const sectionOrder = [
 ] as const;
 ---
 
-<Layout lang={lang} path="privacy" title={getStrings(lang).meta.privacyTitle} description={getStrings(lang).meta.privacyDescription}>
+<Layout lang={lang} path="privacy" title={strings.meta.privacyTitle} description={strings.meta.privacyDescription}>
   <ThemeToggle lang={lang} />
   <main class="px-6 py-24 sm:py-32">
     <article class="mx-auto max-w-3xl">

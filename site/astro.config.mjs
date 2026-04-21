@@ -7,6 +7,13 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://chipcolate.github.io',
   base: '/tesserone',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'it', 'fr', 'es', 'de'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },
