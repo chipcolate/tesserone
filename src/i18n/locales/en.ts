@@ -63,6 +63,12 @@ export const en = {
   logoSelector: {
     noLogo: 'No logo',
     customLogo: 'Custom logo',
+    uploadPhoto: 'Choose photo',
+    replacePhoto: 'Replace photo',
+    photoPermissionDeniedTitle: 'Photo access denied',
+    photoPermissionDeniedBody:
+      'Enable photo library access in Settings to pick a custom card logo.',
+    photoPickErrorTitle: "Couldn't use that photo",
   },
   settings: {
     title: 'Settings',

@@ -2,6 +2,11 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Paths, File } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { FidelityCard, BarcodeFormat, Settings } from '../types';
+import {
+  customLogoToDataUri,
+  writeCustomLogoFromDataUri,
+  customLogoFilename,
+} from './logos';
 
 export interface ExportData {
   cards: FidelityCard[];
@@ -54,6 +59,18 @@ type RawImportedCard = {
   updatedAt?: string;
 };
 
+function normalizeCustomLogoUri(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  // Exports from 2.1.0+ inline custom logos as data URIs; materialize them.
+  if (value.startsWith('data:')) {
+    return writeCustomLogoFromDataUri(value) ?? undefined;
+  }
+  // Otherwise accept either a bare filename or a legacy `file://` URI and
+  // keep only the filename portion — the underlying file may or may not
+  // exist on this device.
+  return customLogoFilename(value);
+}
+
 function migrateCard(card: RawImportedCard, index: number): FidelityCard {
   const now = new Date().toISOString();
   return {
@@ -63,7 +80,7 @@ function migrateCard(card: RawImportedCard, index: number): FidelityCard {
     format: normalizeFormat(card.format),
     color: card.color,
     logoSlug: card.logoSlug,
-    customLogoUri: card.customLogoUri,
+    customLogoUri: normalizeCustomLogoUri(card.customLogoUri),
     notes: card.notes,
     sortIndex: card.sortIndex ?? index,
     createdAt: card.createdAt ?? now,
@@ -158,16 +175,27 @@ export function mergeCards(
   return result;
 }
 
+async function inlineCustomLogos(cards: FidelityCard[]): Promise<FidelityCard[]> {
+  return Promise.all(
+    cards.map(async (card) => {
+      if (!card.customLogoUri) return card;
+      const dataUri = await customLogoToDataUri(card.customLogoUri);
+      return { ...card, customLogoUri: dataUri ?? undefined };
+    })
+  );
+}
+
 export async function exportCards(
   cards: FidelityCard[],
   settings: Partial<Settings>
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    const exportable = await inlineCustomLogos(cards);
     const data: ExportData = {
-      cards,
+      cards: exportable,
       settings,
       exportedAt: new Date().toISOString(),
-      version: '2.0.0',
+      version: '2.1.0',
     };
     const json = JSON.stringify(data, null, 2);
     const fileName = `tesserone-backup-${new Date().toISOString().split('T')[0]}.json`;
