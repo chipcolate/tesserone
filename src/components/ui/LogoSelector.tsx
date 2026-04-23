@@ -7,6 +7,7 @@ import {
   getBrandLogo,
   getBrand,
   pickCustomLogoFromLibrary,
+  customLogoSource,
   type BrandEntry,
 } from '../../services/logos';
 
@@ -17,7 +18,7 @@ interface LogoSelectorProps {
   cardColor: string;
   brandResults: BrandEntry[];
   onBrandSelect: (brand: BrandEntry) => void;
-  onCustomLogoPick: (uri: string) => void;
+  onCustomLogoPick: (ref: string) => void;
   onClear: () => void;
 }
 
@@ -36,7 +37,7 @@ export function LogoSelector({
   const [picking, setPicking] = useState(false);
 
   const bundledLogo = logoSlug ? getBrandLogo(logoSlug) : undefined;
-  const customLogo = customLogoUri ? { uri: customLogoUri } : undefined;
+  const customLogo = customLogoSource(customLogoUri);
   const logoSource = customLogo ?? bundledLogo;
   const brand = logoSlug ? getBrand(logoSlug) : undefined;
   const hasAnyLogo = Boolean(logoSlug || customLogoUri);
@@ -48,7 +49,7 @@ export function LogoSelector({
       const result = await pickCustomLogoFromLibrary();
       switch (result.kind) {
         case 'picked':
-          onCustomLogoPick(result.uri);
+          onCustomLogoPick(result.ref);
           break;
         case 'permissionDenied':
           Alert.alert(

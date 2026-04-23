@@ -20,7 +20,7 @@ import {
   searchBrands,
   getBrandColors,
   deleteCustomLogo,
-  isCustomLogoUri,
+  isCustomLogoRef,
 } from '../../src/services/logos';
 import { BARCODE_FORMAT_OPTIONS } from '../../src/services/scanner';
 import { LogoSelector } from '../../src/components/ui/LogoSelector';
@@ -53,10 +53,10 @@ export default function CardDetailScreen() {
   const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
 
   // Delete a draft custom-logo file unless it's the originally persisted one.
-  const discardDraftIfEphemeral = useCallback((uri: string | undefined) => {
-    if (!isCustomLogoUri(uri)) return;
-    if (uri === originalCustomLogoUriRef.current) return;
-    deleteCustomLogo(uri);
+  const discardDraftIfEphemeral = useCallback((ref: string | undefined) => {
+    if (!isCustomLogoRef(ref)) return;
+    if (ref === originalCustomLogoUriRef.current) return;
+    deleteCustomLogo(ref);
   }, []);
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export default function CardDetailScreen() {
       return;
     }
     const prevUri = originalCustomLogoUriRef.current;
-    if (isCustomLogoUri(prevUri) && prevUri !== customLogoUri) {
+    if (isCustomLogoRef(prevUri) && prevUri !== customLogoUri) {
       deleteCustomLogo(prevUri);
     }
     updateCard(id, {

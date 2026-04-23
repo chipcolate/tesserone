@@ -5,7 +5,7 @@ import { FidelityCard, BarcodeFormat, Settings } from '../types';
 import {
   customLogoToDataUri,
   writeCustomLogoFromDataUri,
-  isCustomLogoUri,
+  customLogoFilename,
 } from './logos';
 
 export interface ExportData {
@@ -59,17 +59,16 @@ type RawImportedCard = {
   updatedAt?: string;
 };
 
-function normalizeCustomLogoUri(uri: string | undefined): string | undefined {
-  if (!uri) return undefined;
+function normalizeCustomLogoUri(value: string | undefined): string | undefined {
+  if (!value) return undefined;
   // Exports from 2.1.0+ inline custom logos as data URIs; materialize them.
-  if (uri.startsWith('data:')) {
-    return writeCustomLogoFromDataUri(uri) ?? undefined;
+  if (value.startsWith('data:')) {
+    return writeCustomLogoFromDataUri(value) ?? undefined;
   }
-  // Same-device re-import: if the URI still points into our custom-logos dir
-  // and the file is on disk, keep it. Otherwise drop — stale cross-device
-  // file:// paths can't be resolved.
-  if (isCustomLogoUri(uri)) return uri;
-  return undefined;
+  // Otherwise accept either a bare filename or a legacy `file://` URI and
+  // keep only the filename portion — the underlying file may or may not
+  // exist on this device.
+  return customLogoFilename(value);
 }
 
 function migrateCard(card: RawImportedCard, index: number): FidelityCard {
