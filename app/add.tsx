@@ -18,7 +18,7 @@ import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } fr
 import { BarcodeFormat, FidelityCard } from '../src/types';
 import * as Haptics from 'expo-haptics';
 import { mapBarcodeType, validateBarcode, fixScannedCode, BARCODE_FORMAT_OPTIONS } from '../src/services/scanner';
-import { searchBrands, getBrandColors } from '../src/services/logos';
+import { searchBrands, getBrandColors, deleteCustomLogo } from '../src/services/logos';
 import type { BrandEntry } from '../src/types';
 import { LogoSelector } from '../src/components/ui/LogoSelector';
 
@@ -41,6 +41,7 @@ export default function AddCardScreen() {
   const [color, setColor] = useState(DEFAULT_CARD_COLOR);
   const [notes, setNotes] = useState('');
   const [logoSlug, setLogoSlug] = useState<string | undefined>();
+  const [customLogoUri, setCustomLogoUri] = useState<string | undefined>();
   const [scanned, setScanned] = useState(false);
   const processingRef = useRef(false);
 
@@ -61,8 +62,30 @@ export default function AddCardScreen() {
   const handleBrandSelect = useCallback((brand: BrandEntry) => {
     setName(brand.name);
     setLogoSlug(brand.slug);
+    setCustomLogoUri((prev) => {
+      deleteCustomLogo(prev);
+      return undefined;
+    });
     const brandColors = getBrandColors(brand.slug);
     if (brandColors) setColor(brandColors.primary);
+    setBrandResults([]);
+  }, []);
+
+  const handleCustomLogoPick = useCallback((uri: string) => {
+    setCustomLogoUri((prev) => {
+      if (prev && prev !== uri) deleteCustomLogo(prev);
+      return uri;
+    });
+    setLogoSlug(undefined);
+    setBrandResults([]);
+  }, []);
+
+  const handleClearLogo = useCallback(() => {
+    setLogoSlug(undefined);
+    setCustomLogoUri((prev) => {
+      deleteCustomLogo(prev);
+      return undefined;
+    });
     setBrandResults([]);
   }, []);
 
@@ -113,6 +136,7 @@ export default function AddCardScreen() {
       format,
       color,
       logoSlug,
+      customLogoUri,
       notes: notes.trim() || undefined,
       sortIndex: nextSortIndex(cards),
       createdAt: now,
@@ -121,7 +145,7 @@ export default function AddCardScreen() {
     addCard(card);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
-  }, [name, code, format, color, logoSlug, notes, cards, addCard, t]);
+  }, [name, code, format, color, logoSlug, customLogoUri, notes, cards, addCard, t]);
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.bg }]}>
@@ -197,11 +221,13 @@ export default function AddCardScreen() {
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelLogo')}</Text>
           <LogoSelector
             logoSlug={logoSlug}
+            customLogoUri={customLogoUri}
             cardName={name}
             cardColor={color}
             brandResults={brandResults}
             onBrandSelect={handleBrandSelect}
-            onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
+            onCustomLogoPick={handleCustomLogoPick}
+            onClear={handleClearLogo}
           />
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelBarcode')}</Text>

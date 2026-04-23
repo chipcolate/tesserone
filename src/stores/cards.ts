@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FidelityCard, CardId, SortMode } from '../types';
+import { deleteCustomLogo, customLogoFilename } from '../services/logos';
 
 type CardsState = {
   cards: Record<CardId, FidelityCard>;
@@ -41,7 +42,8 @@ export const useCardsStore = create<CardsState>()(
 
       removeCard: (id) =>
         set((s) => {
-          const { [id]: _, ...rest } = s.cards;
+          const { [id]: removed, ...rest } = s.cards;
+          if (removed) deleteCustomLogo(removed.customLogoUri);
           return { cards: rest };
         }),
 
@@ -61,12 +63,34 @@ export const useCardsStore = create<CardsState>()(
           return { cards: updated };
         }),
 
-      clearAll: () => set({ cards: {} }),
+      clearAll: () =>
+        set((s) => {
+          for (const card of Object.values(s.cards)) deleteCustomLogo(card.customLogoUri);
+          return { cards: {} };
+        }),
     }),
     {
       name: 'cards',
       storage: createJSONStorage(() => AsyncStorage),
-      version: 1,
+      version: 2,
+      migrate: (persisted, version) => {
+        const state = persisted as CardsState | undefined;
+        if (!state?.cards) return state ?? ({ cards: {} } as CardsState);
+        // v1 → v2: `customLogoUri` stored the full `file://` URI; collapse
+        // to a bare filename so it keeps resolving after app data container
+        // UUID changes or URI normalization drift.
+        if (version < 2) {
+          const next: Record<CardId, FidelityCard> = {};
+          for (const [id, card] of Object.entries(state.cards)) {
+            next[id] = {
+              ...card,
+              customLogoUri: customLogoFilename(card.customLogoUri),
+            };
+          }
+          return { ...state, cards: next };
+        }
+        return state;
+      },
     }
   )
 );

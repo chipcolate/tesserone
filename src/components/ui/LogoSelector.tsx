@@ -1,9 +1,15 @@
-import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { useTheme, typography, textOnColor } from '../../theme';
-import { getBrandLogo, getBrand, type BrandEntry } from '../../services/logos';
+import {
+  getBrandLogo,
+  getBrand,
+  pickCustomLogoFromLibrary,
+  customLogoSource,
+  type BrandEntry,
+} from '../../services/logos';
 
 interface LogoSelectorProps {
   logoSlug?: string;
@@ -12,6 +18,7 @@ interface LogoSelectorProps {
   cardColor: string;
   brandResults: BrandEntry[];
   onBrandSelect: (brand: BrandEntry) => void;
+  onCustomLogoPick: (ref: string) => void;
   onClear: () => void;
 }
 
@@ -22,15 +29,44 @@ export function LogoSelector({
   cardColor,
   brandResults,
   onBrandSelect,
+  onCustomLogoPick,
   onClear,
 }: LogoSelectorProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const [picking, setPicking] = useState(false);
 
   const bundledLogo = logoSlug ? getBrandLogo(logoSlug) : undefined;
-  const customLogo = customLogoUri ? { uri: customLogoUri } : undefined;
+  const customLogo = customLogoSource(customLogoUri);
   const logoSource = customLogo ?? bundledLogo;
   const brand = logoSlug ? getBrand(logoSlug) : undefined;
+  const hasAnyLogo = Boolean(logoSlug || customLogoUri);
+
+  const handleUpload = async () => {
+    if (picking) return;
+    setPicking(true);
+    try {
+      const result = await pickCustomLogoFromLibrary();
+      switch (result.kind) {
+        case 'picked':
+          onCustomLogoPick(result.ref);
+          break;
+        case 'permissionDenied':
+          Alert.alert(
+            t('logoSelector.photoPermissionDeniedTitle'),
+            t('logoSelector.photoPermissionDeniedBody')
+          );
+          break;
+        case 'error':
+          Alert.alert(t('logoSelector.photoPickErrorTitle'), result.message);
+          break;
+        case 'canceled':
+          break;
+      }
+    } finally {
+      setPicking(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -48,13 +84,25 @@ export function LogoSelector({
           <Text style={[typography.label, { color: colors.text }]} numberOfLines={1}>
             {brand?.name ?? (customLogoUri ? t('logoSelector.customLogo') : t('logoSelector.noLogo'))}
           </Text>
-          {(logoSlug || customLogoUri) && (
+          {hasAnyLogo && (
             <Pressable onPress={onClear} hitSlop={8}>
               <Text style={[typography.caption, { color: '#EF5350' }]}>{t('common.remove')}</Text>
             </Pressable>
           )}
         </View>
       </View>
+
+      <Pressable
+        onPress={handleUpload}
+        disabled={picking}
+        style={[styles.uploadButton, { backgroundColor: colors.surface, opacity: picking ? 0.6 : 1 }]}
+      >
+        <Text style={[typography.label, { color: colors.text, fontWeight: '600' }]}>
+          {customLogoUri
+            ? t('logoSelector.replacePhoto')
+            : t('logoSelector.uploadPhoto')}
+        </Text>
+      </Pressable>
 
       {brandResults.length > 0 && (
         <View style={[styles.resultsList, { backgroundColor: colors.surface }]}>
@@ -72,7 +120,7 @@ export function LogoSelector({
 
 const styles = StyleSheet.create({
   container: {
-    gap: 6,
+    gap: 10,
   },
   previewRow: {
     flexDirection: 'row',
@@ -98,6 +146,12 @@ const styles = StyleSheet.create({
   previewInfo: {
     flex: 1,
     gap: 2,
+  },
+  uploadButton: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 10,
   },
   resultsList: {
     borderRadius: 10,

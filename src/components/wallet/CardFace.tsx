@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
 import { FidelityCard } from '../../types';
-import { getBrandLogo, resolveCardColor } from '../../services/logos';
+import { getBrandLogo, resolveCardColor, customLogoSource } from '../../services/logos';
 import { textOnColor } from '../../theme';
 
 interface CardFaceProps {
@@ -14,7 +14,7 @@ export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
   const fg = textOnColor(bg);
 
   const bundledLogo = card.logoSlug ? getBrandLogo(card.logoSlug) : undefined;
-  const customLogo = card.customLogoUri ? { uri: card.customLogoUri } : undefined;
+  const customLogo = customLogoSource(card.customLogoUri);
   const logoSource = customLogo ?? bundledLogo;
 
   return (
@@ -25,6 +25,7 @@ export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
             source={logoSource}
             style={styles.logo}
             contentFit="contain"
+            contentPosition="left center"
             transition={150}
             accessibilityLabel={`${card.name} logo`}
           />
