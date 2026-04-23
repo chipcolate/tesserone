@@ -65,6 +65,12 @@ export const es: Translations = {
   logoSelector: {
     noLogo: 'Sin logo',
     customLogo: 'Logo personalizado',
+    uploadPhoto: 'Elegir foto',
+    replacePhoto: 'Cambiar foto',
+    photoPermissionDeniedTitle: 'Acceso a las fotos denegado',
+    photoPermissionDeniedBody:
+      'Permite el acceso a las fotos en Ajustes para elegir un logo personalizado.',
+    photoPickErrorTitle: 'No se puede usar esa foto',
   },
   settings: {
     title: 'Ajustes',

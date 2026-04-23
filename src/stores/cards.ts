@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FidelityCard, CardId, SortMode } from '../types';
+import { deleteCustomLogo } from '../services/logos';
 
 type CardsState = {
   cards: Record<CardId, FidelityCard>;
@@ -41,7 +42,8 @@ export const useCardsStore = create<CardsState>()(
 
       removeCard: (id) =>
         set((s) => {
-          const { [id]: _, ...rest } = s.cards;
+          const { [id]: removed, ...rest } = s.cards;
+          if (removed) deleteCustomLogo(removed.customLogoUri);
           return { cards: rest };
         }),
 
@@ -61,7 +63,11 @@ export const useCardsStore = create<CardsState>()(
           return { cards: updated };
         }),
 
-      clearAll: () => set({ cards: {} }),
+      clearAll: () =>
+        set((s) => {
+          for (const card of Object.values(s.cards)) deleteCustomLogo(card.customLogoUri);
+          return { cards: {} };
+        }),
     }),
     {
       name: 'cards',

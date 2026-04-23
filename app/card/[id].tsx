@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -16,7 +16,12 @@ import { useTranslation } from 'react-i18next';
 import { useCardsStore } from '../../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor } from '../../src/theme';
 import { BarcodeFormat, BrandEntry } from '../../src/types';
-import { searchBrands, getBrandColors } from '../../src/services/logos';
+import {
+  searchBrands,
+  getBrandColors,
+  deleteCustomLogo,
+  isCustomLogoUri,
+} from '../../src/services/logos';
 import { BARCODE_FORMAT_OPTIONS } from '../../src/services/scanner';
 import { LogoSelector } from '../../src/components/ui/LogoSelector';
 import { formatDate } from '../../src/i18n/format';
@@ -40,10 +45,19 @@ export default function CardDetailScreen() {
   const [color, setColor] = useState(card?.color ?? '#42A5F5');
   const [notes, setNotes] = useState(card?.notes ?? '');
   const [logoSlug, setLogoSlug] = useState<string | undefined>(card?.logoSlug);
+  const [customLogoUri, setCustomLogoUri] = useState<string | undefined>(card?.customLogoUri);
+  const originalCustomLogoUriRef = useRef<string | undefined>(card?.customLogoUri);
   const [brandResults, setBrandResults] = useState<BrandEntry[]>(
     () => (!card?.logoSlug && card?.name) ? searchBrands(card.name) : []
   );
   const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
+
+  // Delete a draft custom-logo file unless it's the originally persisted one.
+  const discardDraftIfEphemeral = useCallback((uri: string | undefined) => {
+    if (!isCustomLogoUri(uri)) return;
+    if (uri === originalCustomLogoUriRef.current) return;
+    deleteCustomLogo(uri);
+  }, []);
 
   useEffect(() => {
     const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
@@ -68,8 +82,30 @@ export default function CardDetailScreen() {
   const handleBrandSelect = (brand: BrandEntry) => {
     setName(brand.name);
     setLogoSlug(brand.slug);
+    setCustomLogoUri((prev) => {
+      discardDraftIfEphemeral(prev);
+      return undefined;
+    });
     const brandColors = getBrandColors(brand.slug);
     if (brandColors) setColor(brandColors.primary);
+    setBrandResults([]);
+  };
+
+  const handleCustomLogoPick = (uri: string) => {
+    setCustomLogoUri((prev) => {
+      if (prev && prev !== uri) discardDraftIfEphemeral(prev);
+      return uri;
+    });
+    setLogoSlug(undefined);
+    setBrandResults([]);
+  };
+
+  const handleClearLogo = () => {
+    setLogoSlug(undefined);
+    setCustomLogoUri((prev) => {
+      discardDraftIfEphemeral(prev);
+      return undefined;
+    });
     setBrandResults([]);
   };
 
@@ -78,12 +114,17 @@ export default function CardDetailScreen() {
       Alert.alert(t('card.missingNameTitle'), t('card.missingNameBody'));
       return;
     }
+    const prevUri = originalCustomLogoUriRef.current;
+    if (isCustomLogoUri(prevUri) && prevUri !== customLogoUri) {
+      deleteCustomLogo(prevUri);
+    }
     updateCard(id, {
       name: name.trim(),
       code: code.trim(),
       format,
       color,
       logoSlug,
+      customLogoUri,
       notes: notes.trim() || undefined,
     });
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -100,6 +141,9 @@ export default function CardDetailScreen() {
           text: t('common.delete'),
           style: 'destructive',
           onPress: () => {
+            // Unsaved draft file is separate from the persisted card.customLogoUri
+            // that the store will clean up for us.
+            discardDraftIfEphemeral(customLogoUri);
             removeCard(id);
             router.back();
           },
@@ -146,12 +190,13 @@ export default function CardDetailScreen() {
         <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelLogo')}</Text>
         <LogoSelector
           logoSlug={logoSlug}
-          customLogoUri={card.customLogoUri}
+          customLogoUri={customLogoUri}
           cardName={name}
           cardColor={color}
           brandResults={brandResults}
           onBrandSelect={handleBrandSelect}
-          onClear={() => { setLogoSlug(undefined); setBrandResults([]); }}
+          onCustomLogoPick={handleCustomLogoPick}
+          onClear={handleClearLogo}
         />
 
         <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelBarcode')}</Text>

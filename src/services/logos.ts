@@ -1,7 +1,9 @@
 import { ImageSourcePropType } from 'react-native';
 import Fuse from 'fuse.js';
+import * as ImagePicker from 'expo-image-picker';
+import { Directory, File, Paths } from 'expo-file-system';
 import brandIndexData from '../../data/brand-index.json';
-import type { BrandEntry } from '../types';
+import type { BrandEntry, FidelityCard } from '../types';
 
 export type { BrandEntry } from '../types';
 
@@ -59,4 +61,135 @@ export function resolveCardColor(
   logoSlug: string | undefined
 ): string {
   return color || getBrand(logoSlug || '')?.primaryColor || FALLBACK_CARD_BG;
+}
+
+const CUSTOM_LOGO_DIR_NAME = 'custom-logos';
+
+function customLogoDir(): Directory {
+  return new Directory(Paths.document, CUSTOM_LOGO_DIR_NAME);
+}
+
+function customLogoDirPrefix(): string {
+  const uri = customLogoDir().uri;
+  return uri.endsWith('/') ? uri : uri + '/';
+}
+
+function ensureCustomLogoDir(): Directory {
+  const dir = customLogoDir();
+  if (!dir.exists) dir.create({ intermediates: true, idempotent: true });
+  return dir;
+}
+
+function newCustomLogoFilename(): string {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.jpg`;
+}
+
+/** True if `uri` points at a file inside the app's custom-logos directory. */
+export function isCustomLogoUri(uri: string | undefined): boolean {
+  if (!uri) return false;
+  return uri.startsWith(customLogoDirPrefix());
+}
+
+export type PickCustomLogoResult =
+  | { kind: 'picked'; uri: string }
+  | { kind: 'canceled' }
+  | { kind: 'permissionDenied' }
+  | { kind: 'error'; message: string };
+
+/**
+ * Prompts the user for photo library access, opens the picker with a square
+ * crop, and copies the selected image into the custom-logos directory.
+ */
+export async function pickCustomLogoFromLibrary(): Promise<PickCustomLogoResult> {
+  try {
+    const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!perm.granted) return { kind: 'permissionDenied' };
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
+      base64: true,
+    });
+    if (result.canceled) return { kind: 'canceled' };
+    const asset = result.assets[0];
+    if (!asset?.base64) return { kind: 'error', message: 'No image data returned' };
+
+    const dir = ensureCustomLogoDir();
+    const dest = new File(dir, newCustomLogoFilename());
+    dest.create({ overwrite: true });
+    dest.write(asset.base64, { encoding: 'base64' });
+    return { kind: 'picked', uri: dest.uri };
+  } catch (e) {
+    return { kind: 'error', message: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+/**
+ * Writes a base64 data URI into the custom-logos dir and returns the new
+ * file URI. Returns null if the data URI is malformed or the write fails.
+ * Used by import to rehydrate custom logos from exported JSON.
+ */
+export function writeCustomLogoFromDataUri(dataUri: string): string | null {
+  const match = /^data:image\/[a-zA-Z0-9+.-]+;base64,(.*)$/.exec(dataUri);
+  if (!match) return null;
+  try {
+    const dir = ensureCustomLogoDir();
+    const file = new File(dir, newCustomLogoFilename());
+    file.create({ overwrite: true });
+    file.write(match[1], { encoding: 'base64' });
+    return file.uri;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Reads a custom-logo file and returns a JPEG base64 data URI. Returns null
+ * if the URI isn't in our dir or the file is missing. Used by export.
+ */
+export async function customLogoToDataUri(uri: string): Promise<string | null> {
+  if (!isCustomLogoUri(uri)) return null;
+  try {
+    const file = new File(uri);
+    if (!file.exists) return null;
+    const base64 = await file.base64();
+    return `data:image/jpeg;base64,${base64}`;
+  } catch {
+    return null;
+  }
+}
+
+/** Best-effort delete of a custom-logo file. No-op for non-custom URIs. */
+export function deleteCustomLogo(uri: string | undefined): void {
+  if (!isCustomLogoUri(uri)) return;
+  try {
+    const file = new File(uri!);
+    if (file.exists) file.delete();
+  } catch {
+    // cleanup is best-effort
+  }
+}
+
+/**
+ * Enumerate the custom-logos directory and delete any file not referenced by
+ * a card. Covers add-then-cancel leaks and stale files from removed cards
+ * that slipped past the store-level cleanup.
+ */
+export function sweepOrphanLogos(cards: Record<string, FidelityCard>): void {
+  const dir = customLogoDir();
+  if (!dir.exists) return;
+  const referenced = new Set<string>();
+  for (const card of Object.values(cards)) {
+    if (isCustomLogoUri(card.customLogoUri)) referenced.add(card.customLogoUri!);
+  }
+  try {
+    for (const entry of dir.list()) {
+      if (entry instanceof File && !referenced.has(entry.uri)) {
+        try { entry.delete(); } catch { /* ignore */ }
+      }
+    }
+  } catch {
+    // ignore enumeration errors
+  }
 }

@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { ThemeProvider, useTheme } from '../src/theme';
 import { initI18n } from '../src/i18n';
 import { useSettingsStore } from '../src/stores/settings';
+import { useCardsStore } from '../src/stores/cards';
+import { sweepOrphanLogos } from '../src/services/logos';
 
 function Inner() {
   const { dark, colors } = useTheme();
@@ -55,6 +57,9 @@ export default function RootLayout() {
   const hydrated = useSettingsStore.persist?.hasHydrated?.() ?? true;
   const [ready, setReady] = useState(hydrated);
 
+  const cardsHydrated = useCardsStore.persist?.hasHydrated?.() ?? true;
+  const [cardsReady, setCardsReady] = useState(cardsHydrated);
+
   useEffect(() => {
     if (!ready) {
       const unsub = useSettingsStore.persist?.onFinishHydration?.(() => setReady(true));
@@ -63,8 +68,19 @@ export default function RootLayout() {
   }, [ready]);
 
   useEffect(() => {
+    if (!cardsReady) {
+      const unsub = useCardsStore.persist?.onFinishHydration?.(() => setCardsReady(true));
+      return unsub;
+    }
+  }, [cardsReady]);
+
+  useEffect(() => {
     if (ready) initI18n(language);
   }, [ready, language]);
+
+  useEffect(() => {
+    if (cardsReady) sweepOrphanLogos(useCardsStore.getState().cards);
+  }, [cardsReady]);
 
   if (!ready) return null;
 
