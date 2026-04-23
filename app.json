@@ -15,6 +15,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.chipcolate.tesserone",
+      "buildNumber": "1",
       "icon": {
         "light": "./assets/icon.png",
         "dark": "./assets/icon-dark.png"
