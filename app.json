@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tesserone",
     "slug": "tesserone",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "tesserone",
@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.chipcolate.tesserone",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "icon": {
         "light": "./assets/icon.png",
         "dark": "./assets/icon-dark.png"
@@ -30,6 +30,7 @@
         "backgroundColor": "#0A0A0A"
       },
       "package": "com.chipcolate.tesserone",
+      "versionCode": 2,
       "softwareKeyboardLayoutMode": "resize",
       "permissions": [
         "android.permission.CAMERA"
