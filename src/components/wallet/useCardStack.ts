@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { useSharedValue, withDecay, withSpring, runOnJS, interpolate } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
@@ -60,25 +60,42 @@ export function stackContentHeight(numCards: number): number {
 }
 
 export function useCardStack() {
+  // iOS: UIScreen.main.brightness is the device brightness — we save and restore it.
+  // Android: setBrightnessAsync only installs a per-window override; releasing it
+  // via restoreSystemBrightnessAsync hands control back to adaptive brightness,
+  // which is what users expect (and avoids a stale value from getBrightnessAsync,
+  // which under adaptive mode reports the user's adj-slider offset rather than the
+  // actual screen brightness).
   const savedBrightnessRef = useRef<number | null>(null);
+  const overrideActiveRef = useRef(false);
 
   const maxBrightness = useCallback(async () => {
     try {
-      savedBrightnessRef.current = await Brightness.getBrightnessAsync();
+      if (Platform.OS === 'ios') {
+        savedBrightnessRef.current = await Brightness.getBrightnessAsync();
+      }
       await Brightness.setBrightnessAsync(1);
+      overrideActiveRef.current = true;
     } catch {
       savedBrightnessRef.current = null;
     }
   }, []);
 
   const restoreBrightness = useCallback(async () => {
-    const saved = savedBrightnessRef.current;
-    if (saved === null) return;
-    savedBrightnessRef.current = null;
+    if (!overrideActiveRef.current) return;
+    overrideActiveRef.current = false;
     try {
-      await Brightness.setBrightnessAsync(saved);
+      if (Platform.OS === 'android') {
+        await Brightness.restoreSystemBrightnessAsync();
+      } else {
+        const saved = savedBrightnessRef.current;
+        savedBrightnessRef.current = null;
+        if (saved !== null) {
+          await Brightness.setBrightnessAsync(saved);
+        }
+      }
     } catch {
-      // already cleared; next maxBrightness call will re-capture
+      // next maxBrightness call will re-apply the override
     }
   }, []);
 
