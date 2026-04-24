@@ -40,21 +40,17 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
 
   return (
     <View style={styles.back}>
-      <Text style={[typography.cardName, styles.name]} numberOfLines={1}>
-        {card.name}
-      </Text>
-
       <View style={styles.barcodeWrap}>
         {error ? (
           <Text style={styles.errorText}>Could not render barcode</Text>
         ) : isQR ? (
-          <QRCode value={card.code} size={180} backgroundColor="#FFFFFF" />
+          <QRCode value={card.code} size={240} backgroundColor="#FFFFFF" />
         ) : (
           <Barcode
             value={card.code}
             format={barcodeLibFormat(card.format)}
-            width={1.8}
-            height={100}
+            width={2.4}
+            height={140}
             background="#FFFFFF"
             lineColor="#000000"
             onError={() => setError(true)}
@@ -62,13 +58,19 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
         )}
       </View>
 
-      <Text style={[typography.barcode, styles.code]}>{card.code}</Text>
-
-      {card.notes ? (
-        <Text style={[typography.caption, styles.notes]} numberOfLines={3}>
-          {card.notes}
+      <View style={styles.footer}>
+        <Text style={[typography.cardName, styles.name]} numberOfLines={1}>
+          {card.name}
         </Text>
-      ) : null}
+
+        <Text style={[typography.barcode, styles.code]}>{card.code}</Text>
+
+        {card.notes ? (
+          <Text style={[typography.caption, styles.notes]} numberOfLines={3}>
+            {card.notes}
+          </Text>
+        ) : null}
+      </View>
     </View>
   );
 });
@@ -79,17 +81,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
     padding: 24,
+    paddingBottom: 40,
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 16,
-  },
-  name: {
-    color: '#1A1A1A',
+    justifyContent: 'space-between',
   },
   barcodeWrap: {
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 120,
+    minHeight: 140,
+  },
+  footer: {
+    alignItems: 'center',
+    width: '100%',
+    gap: 10,
+  },
+  name: {
+    color: '#1A1A1A',
   },
   code: {
     color: '#333333',
