@@ -1,4 +1,5 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 import { useSharedValue, withDecay, withSpring, runOnJS, interpolate } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
@@ -86,6 +87,17 @@ export function useCardStack() {
   const maxScroll = useSharedValue(0);
   const viewportHeight = useSharedValue(0);
   const selectedCardIndex = useSharedValue(-1);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next === 'background' || next === 'inactive') {
+        restoreBrightness();
+      } else if (next === 'active' && selectedCardIndex.value !== -1) {
+        maxBrightness();
+      }
+    });
+    return () => sub.remove();
+  }, [maxBrightness, restoreBrightness, selectedCardIndex]);
   const dismissTranslateY = useSharedValue(0);
   const savedDismissY = useSharedValue(0);
   const flipProgress = useSharedValue(0);
