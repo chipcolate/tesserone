@@ -8,6 +8,7 @@ import {
   Alert,
   Modal,
 } from 'react-native';
+import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -221,7 +222,7 @@ export default function SettingsScreen() {
           <View style={styles.row}>
             <Text style={[typography.body, { color: colors.text }]}>Tesserone</Text>
             <Text style={[typography.caption, { color: colors.textSecondary }]}>
-              {t('settings.aboutVersion', { version: '1.0.0' })}
+              {t('settings.aboutVersion', { version: Constants.expoConfig?.version ?? '' })}
             </Text>
           </View>
           <View style={[styles.divider, { backgroundColor: colors.bg }]} />
