@@ -151,14 +151,14 @@ Tes cartes. Sur ton téléphone.
 
 **Promotional Text** (127/170)
 ```
-Tes cartes de fidélité dans un paquet familier. Touche pour retourner, scanne, fini. Pas de cloud, pas de compte, pas de pistage.
+Tes cartes de fidélité dans une pile familière. Touche pour retourner, scanne, fini. Pas de cloud, pas de compte, pas de pistage.
 ```
 
 **Description** (~2050/4000)
 ```
 Tes cartes de fidélité. Sur ton téléphone. Point.
 
-Tesserone est un gestionnaire de cartes de fidélité simple, avec la sensation familière d'un paquet de cartes. Touche une carte pour l'ouvrir et la retourner sur le code-barres — la luminosité de l'écran passe au maximum toute seule, pour que la caisse le lise du premier coup.
+Tesserone est un gestionnaire de cartes de fidélité simple, avec la sensation familière d'une pile de cartes. Touche une carte pour l'ouvrir et la retourner sur le code-barres — la luminosité de l'écran passe au maximum toute seule, pour que la caisse le lise du premier coup.
 
 Pas de cloud. Pas de compte. Pas de pistage. Tes cartes restent sur ton appareil, là où elles doivent être.
 
@@ -174,7 +174,7 @@ CE QUE TU AS
 • Zéro cloud — pas de serveurs, pas de backend, pas de base de données où te retrouver
 • Zéro pistage — pas d'analytics, pas de télémétrie, aucun SDK tiers
 • Prêt à la caisse — touche pour retourner, la luminosité passe au max toute seule
-• Paquet familier — des cartes qui défilent, s'ouvrent et se retournent comme tu l'attends
+• Pile familière — des cartes qui défilent, s'ouvrent et se retournent comme tu l'attends
 • Tous les formats — EAN-13, CODE-128, QR, Aztec, PDF417, DataMatrix
 • Pas de verrou — exporte tout dans un fichier JSON quand tu veux
 • Open source — Apache 2.0, chaque ligne vérifiable
@@ -309,3 +309,4 @@ kundenkarten,karten,wallet,punkte,stempel,barcode,scanner,offline,datenschutz,ge
 - **Keywords** — Apple parses comma-separated; spaces after commas are unnecessary. Plurals auto-generated, so `card` is covered by `cards`. Don't repeat words already in Name/Subtitle.
 - **Subtitle FR** is at the 30-char limit. Alternative if you want breathing room: `Tes cartes. Dans ta poche.` (26).
 - **Italian "mazzo" avoided** — in Italian, `mazzo di carte` reads as playing cards. Using `pila di tessere` or no metaphor at all.
+- **French "paquet" avoided** — in French, `paquet de cartes` reads as a deck of (playing) cards. Using `pile de cartes` instead.

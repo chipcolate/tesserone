@@ -23,7 +23,7 @@ export const fr: Strings = {
     headlineLine2: 'Sur ton téléphone.',
     headlineLine3: "Point.",
     subheading:
-      "Un gestionnaire de cartes de fidélité simple, avec la sensation familière d'un paquet de cartes. Pas de cloud, pas de compte, pas de pistage. Tes cartes restent sur ton appareil — là où elles doivent être.",
+      "Un gestionnaire de cartes de fidélité simple, avec la sensation familière d'une pile de cartes. Pas de cloud, pas de compte, pas de pistage. Tes cartes restent sur ton appareil — là où elles doivent être.",
   },
   features: {
     headingLine1: 'Tout ce que les classiques faisaient.',
@@ -46,7 +46,7 @@ export const fr: Strings = {
         body: "Touche une carte pour la retourner. La luminosité de l'écran passe au maximum automatiquement, pour une lecture fiable.",
       },
       familiarStack: {
-        title: 'Un paquet de cartes familier',
+        title: 'Une pile de cartes familière',
         body: "Des cartes qui défilent, s'ouvrent et se retournent exactement comme tu l'attends. Pas de surprise, pas d'apprentissage.",
       },
       allFormats: {
@@ -69,7 +69,7 @@ export const fr: Strings = {
     headingLine2: 'Elles marchaient.',
     p1: "Pendant des années, les apps de cartes de fidélité, ça marchait, tout simplement. Tu scannais un code-barres. L'app le gardait. À la caisse, tu le ressortais. Fin.",
     p2: "Puis les apps qu'on utilisait ont été rachetées. Les nouveaux propriétaires les ont « modernisées ». D'un coup, il fallait un compte. Puis une synchro cloud que personne n'avait demandée. Puis des pubs. Puis un abonnement pour des fonctions qui étaient gratuites avant. Puis nos cartes ont commencé à disparaître parce que le serveur de quelqu'un avait passé une mauvaise journée. Puis l'app voulait notre adresse e-mail pour afficher un code-barres.",
-    p3: "On en a eu marre de voir des outils simples se faire cannibaliser par des boîtes qui traitaient nos cartes comme un entonnoir plutôt que comme une fonctionnalité.",
+    p3: "On en a eu marre de voir des outils simples se faire cannibaliser par des boîtes qui traitaient nos cartes comme un canal d'acquisition plutôt que comme une fonctionnalité.",
     p4: "Alors on en a fait une nouvelle, comme celles d'avant. Bien faite. Pour nous, et pour tous ceux qui regrettent l'époque où les apps faisaient une chose et respectaient assez ton appareil pour rester en dehors du cloud.",
   },
   os: {
@@ -93,7 +93,7 @@ export const fr: Strings = {
     copyright: 'Sous licence Apache 2.0.',
     privacy: 'Confidentialité',
     github: 'GitHub',
-    issues: 'Signalements',
+    issues: 'Tickets',
     languageLabel: 'Langue',
   },
   themeToggle: {
