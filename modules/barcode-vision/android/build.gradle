@@ -1,0 +1,19 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'com.chipcolate.barcodevision'
+version = '1.0.0'
+
+android {
+  namespace 'expo.modules.barcodevision'
+  defaultConfig {
+    versionCode 1
+    versionName '1.0.0'
+  }
+}
+
+dependencies {
+  implementation 'com.google.mlkit:barcode-scanning:17.3.0'
+}
