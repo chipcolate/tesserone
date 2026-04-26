@@ -1,0 +1,8 @@
+{
+  "name": "barcode-vision",
+  "version": "1.0.0",
+  "description": "iOS Vision wrapper for static-image barcode detection",
+  "main": "index.ts",
+  "license": "Apache-2.0",
+  "private": true
+}
