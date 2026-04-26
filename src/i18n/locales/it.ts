@@ -132,6 +132,9 @@ export const it: Translations = {
       "Scorri verso l'alto per rimandarla indietro.\nTieni premuto per modificarla.\nTocca di nuovo per chiuderla.",
     homeScrollTitle: 'Scorri il mazzo',
     homeScrollMessage: "Trascina verso l'alto o verso il basso per scorrere tra le tessere.",
+    homeShareTipTitle: 'Importa da uno screenshot',
+    homeShareTipMessage:
+      "Hai una tessera aperta in un'altra app? Fai uno screenshot e condividi l'immagine con Tesserone — il codice viene riconosciuto in automatico.",
     homeReorderHintTitle: 'Riordina le tue tessere',
     homeReorderHintMessage:
       'Tocca Riordina per entrare in modalità riordino, poi trascina le tessere come preferisci.',

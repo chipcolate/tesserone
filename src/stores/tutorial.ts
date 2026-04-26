@@ -7,6 +7,7 @@ export type TutorialStepId =
   | 'home-tap-expand'
   | 'expanded-tips'
   | 'home-scroll'
+  | 'home-share-tip'
   | 'home-reorder-hint'
   | 'reorder-drag';
 

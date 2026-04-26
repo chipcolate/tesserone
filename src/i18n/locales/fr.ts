@@ -134,6 +134,9 @@ export const fr: Translations = {
       "Balaie vers le haut pour la refermer.\nAppui long pour la modifier.\nRetouche pour fermer.",
     homeScrollTitle: 'Parcours la pile',
     homeScrollMessage: 'Fais glisser vers le haut ou le bas pour parcourir tes cartes.',
+    homeShareTipTitle: 'Importer depuis une capture',
+    homeShareTipMessage:
+      "Une carte ouverte dans une autre app ? Fais une capture d'écran et partage l'image avec Tesserone — le code-barres est détecté automatiquement.",
     homeReorderHintTitle: 'Réorganise tes cartes',
     homeReorderHintMessage:
       'Touche Réorganiser pour activer le mode, puis fais glisser les cartes dans ton ordre préféré.',

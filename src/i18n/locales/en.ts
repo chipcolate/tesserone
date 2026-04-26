@@ -129,6 +129,9 @@ export const en = {
       'Swipe up to send the card back.\nLong-press to edit.\nTap again to close.',
     homeScrollTitle: 'Browse the stack',
     homeScrollMessage: 'Drag up or down to scroll through your cards.',
+    homeShareTipTitle: 'Import from a screenshot',
+    homeShareTipMessage:
+      'Got a card open in another app? Screenshot it, then share the image with Tesserone — the barcode is detected automatically.',
     homeReorderHintTitle: 'Rearrange your cards',
     homeReorderHintMessage:
       'Tap Reorder to enter reorder mode, then drag cards to your preferred order.',

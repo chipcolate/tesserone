@@ -137,6 +137,9 @@ export const de: Translations = {
       'Wische nach oben, um sie zurückzuschieben.\nLange drücken zum Bearbeiten.\nErneut tippen zum Schließen.',
     homeScrollTitle: 'Durch den Stapel blättern',
     homeScrollMessage: 'Ziehe nach oben oder unten, um durch deine Karten zu blättern.',
+    homeShareTipTitle: 'Per Screenshot importieren',
+    homeShareTipMessage:
+      'Karte in einer anderen App geöffnet? Mach einen Screenshot und teile das Bild mit Tesserone — der Barcode wird automatisch erkannt.',
     homeReorderHintTitle: 'Karten neu anordnen',
     homeReorderHintMessage:
       'Tippe auf „Neu anordnen", um den Sortiermodus zu aktivieren, und ziehe die Karten in deine gewünschte Reihenfolge.',

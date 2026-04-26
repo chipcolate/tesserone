@@ -133,6 +133,9 @@ export const es: Translations = {
       'Desliza hacia arriba para devolverla.\nManténla pulsada para editarla.\nPulsa otra vez para cerrarla.',
     homeScrollTitle: 'Recorre la pila',
     homeScrollMessage: 'Arrastra hacia arriba o abajo para moverte entre tus tarjetas.',
+    homeShareTipTitle: 'Importa desde una captura',
+    homeShareTipMessage:
+      '¿Tienes una tarjeta abierta en otra app? Haz una captura y comparte la imagen con Tesserone — el código se detecta automáticamente.',
     homeReorderHintTitle: 'Reordena tus tarjetas',
     homeReorderHintMessage:
       'Pulsa Reordenar para activar el modo y arrastra las tarjetas al orden que prefieras.',
