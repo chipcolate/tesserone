@@ -23,7 +23,7 @@ export const it: Strings = {
     headlineLine2: 'Sul tuo telefono.',
     headlineLine3: 'Tutto qui.',
     subheading:
-      'Un semplice gestore di tessere fedeltà con la sensazione familiare di un mazzo di carte. Niente cloud, niente account, niente tracciamento. Le tue tessere stanno sul tuo dispositivo — dove devono stare.',
+      'Un semplice gestore di tessere fedeltà con la sensazione familiare di una pila di tessere. Niente cloud, niente account, niente tracciamento. Le tue tessere stanno sul tuo dispositivo — dove devono stare.',
   },
   features: {
     headingLine1: 'Tutto quello che sapevano fare i classici.',
@@ -46,7 +46,7 @@ export const it: Strings = {
         body: 'Tocca una tessera per girarla: la luminosità dello schermo va al massimo da sola, per una scansione affidabile.',
       },
       familiarStack: {
-        title: 'Un mazzo di tessere familiare',
+        title: 'Una pila di tessere familiare',
         body: 'Tessere che scorrono, si espandono e si girano esattamente come ti aspetti. Zero sorprese, zero curva di apprendimento.',
       },
       allFormats: {
@@ -69,13 +69,13 @@ export const it: Strings = {
     headingLine2: 'Funzionavano.',
     p1: 'Per anni, le app per le tessere fedeltà funzionavano e basta. Scansionavi un codice a barre. L\'app lo memorizzava. Alla cassa, lo tiravi fuori. Fatto.',
     p2: 'Poi le app su cui contavamo sono state acquisite. I nuovi proprietari le hanno «modernizzate». All\'improvviso servivano account. Poi sincronizzazione cloud che nessuno aveva chiesto. Poi pubblicità. Poi un abbonamento per funzioni che prima erano gratis. Poi le tessere hanno iniziato a sparire perché il server di qualcuno aveva avuto una brutta giornata. Poi l\'app voleva il nostro indirizzo email per mostrare un codice a barre.',
-    p3: 'Ci siamo stancati di vedere strumenti semplici cannibalizzati da aziende che trattavano le nostre tessere come un imbuto anziché una funzione.',
-    p4: 'Così ne abbiamo costruita una nuova, come le vecchie. Fatta bene. Per noi, e per chiunque rimpianga quando le app facevano una cosa sola e rispettavano il tuo dispositivo abbastanza da stare fuori dal cloud.',
+    p3: 'Ci siamo stancati di vedere strumenti semplici cannibalizzati da aziende che trattavano le nostre tessere come un canale di acquisizione anziché una funzionalità.',
+    p4: 'Così ne abbiamo costruita una nuova, come le vecchie. Fatta bene. Per noi, e per chiunque rimpianga il tempo in cui le app facevano una cosa sola e rispettavano il tuo dispositivo abbastanza da stare fuori dal cloud.',
   },
   os: {
     eyebrow: 'Open source, semplice per scelta',
     heading: 'Ogni riga, verificabile.',
-    body: 'Tesserone è rilasciata con licenza Apache 2.0. Significa che puoi leggerla, verificarla, farne un fork o costruirti la tua. Niente telemetria, niente analytics, niente server — e niente su cui fidarsi solo della nostra parola.',
+    body: 'Tesserone è rilasciata con licenza Apache 2.0. Significa che puoi leggerla, verificarla, farne un fork o costruirti la tua. Niente telemetria, niente analytics, niente server — e niente da credere solo sulla nostra parola.',
     badgeLicense: 'Licenza Apache 2.0',
     badgeTelemetry: 'Zero telemetria',
     badgeServers: 'Nessun server',

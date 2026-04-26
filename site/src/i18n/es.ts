@@ -35,7 +35,7 @@ export const es: Strings = {
       },
       zeroCloud: {
         title: 'Cero nube',
-        body: 'No hay servidores. No hay backend. No tenemos una base de datos donde puedas estar.',
+        body: 'No hay servidores. No hay backend. No tenemos una base de datos donde puedas acabar.',
       },
       zeroTracking: {
         title: 'Cero rastreo',
@@ -69,7 +69,7 @@ export const es: Strings = {
     headingLine2: 'Funcionaban.',
     p1: 'Durante años, las apps de tarjetas de fidelidad simplemente funcionaban. Escaneabas un código de barras. La app lo guardaba. En la caja, lo sacabas. Listo.',
     p2: 'Luego las apps en las que confiábamos fueron adquiridas. Los nuevos dueños las «modernizaron». De repente hacían falta cuentas. Luego sincronización en la nube que nadie había pedido. Luego anuncios. Luego un muro de pago para funciones que antes eran gratuitas. Luego las tarjetas empezaron a desaparecer porque el servidor de alguien había tenido un mal día. Luego la app quería nuestro correo para mostrar un código de barras.',
-    p3: 'Nos cansamos de ver herramientas sencillas canibalizadas por empresas que trataban nuestras tarjetas como un embudo y no como una función.',
+    p3: 'Nos cansamos de ver herramientas sencillas canibalizadas por empresas que trataban nuestras tarjetas como un canal de captación y no como una funcionalidad.',
     p4: 'Así que construimos una nueva, como las de antes. Bien hecha. Para nosotros, y para quien eche de menos cuando las apps hacían una sola cosa y respetaban tu dispositivo lo suficiente como para quedarse fuera de la nube.',
   },
   os: {

@@ -47,7 +47,7 @@ export const de: Strings = {
       },
       familiarStack: {
         title: 'Ein vertrauter Kartenstapel',
-        body: 'Karten, die sich blättern, öffnen und umdrehen lassen — genau wie du es erwartest. Keine Überraschungen, keine Lernkurve.',
+        body: 'Karten, die sich scrollen, öffnen und umdrehen lassen — genau wie du es erwartest. Keine Überraschungen, keine Lernkurve.',
       },
       allFormats: {
         title: 'Alle Formate',
@@ -69,7 +69,7 @@ export const de: Strings = {
     headingLine2: 'Sie funktionierten.',
     p1: 'Jahrelang funktionierten Kundenkarten-Apps einfach. Du hast einen Barcode gescannt. Die App hat ihn gespeichert. An der Kasse hast du ihn hervorgeholt. Fertig.',
     p2: 'Dann wurden die Apps, auf die wir uns verlassen haben, aufgekauft. Die neuen Eigentümer haben sie „modernisiert". Plötzlich brauchten wir Konten. Dann eine Cloud-Synchronisation, um die niemand gebeten hatte. Dann Werbung. Dann eine Paywall für Funktionen, die früher gratis waren. Dann fingen unsere Karten an zu verschwinden, weil der Server von jemandem einen schlechten Tag hatte. Dann wollte die App unsere E-Mail-Adresse, nur um einen Barcode anzuzeigen.',
-    p3: 'Wir hatten genug davon, zuzusehen, wie einfache Werkzeuge von Firmen kannibalisiert werden, die unsere Karten als Trichter behandelten statt als Funktion.',
+    p3: 'Wir hatten genug davon, zuzusehen, wie einfache Werkzeuge von Firmen kannibalisiert werden, die unsere Karten als Akquisekanal behandelten statt als Funktion.',
     p4: 'Also haben wir eine neue gebaut — wie die alten. Ordentlich. Für uns und für alle, die sich die Zeit zurückwünschen, in der Apps eine Sache konnten und dein Gerät so sehr respektierten, dass sie aus der Cloud blieben.',
   },
   os: {
