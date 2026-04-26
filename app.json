@@ -77,8 +77,7 @@
           "iosActivationRules": {
             "NSExtensionActivationSupportsImageWithMaxCount": 1
           },
-          "androidIntentFilters": ["image/*"],
-          "disableExperimental": true
+          "androidIntentFilters": ["image/*"]
         }
       ]
     ],
