@@ -23,8 +23,9 @@ export const de: Translations = {
   },
   add: {
     title: 'Karte hinzufügen',
-    tabScan: 'Scannen',
-    tabManual: 'Manuell',
+    actionScan: 'Scannen',
+    actionPick: 'Wählen',
+    actionManual: 'Manuell',
     scanHint: 'Richte die Kamera auf einen Barcode',
     labelName: 'Kartenname',
     labelLogo: 'Logo',
@@ -42,6 +43,13 @@ export const de: Translations = {
     missingCodeBody: 'Bitte gib einen Barcode ein oder scanne einen.',
     invalidBarcodeTitle: 'Ungültiger Barcode',
     invalidBarcodeBody: 'Der Code entspricht nicht dem Format {{format}}.',
+    scanningImage: 'Bild wird gescannt…',
+    scanNotFound: 'In diesem Bild wurde kein Barcode erkannt. Gib den Code unten manuell ein.',
+    scanErrorTitle: 'Scan fehlgeschlagen',
+    scanErrorBody: 'Etwas ist schiefgelaufen. Versuche es mit einem schärferen Foto oder gib den Code manuell ein.',
+    sharedImageLabel: 'Geteiltes Bild',
+    photoPermissionDeniedTitle: 'Fotozugriff erforderlich',
+    photoPermissionDeniedBody: 'Erlaube den Fotozugriff, um einen Barcode aus einem Bild zu lesen.',
   },
   card: {
     title: 'Karte bearbeiten',
@@ -129,6 +137,9 @@ export const de: Translations = {
       'Wische nach oben, um sie zurückzuschieben.\nLange drücken zum Bearbeiten.\nErneut tippen zum Schließen.',
     homeScrollTitle: 'Durch den Stapel blättern',
     homeScrollMessage: 'Ziehe nach oben oder unten, um durch deine Karten zu blättern.',
+    homeShareTipTitle: 'Per Screenshot importieren',
+    homeShareTipMessage:
+      'Karte in einer anderen App geöffnet? Mach einen Screenshot und teile das Bild mit Tesserone — der Barcode wird automatisch erkannt.',
     homeReorderHintTitle: 'Karten neu anordnen',
     homeReorderHintMessage:
       'Tippe auf „Neu anordnen", um den Sortiermodus zu aktivieren, und ziehe die Karten in deine gewünschte Reihenfolge.',

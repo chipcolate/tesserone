@@ -21,8 +21,9 @@ export const en = {
   },
   add: {
     title: 'Add Card',
-    tabScan: 'Scan',
-    tabManual: 'Manual',
+    actionScan: 'Scan',
+    actionPick: 'Pick',
+    actionManual: 'Manual',
     scanHint: 'Point at a barcode',
     labelName: 'Card Name',
     labelLogo: 'Logo',
@@ -40,6 +41,13 @@ export const en = {
     missingCodeBody: 'Please enter or scan a barcode.',
     invalidBarcodeTitle: 'Invalid barcode',
     invalidBarcodeBody: "The code doesn't match the {{format}} format.",
+    scanningImage: 'Scanning image…',
+    scanNotFound: "Couldn't read a barcode in this image. Enter the code manually below.",
+    scanErrorTitle: 'Scan failed',
+    scanErrorBody: 'Something went wrong reading this image. Try a clearer photo, or enter the code manually.',
+    sharedImageLabel: 'Shared image',
+    photoPermissionDeniedTitle: 'Photo access needed',
+    photoPermissionDeniedBody: 'Tesserone needs photo library access to read a barcode from an image.',
   },
   card: {
     title: 'Edit Card',
@@ -121,6 +129,9 @@ export const en = {
       'Swipe up to send the card back.\nLong-press to edit.\nTap again to close.',
     homeScrollTitle: 'Browse the stack',
     homeScrollMessage: 'Drag up or down to scroll through your cards.',
+    homeShareTipTitle: 'Import from a screenshot',
+    homeShareTipMessage:
+      'Got a card open in another app? Screenshot it, then share the image with Tesserone — the barcode is detected automatically.',
     homeReorderHintTitle: 'Rearrange your cards',
     homeReorderHintMessage:
       'Tap Reorder to enter reorder mode, then drag cards to your preferred order.',

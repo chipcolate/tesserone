@@ -21,6 +21,7 @@ const STEP_TARGETS: Record<TutorialStepId, TutorialStepDef['target']> = {
   'home-tap-expand': null,
   'expanded-tips': null,
   'home-scroll': null,
+  'home-share-tip': null,
   'home-reorder-hint': 'reorderItem',
   'reorder-drag': null,
 };
@@ -41,6 +42,10 @@ const STEP_KEY: Record<TutorialStepId, { title: string; message: string }> = {
   'home-scroll': {
     title: 'tutorial.homeScrollTitle',
     message: 'tutorial.homeScrollMessage',
+  },
+  'home-share-tip': {
+    title: 'tutorial.homeShareTipTitle',
+    message: 'tutorial.homeShareTipMessage',
   },
   'home-reorder-hint': {
     title: 'tutorial.homeReorderHintTitle',
@@ -81,6 +86,7 @@ export function useActiveTutorialStep(ctx: TutorialContext): TutorialStepDef | n
     if (ctx.cardCount === 0 && !seen('home-add-first')) return make('home-add-first');
     if (ctx.cardCount >= 1 && !seen('home-tap-expand')) return make('home-tap-expand');
     if (ctx.cardCount >= 2 && !seen('home-scroll')) return make('home-scroll');
+    if (ctx.cardCount >= 1 && !seen('home-share-tip')) return make('home-share-tip');
   }
 
   return null;

@@ -23,8 +23,9 @@ export const es: Translations = {
   },
   add: {
     title: 'Añadir tarjeta',
-    tabScan: 'Escanear',
-    tabManual: 'Manual',
+    actionScan: 'Escanear',
+    actionPick: 'Elegir',
+    actionManual: 'Manual',
     scanHint: 'Apunta a un código de barras',
     labelName: 'Nombre de la tarjeta',
     labelLogo: 'Logo',
@@ -42,6 +43,13 @@ export const es: Translations = {
     missingCodeBody: 'Introduce o escanea un código de barras.',
     invalidBarcodeTitle: 'Código no válido',
     invalidBarcodeBody: 'El código no coincide con el formato {{format}}.',
+    scanningImage: 'Escaneando imagen…',
+    scanNotFound: 'No se detectó ningún código en esta imagen. Introduce el código manualmente abajo.',
+    scanErrorTitle: 'Error al escanear',
+    scanErrorBody: 'Algo no fue bien. Prueba con una foto más nítida o introduce el código manualmente.',
+    sharedImageLabel: 'Imagen compartida',
+    photoPermissionDeniedTitle: 'Acceso a las fotos necesario',
+    photoPermissionDeniedBody: 'Permite el acceso a las fotos para leer un código desde una imagen.',
   },
   card: {
     title: 'Editar tarjeta',
@@ -125,6 +133,9 @@ export const es: Translations = {
       'Desliza hacia arriba para devolverla.\nManténla pulsada para editarla.\nPulsa otra vez para cerrarla.',
     homeScrollTitle: 'Recorre la pila',
     homeScrollMessage: 'Arrastra hacia arriba o abajo para moverte entre tus tarjetas.',
+    homeShareTipTitle: 'Importa desde una captura',
+    homeShareTipMessage:
+      '¿Tienes una tarjeta abierta en otra app? Haz una captura y comparte la imagen con Tesserone — el código se detecta automáticamente.',
     homeReorderHintTitle: 'Reordena tus tarjetas',
     homeReorderHintMessage:
       'Pulsa Reordenar para activar el modo y arrastra las tarjetas al orden que prefieras.',

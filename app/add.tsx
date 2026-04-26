@@ -7,22 +7,26 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
+  Image,
 } from 'react-native';
 import { KeyboardAwareScrollView, type KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from 'react-i18next';
 import { useCardsStore, nextSortIndex } from '../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } from '../src/theme';
 import { BarcodeFormat, FidelityCard } from '../src/types';
 import * as Haptics from 'expo-haptics';
 import { mapBarcodeType, validateBarcode, fixScannedCode, BARCODE_FORMAT_OPTIONS } from '../src/services/scanner';
+import { scanBarcodeFromImage } from '../src/services/imageScan';
 import { searchBrands, getBrandColors, deleteCustomLogo } from '../src/services/logos';
 import type { BrandEntry } from '../src/types';
 import { LogoSelector } from '../src/components/ui/LogoSelector';
 
-type Tab = 'scan' | 'manual';
+type Mode = 'edit' | 'camera';
+type ScanStatus = 'idle' | 'scanning' | 'notFound';
 
 const ACTION_BAR_HEIGHT = 68;
 
@@ -33,8 +37,9 @@ export default function AddCardScreen() {
   const cards = useCardsStore((s) => s.cards);
   const addCard = useCardsStore((s) => s.addCard);
   const [permission, requestPermission] = useCameraPermissions();
+  const params = useLocalSearchParams<{ sharedImageUri?: string }>();
 
-  const [tab, setTab] = useState<Tab>('manual');
+  const [mode, setMode] = useState<Mode>('edit');
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [format, setFormat] = useState<BarcodeFormat>('EAN13');
@@ -43,16 +48,20 @@ export default function AddCardScreen() {
   const [logoSlug, setLogoSlug] = useState<string | undefined>();
   const [customLogoUri, setCustomLogoUri] = useState<string | undefined>();
   const [scanned, setScanned] = useState(false);
+  const [scanStatus, setScanStatus] = useState<ScanStatus>('idle');
+  const [pickedImageUri, setPickedImageUri] = useState<string | undefined>();
   const processingRef = useRef(false);
+  const sharedHandledRef = useRef(false);
+  const nameInputRef = useRef<TextInput>(null);
 
   const [brandResults, setBrandResults] = useState<BrandEntry[]>([]);
   const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
 
   useEffect(() => {
-    if (tab !== 'manual') return;
+    if (mode !== 'edit') return;
     const t = setTimeout(() => scrollRef.current?.flashScrollIndicators(), 400);
     return () => clearTimeout(t);
-  }, [tab]);
+  }, [mode]);
 
   const handleNameChange = useCallback((text: string) => {
     setName(text);
@@ -99,20 +108,73 @@ export default function AddCardScreen() {
       const fixed = fixScannedCode(data.trim(), mappedFormat);
       setCode(fixed.code);
       setFormat(fixed.format);
-      setTab('manual');
+      setMode('edit');
     },
     []
   );
 
-  const handleScanTab = useCallback(async () => {
+  const runImageScan = useCallback(
+    async (uri: string) => {
+      setMode('edit');
+      setPickedImageUri(uri);
+      setScanStatus('scanning');
+      const result = await scanBarcodeFromImage(uri);
+      if (result.kind === 'detected') {
+        setCode(result.code);
+        setFormat(result.format);
+        setPickedImageUri(undefined);
+        setScanStatus('idle');
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      } else if (result.kind === 'notFound') {
+        setScanStatus('notFound');
+      } else {
+        setScanStatus('idle');
+        setPickedImageUri(undefined);
+        Alert.alert(t('add.scanErrorTitle'), t('add.scanErrorBody'));
+      }
+    },
+    [t]
+  );
+
+  useEffect(() => {
+    if (sharedHandledRef.current) return;
+    if (!params.sharedImageUri) return;
+    sharedHandledRef.current = true;
+    void runImageScan(params.sharedImageUri);
+  }, [params.sharedImageUri, runImageScan]);
+
+  const handleScan = useCallback(async () => {
     if (!permission?.granted) {
       const result = await requestPermission();
       if (!result.granted) return;
     }
     processingRef.current = false;
     setScanned(false);
-    setTab('scan');
+    setMode('camera');
   }, [permission, requestPermission]);
+
+  const handlePick = useCallback(async () => {
+    setMode('edit');
+    const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!perm.granted) {
+      Alert.alert(t('add.photoPermissionDeniedTitle'), t('add.photoPermissionDeniedBody'));
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: false,
+      quality: 1,
+    });
+    if (result.canceled) return;
+    const asset = result.assets[0];
+    if (!asset?.uri) return;
+    await runImageScan(asset.uri);
+  }, [runImageScan, t]);
+
+  const handleManual = useCallback(() => {
+    setMode('edit');
+    requestAnimationFrame(() => nameInputRef.current?.focus());
+  }, []);
 
   const handleSave = useCallback(() => {
     if (!name.trim()) {
@@ -147,42 +209,29 @@ export default function AddCardScreen() {
     router.back();
   }, [name, code, format, color, logoSlug, customLogoUri, notes, cards, addCard, t]);
 
+  const renderActionTile = (label: string, onPress: () => void) => (
+    <Pressable
+      style={[styles.actionTile, { backgroundColor: colors.surface }]}
+      onPress={onPress}
+      accessibilityRole="button"
+    >
+      <Text style={[typography.body, { color: colors.text, fontWeight: '700' }]}>{label}</Text>
+    </Pressable>
+  );
+
   return (
     <View style={[styles.screen, { backgroundColor: colors.bg }]}>
       <View style={styles.header}>
         <Text style={[typography.cardName, { color: colors.text }]}>{t('add.title')}</Text>
       </View>
 
-      <View style={[styles.tabs, { backgroundColor: colors.surface }]}>
-        <Pressable
-          style={[styles.tab, tab === 'scan' && { backgroundColor: colors.accent }]}
-          onPress={handleScanTab}
-        >
-          <Text
-            style={[
-              typography.label,
-              { color: tab === 'scan' ? textOnColor(colors.accent) : colors.text },
-            ]}
-          >
-            {t('add.tabScan')}
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[styles.tab, tab === 'manual' && { backgroundColor: colors.accent }]}
-          onPress={() => setTab('manual')}
-        >
-          <Text
-            style={[
-              typography.label,
-              { color: tab === 'manual' ? textOnColor(colors.accent) : colors.text },
-            ]}
-          >
-            {t('add.tabManual')}
-          </Text>
-        </Pressable>
+      <View style={styles.actionsRow}>
+        {renderActionTile(t('add.actionScan'), handleScan)}
+        {renderActionTile(t('add.actionPick'), handlePick)}
+        {renderActionTile(t('add.actionManual'), handleManual)}
       </View>
 
-      {tab === 'scan' && permission?.granted ? (
+      {mode === 'camera' && permission?.granted ? (
         <View style={styles.cameraWrap}>
           <CameraView
             style={styles.camera}
@@ -208,8 +257,27 @@ export default function AddCardScreen() {
           keyboardDismissMode="interactive"
           bottomOffset={ACTION_BAR_HEIGHT + insets.bottom}
         >
+          {scanStatus === 'scanning' && (
+            <View style={[styles.scanBanner, { backgroundColor: colors.surface }]}>
+              <Text style={[typography.body, { color: colors.text }]}>{t('add.scanningImage')}</Text>
+            </View>
+          )}
+          {scanStatus === 'notFound' && pickedImageUri && (
+            <View style={[styles.scanResultRow, { backgroundColor: colors.surface }]}>
+              <Image
+                source={{ uri: pickedImageUri }}
+                style={styles.thumbnail}
+                accessibilityLabel={t('add.sharedImageLabel')}
+              />
+              <Text style={[typography.body, styles.scanResultText, { color: colors.text }]}>
+                {t('add.scanNotFound')}
+              </Text>
+            </View>
+          )}
+
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelName')}</Text>
           <TextInput
+            ref={nameInputRef}
             style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
             value={name}
             onChangeText={handleNameChange}
@@ -322,18 +390,18 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 12,
   },
-  tabs: {
+  actionsRow: {
     flexDirection: 'row',
     marginHorizontal: 20,
-    borderRadius: 10,
-    padding: 3,
+    gap: 10,
     marginBottom: 16,
   },
-  tab: {
+  actionTile: {
     flex: 1,
-    paddingVertical: 8,
-    borderRadius: 8,
+    height: 72,
+    borderRadius: 14,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   cameraWrap: {
     flex: 1,
@@ -365,6 +433,29 @@ const styles = StyleSheet.create({
   formContent: {
     paddingHorizontal: 20,
     paddingBottom: 40,
+  },
+  scanBanner: {
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  scanResultRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  thumbnail: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    backgroundColor: '#0006',
+  },
+  scanResultText: {
+    flex: 1,
   },
   label: {
     fontSize: 13,

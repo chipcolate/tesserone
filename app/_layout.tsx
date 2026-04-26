@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Stack, type ErrorBoundaryProps } from 'expo-router';
+import { Stack, router, type ErrorBoundaryProps } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -7,19 +7,33 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as SystemUI from 'expo-system-ui';
 import { useTranslation } from 'react-i18next';
+import { ShareIntentProvider, useShareIntentContext } from 'expo-share-intent';
 import { ThemeProvider, useTheme } from '../src/theme';
 import { initI18n } from '../src/i18n';
 import { useSettingsStore } from '../src/stores/settings';
 import { useCardsStore } from '../src/stores/cards';
 import { sweepOrphanLogos } from '../src/services/logos';
 
-function Inner() {
+function Inner({ cardsReady }: { cardsReady: boolean }) {
   const { dark, colors } = useTheme();
+  const { hasShareIntent, shareIntent, resetShareIntent } = useShareIntentContext();
 
   useEffect(() => {
     if (Platform.OS !== 'android') return;
     SystemUI.setBackgroundColorAsync(colors.bg);
   }, [colors.bg]);
+
+  useEffect(() => {
+    if (!cardsReady || !hasShareIntent) return;
+    const file = shareIntent?.files?.[0];
+    if (!file?.path) return;
+    if (file.mimeType && !file.mimeType.startsWith('image/')) {
+      resetShareIntent();
+      return;
+    }
+    router.push({ pathname: '/add', params: { sharedImageUri: file.path } });
+    resetShareIntent();
+  }, [cardsReady, hasShareIntent, shareIntent, resetShareIntent]);
 
   return (
     <GestureHandlerRootView style={[styles.root, { backgroundColor: colors.bg }]}>
@@ -86,7 +100,9 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <Inner />
+      <ShareIntentProvider>
+        <Inner cardsReady={cardsReady} />
+      </ShareIntentProvider>
     </ThemeProvider>
   );
 }

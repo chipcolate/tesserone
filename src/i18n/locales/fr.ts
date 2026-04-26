@@ -23,8 +23,9 @@ export const fr: Translations = {
   },
   add: {
     title: 'Ajouter une carte',
-    tabScan: 'Scanner',
-    tabManual: 'Manuel',
+    actionScan: 'Scanner',
+    actionPick: 'Choisir',
+    actionManual: 'Manuel',
     scanHint: 'Vise un code-barres',
     labelName: 'Nom de la carte',
     labelLogo: 'Logo',
@@ -42,6 +43,13 @@ export const fr: Translations = {
     missingCodeBody: 'Saisis ou scanne un code-barres.',
     invalidBarcodeTitle: 'Code-barres invalide',
     invalidBarcodeBody: 'Le code ne correspond pas au format {{format}}.',
+    scanningImage: "Analyse de l'image…",
+    scanNotFound: 'Aucun code-barres détecté dans cette image. Saisis le code manuellement ci-dessous.',
+    scanErrorTitle: "Échec de l'analyse",
+    scanErrorBody: 'Une erreur est survenue. Essaie une photo plus nette, ou saisis le code manuellement.',
+    sharedImageLabel: 'Image partagée',
+    photoPermissionDeniedTitle: 'Accès aux photos requis',
+    photoPermissionDeniedBody: "Autorise l'accès aux photos pour lire un code-barres depuis une image.",
   },
   card: {
     title: 'Modifier la carte',
@@ -126,6 +134,9 @@ export const fr: Translations = {
       "Balaie vers le haut pour la refermer.\nAppui long pour la modifier.\nRetouche pour fermer.",
     homeScrollTitle: 'Parcours la pile',
     homeScrollMessage: 'Fais glisser vers le haut ou le bas pour parcourir tes cartes.',
+    homeShareTipTitle: 'Importer depuis une capture',
+    homeShareTipMessage:
+      "Une carte ouverte dans une autre app ? Fais une capture d'écran et partage l'image avec Tesserone — le code-barres est détecté automatiquement.",
     homeReorderHintTitle: 'Réorganise tes cartes',
     homeReorderHintMessage:
       'Touche Réorganiser pour activer le mode, puis fais glisser les cartes dans ton ordre préféré.',

@@ -23,8 +23,9 @@ export const it: Translations = {
   },
   add: {
     title: 'Aggiungi tessera',
-    tabScan: 'Scansiona',
-    tabManual: 'Manuale',
+    actionScan: 'Scansiona',
+    actionPick: 'Scegli',
+    actionManual: 'Manuale',
     scanHint: 'Inquadra un codice a barre',
     labelName: 'Nome tessera',
     labelLogo: 'Logo',
@@ -42,6 +43,13 @@ export const it: Translations = {
     missingCodeBody: 'Inserisci o scansiona un codice a barre.',
     invalidBarcodeTitle: 'Codice non valido',
     invalidBarcodeBody: 'Il codice non corrisponde al formato {{format}}.',
+    scanningImage: 'Lettura immagine…',
+    scanNotFound: 'Nessun codice rilevato in questa immagine. Inserisci il codice qui sotto.',
+    scanErrorTitle: 'Scansione non riuscita',
+    scanErrorBody: 'Qualcosa è andato storto. Prova con una foto più nitida o inserisci il codice manualmente.',
+    sharedImageLabel: 'Immagine condivisa',
+    photoPermissionDeniedTitle: 'Accesso alle foto necessario',
+    photoPermissionDeniedBody: "Consenti l'accesso alle foto per leggere un codice da un'immagine.",
   },
   card: {
     title: 'Modifica tessera',
@@ -124,6 +132,9 @@ export const it: Translations = {
       "Scorri verso l'alto per rimandarla indietro.\nTieni premuto per modificarla.\nTocca di nuovo per chiuderla.",
     homeScrollTitle: 'Scorri il mazzo',
     homeScrollMessage: "Trascina verso l'alto o verso il basso per scorrere tra le tessere.",
+    homeShareTipTitle: 'Importa da uno screenshot',
+    homeShareTipMessage:
+      "Hai una tessera aperta in un'altra app? Fai uno screenshot e condividi l'immagine con Tesserone — il codice viene riconosciuto in automatico.",
     homeReorderHintTitle: 'Riordina le tue tessere',
     homeReorderHintMessage:
       'Tocca Riordina per entrare in modalità riordino, poi trascina le tessere come preferisci.',

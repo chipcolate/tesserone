@@ -70,7 +70,16 @@
         }
       ],
       "expo-sharing",
-      "expo-image"
+      "expo-image",
+      [
+        "expo-share-intent",
+        {
+          "iosActivationRules": {
+            "NSExtensionActivationSupportsImageWithMaxCount": 1
+          },
+          "androidIntentFilters": ["image/*"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
