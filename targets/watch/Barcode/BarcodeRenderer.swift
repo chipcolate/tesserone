@@ -2,16 +2,16 @@ import SwiftUI
 
 /// Top-level renderer dispatcher. Picks the right backend per format and
 /// surfaces a clean fallback when we can't render a given format on watchOS.
+///
+/// Note: CoreImage / CIFilter generators (QR, CODE128, PDF417, AZTEC) are
+/// NOT available on watchOS. Those formats fall through to "Open on iPhone"
+/// until a third-party watchOS-capable encoder is added.
 struct BarcodeRenderer: View {
     let code: String
     let format: WatchBarcodeFormat
 
     var body: some View {
         switch format {
-        case .QR, .AZTEC:
-            CIFilterBarcodeView(code: code, format: format, isQRLike: true)
-        case .CODE128, .PDF417:
-            CIFilterBarcodeView(code: code, format: format, isQRLike: false)
         case .EAN13:
             renderOneD(EAN.encodeEAN13(code))
         case .EAN8:
@@ -22,7 +22,7 @@ struct BarcodeRenderer: View {
             renderOneD(Code39.encode(code))
         case .ITF14:
             renderOneD(ITF14.encode(code))
-        case .UPCE, .DATAMATRIX:
+        case .QR, .AZTEC, .CODE128, .PDF417, .UPCE, .DATAMATRIX:
             UnsupportedFormatView(format: format)
         }
     }
