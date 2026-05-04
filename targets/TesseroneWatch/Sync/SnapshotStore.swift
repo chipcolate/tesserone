@@ -2,6 +2,10 @@ import Foundation
 
 final class SnapshotStore: ObservableObject {
     @Published private(set) var snapshot: WatchSnapshot?
+    /// True when the iOS app sent a snapshot whose schemaVersion exceeds
+    /// what this watch app understands. UI surfaces an "update watch app"
+    /// branch instead of a silently-stale list.
+    @Published private(set) var schemaOutdated: Bool = false
 
     private let url: URL = {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -16,9 +20,16 @@ final class SnapshotStore: ObservableObject {
         do {
             let json = try JSONSerialization.data(withJSONObject: data)
             let snap = try JSONDecoder().decode(WatchSnapshot.self, from: json)
+            if snap.schemaVersion > WATCH_SCHEMA_VERSION {
+                DispatchQueue.main.async { [weak self] in
+                    self?.schemaOutdated = true
+                }
+                return
+            }
             try? json.write(to: url, options: .atomic)
             DispatchQueue.main.async { [weak self] in
                 self?.snapshot = snap
+                self?.schemaOutdated = false
             }
         } catch {
             NSLog("[TesseroneWatch] snapshot decode failed: %@", error.localizedDescription)

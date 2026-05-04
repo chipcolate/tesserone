@@ -2,7 +2,6 @@ import SwiftUI
 
 struct BarcodeView: View {
     let card: WatchSnapshotCard
-    @StateObject private var runtimeSession = RuntimeSession()
 
     var body: some View {
         ZStack {
@@ -21,7 +20,5 @@ struct BarcodeView: View {
         }
         .navigationTitle(card.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { runtimeSession.start() }
-        .onDisappear { runtimeSession.stop() }
     }
 }

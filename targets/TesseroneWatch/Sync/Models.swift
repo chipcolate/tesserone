@@ -1,5 +1,7 @@
 import Foundation
 
+let WATCH_SCHEMA_VERSION: Int = 1
+
 enum WatchSortMode: String, Codable {
     case manual
     case alphabetical
