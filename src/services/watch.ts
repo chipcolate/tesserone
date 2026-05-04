@@ -57,6 +57,7 @@ function buildSnapshot(): WatchSnapshot {
         logoSlug: c.logoSlug,
         hasCustomLogo: !!customLogoFilename(c.customLogoUri),
         sortIndex: c.sortIndex,
+        createdAt: c.createdAt,
         updatedAt: c.updatedAt,
       })
     ),

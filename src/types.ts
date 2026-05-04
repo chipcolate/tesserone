@@ -67,6 +67,7 @@ export interface WatchSnapshotCard {
   logoSlug?: string;
   hasCustomLogo: boolean;
   sortIndex: number;
+  createdAt: string;
   updatedAt: string;
 }
 
