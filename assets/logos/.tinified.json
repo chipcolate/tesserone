@@ -1,0 +1,482 @@
+{
+  "acqua-e-sapone.png": {
+    "hash": "c8a415af6de0dd858740b873732f67d6e923820203355089395fb61540232e7f",
+    "originalSize": 118477,
+    "tinifiedSize": 32391,
+    "date": "2026-05-04T09:05:31.499Z"
+  },
+  "alcampo.png": {
+    "hash": "0f889f0b1627f73291b31da38c7272090ec81901e2db9f83b6c55f674915e49e",
+    "originalSize": 33166,
+    "tinifiedSize": 13080,
+    "date": "2026-05-04T09:05:32.350Z"
+  },
+  "aldi.png": {
+    "hash": "a626c665014ba72d1583696e6b9a5b6eeed7b7ba4d01cb37c62556375688121a",
+    "originalSize": 252410,
+    "tinifiedSize": 60701,
+    "date": "2026-05-04T09:05:34.272Z"
+  },
+  "argos.png": {
+    "hash": "11ff8e28451aa69bc154b598da805df1f70942f4509d5dc18c745b5d53b72b6b",
+    "originalSize": 58262,
+    "tinifiedSize": 18358,
+    "date": "2026-05-04T09:05:35.643Z"
+  },
+  "asda.png": {
+    "hash": "3228e41a3da5e072f946a4d472d17371728916143137d672646a1a7faaee5842",
+    "originalSize": 41917,
+    "tinifiedSize": 14468,
+    "date": "2026-05-04T09:05:36.613Z"
+  },
+  "auchan.png": {
+    "hash": "5045c9127cb75364fa50275afc1456502e54ee0907881aad29a74847e486e371",
+    "originalSize": 35515,
+    "tinifiedSize": 9285,
+    "date": "2026-05-04T09:05:37.355Z"
+  },
+  "bennet.png": {
+    "hash": "5d2f8669b456c6dc70e2980dfd4922eeb5d590194ca52e84f9eba5f5cbe723d4",
+    "originalSize": 24538,
+    "tinifiedSize": 13554,
+    "date": "2026-05-04T09:05:37.996Z"
+  },
+  "bershka.png": {
+    "hash": "98bd19f22ca69ca543df2e25383e1935631652e46b958fbc29adb247d94d6a92",
+    "originalSize": 30208,
+    "tinifiedSize": 9443,
+    "date": "2026-05-04T09:05:38.923Z"
+  },
+  "bonpreu.png": {
+    "hash": "d8a46f427f238d3eb0a1c2f02a0d64d8e06daaaa9ae17ec12a0d01552a756c95",
+    "originalSize": 35998,
+    "tinifiedSize": 9802,
+    "date": "2026-05-04T09:05:39.663Z"
+  },
+  "boulanger.png": {
+    "hash": "99bdc812c05d394a476b1c60a1c63c40c365dcd69b849c1088f9190d40a49d0e",
+    "originalSize": 27919,
+    "tinifiedSize": 8461,
+    "date": "2026-05-04T09:05:40.383Z"
+  },
+  "budni.png": {
+    "hash": "e0d28dd2f89870f769ea9e77777539b3e96878b2e5eb3f844469940c2a702a00",
+    "originalSize": 98756,
+    "tinifiedSize": 28025,
+    "date": "2026-05-04T09:05:41.759Z"
+  },
+  "caprabo.png": {
+    "hash": "3e4b4eec454e3331e61d866fb5b5a7e83f9be0f1bdb955033b9ffdd3bc692ab5",
+    "originalSize": 30120,
+    "tinifiedSize": 9383,
+    "date": "2026-05-04T09:05:42.462Z"
+  },
+  "carrefour.png": {
+    "hash": "86fb645ec914443443395ee65fd9350630ad0d4fe3c6c71805fb8b40251f1a9b",
+    "originalSize": 5347,
+    "tinifiedSize": 2658,
+    "date": "2026-05-04T09:05:43.025Z"
+  },
+  "castorama.png": {
+    "hash": "4b9197ad5ab3cbb492dcb4a652f6ca4f44b26c6638d71aa8d9864d6e744b28c4",
+    "originalSize": 29161,
+    "tinifiedSize": 9986,
+    "date": "2026-05-04T09:05:43.948Z"
+  },
+  "celio.png": {
+    "hash": "caf26331ae117b7886e23765fadfc24c852b625196a737104ca385a5f97e3d13",
+    "originalSize": 36030,
+    "tinifiedSize": 11615,
+    "date": "2026-05-04T09:05:44.645Z"
+  },
+  "conad.png": {
+    "hash": "07ca1974aeec4af09ebc4b06f44906c244bfa8b1726321d168faa535a5a6caae",
+    "originalSize": 11242,
+    "tinifiedSize": 4581,
+    "date": "2026-05-04T09:05:45.191Z"
+  },
+  "consum.png": {
+    "hash": "a7ba705e0961e632bdc7ee50ed6048a28f317cfd4463c689c7eba6ce730a3f99",
+    "originalSize": 32325,
+    "tinifiedSize": 14309,
+    "date": "2026-05-04T09:05:45.855Z"
+  },
+  "cortefiel.png": {
+    "hash": "644b82562ac42824b5473c27b439562fb7b690dbc5c24084c71d4462b78887b4",
+    "originalSize": 26450,
+    "tinifiedSize": 7061,
+    "date": "2026-05-04T09:05:46.421Z"
+  },
+  "costa-coffee.png": {
+    "hash": "2d3cb38c1d5c8451f934bb829205666a16bf0a00e878798203e1c490ac3fad8c",
+    "originalSize": 12127,
+    "tinifiedSize": 4331,
+    "date": "2026-05-04T09:05:47.012Z"
+  },
+  "cultura.png": {
+    "hash": "6f02a1704cc98137d41a8d933a8e90ceb43543b9d3c429dc3f3c860f8a87e7e2",
+    "originalSize": 64056,
+    "tinifiedSize": 14665,
+    "date": "2026-05-04T09:05:48.027Z"
+  },
+  "darty.png": {
+    "hash": "b62673366ed259eb9913b0207b500d49c52b27d288c2f942c47d69591eb24983",
+    "originalSize": 32266,
+    "tinifiedSize": 10261,
+    "date": "2026-05-04T09:05:49.001Z"
+  },
+  "decathlon.png": {
+    "hash": "3dbc2ef194249b22eed1cb5e4fd6e005d4e6186b1b81a3f16103bbe9657e1952",
+    "originalSize": 223309,
+    "tinifiedSize": 86218,
+    "date": "2026-05-04T09:05:51.274Z"
+  },
+  "deichmann.png": {
+    "hash": "feaab53f6f604170796cb7586221e891390e91b61c13d543a3a5a5dffafd0639",
+    "originalSize": 71458,
+    "tinifiedSize": 22619,
+    "date": "2026-05-04T09:05:52.347Z"
+  },
+  "dia.png": {
+    "hash": "abf3ab1311043017298289e68d73e90fc4406fc80907f417f22de700e3a27751",
+    "originalSize": 50482,
+    "tinifiedSize": 12842,
+    "date": "2026-05-04T09:05:53.097Z"
+  },
+  "dm.png": {
+    "hash": "1aa9c3ea25fb2f9fc250b19f0e902960c0d32774b6290faa8bea0f914b59e397",
+    "originalSize": 74832,
+    "tinifiedSize": 25740,
+    "date": "2026-05-04T09:05:54.282Z"
+  },
+  "edeka.png": {
+    "hash": "d84407dd964ee22649f3acb216124777bcfcc8b4b5cc898a6d91c6aa3026c610",
+    "originalSize": 50268,
+    "tinifiedSize": 12918,
+    "date": "2026-05-04T09:05:55.527Z"
+  },
+  "el-corte-ingles.png": {
+    "hash": "b55ae53f2d42c818a9e48a6cde344f24b051574a31b2dd125f014fd086694df9",
+    "originalSize": 65210,
+    "tinifiedSize": 20787,
+    "date": "2026-05-04T09:05:56.805Z"
+  },
+  "eroski.png": {
+    "hash": "bef65dd28958d7a1e4f096a04c5b072669e9bcd28828d2575f836a24a95b7fef",
+    "originalSize": 42208,
+    "tinifiedSize": 14615,
+    "date": "2026-05-04T09:05:57.644Z"
+  },
+  "esselunga.png": {
+    "hash": "3772cebeeb4d5f6be628e6395c4de6fb07ad65d28448eb1c6e82aa22f4dfdb87",
+    "originalSize": 6539,
+    "tinifiedSize": 3369,
+    "date": "2026-05-04T09:05:58.197Z"
+  },
+  "euronics.png": {
+    "hash": "e18f49ee8aa18121bc02f55c90139aa7186f2e9868a9ffc173adad960a9ad4d6",
+    "originalSize": 51797,
+    "tinifiedSize": 15370,
+    "date": "2026-05-04T09:05:58.963Z"
+  },
+  "eurospin.png": {
+    "hash": "35f101d363c64051ca72a10375df0837e74521376c828a52013c8ded1b8823f3",
+    "originalSize": 2318990,
+    "tinifiedSize": 462804,
+    "date": "2026-05-04T09:06:03.943Z"
+  },
+  "feltrinelli.png": {
+    "hash": "68a6a6e4807f91c9843b122b350455885a62258a90b401cfe96042d04b233d71",
+    "originalSize": 57085,
+    "tinifiedSize": 14456,
+    "date": "2026-05-04T09:06:04.866Z"
+  },
+  "fnac.png": {
+    "hash": "272c6dcce8306109684068a1a857f1a5f0f80d5f48ca58549bc0c041b5de3081",
+    "originalSize": 89857,
+    "tinifiedSize": 21778,
+    "date": "2026-05-04T09:06:06.026Z"
+  },
+  "franprix.png": {
+    "hash": "30bbd151d7d8e083b740866afb33f05f942fb08d9e5c4cfb63dbf18d34e67137",
+    "originalSize": 37683,
+    "tinifiedSize": 9878,
+    "date": "2026-05-04T09:06:06.893Z"
+  },
+  "geant-casino.png": {
+    "hash": "2d718c33454d9cc0fe9a2875f9e421b6263a9a93f4048245849f9792c432bc12",
+    "originalSize": 61027,
+    "tinifiedSize": 18322,
+    "date": "2026-05-04T09:06:07.925Z"
+  },
+  "globus.png": {
+    "hash": "e50bd3b7f10f175eebaa2a8ff9fb4edf3c5e56a8202a31a09f7dfd7aae52cb5e",
+    "originalSize": 43328,
+    "tinifiedSize": 15505,
+    "date": "2026-05-04T09:06:08.809Z"
+  },
+  "grand-frais.png": {
+    "hash": "622d28afef45fb0151cd9f5539593e5e028899fbb2829b277c21d0a50c32c2fe",
+    "originalSize": 66498,
+    "tinifiedSize": 20799,
+    "date": "2026-05-04T09:06:09.904Z"
+  },
+  "halfords.png": {
+    "hash": "a0d17e4a9af5e05c3cf9e48386536dfb31b9cbe1e9ab6c8075d8926d87c0c690",
+    "originalSize": 48670,
+    "tinifiedSize": 12453,
+    "date": "2026-05-04T09:06:10.666Z"
+  },
+  "hipercor.png": {
+    "hash": "b94f44be3874cbbed5ec8ceb4686ed602978b5a025b93b24c7efcf6312b265f4",
+    "originalSize": 42389,
+    "tinifiedSize": 10486,
+    "date": "2026-05-04T09:06:11.397Z"
+  },
+  "hornbach.png": {
+    "hash": "453573cd60ff088c73c671fdfd668e8b34832278664f5ffb4386185cb24276bf",
+    "originalSize": 55912,
+    "tinifiedSize": 16150,
+    "date": "2026-05-04T09:06:12.612Z"
+  },
+  "iceland-foods.png": {
+    "hash": "8762efd586550ae374961464ad30fbece32275f19ea7f1664c322c0d4131f5c4",
+    "originalSize": 49454,
+    "tinifiedSize": 12292,
+    "date": "2026-05-04T09:06:13.781Z"
+  },
+  "ikea.png": {
+    "hash": "e29ced21e2cd18bb78111af4421154d0dda1792b508b686710e4d30361456de3",
+    "originalSize": 33703,
+    "tinifiedSize": 14860,
+    "date": "2026-05-04T09:06:14.590Z"
+  },
+  "intermarche.png": {
+    "hash": "ce138fa1bcfa3e71418fb2f07ce2e82529b052421e6c6c44c459252aed49a0fe",
+    "originalSize": 75335,
+    "tinifiedSize": 20693,
+    "date": "2026-05-04T09:06:15.731Z"
+  },
+  "iperal.png": {
+    "hash": "c3b835bd5f4724d8ebff84b58d907f4fce0b2f3e12472401678c74f8cbb6f801",
+    "originalSize": 202463,
+    "tinifiedSize": 76372,
+    "date": "2026-05-04T09:06:19.226Z"
+  },
+  "john-lewis.png": {
+    "hash": "41c5001d9dcfe815668039c072d7fdfece188f3c98acd1b23de5baccff20f719",
+    "originalSize": 57718,
+    "tinifiedSize": 13727,
+    "date": "2026-05-04T09:06:20.002Z"
+  },
+  "kaufland.png": {
+    "hash": "d035d3abcdf52d2b5997cf225e817b6e10376739447575ec8acdd73e639edd0b",
+    "originalSize": 74381,
+    "tinifiedSize": 14647,
+    "date": "2026-05-04T09:06:21.628Z"
+  },
+  "kiabi.png": {
+    "hash": "c54468a7f86dff025ceeee42ca3d6652acd9fe3ae9985914053b5756a0744683",
+    "originalSize": 71678,
+    "tinifiedSize": 20287,
+    "date": "2026-05-04T09:06:22.521Z"
+  },
+  "kik.png": {
+    "hash": "b79bf3faae1e95c40a4bcdb3f5e6b9a2787d14ce6ba1ba969cb7f19db2562dec",
+    "originalSize": 455019,
+    "tinifiedSize": 118437,
+    "date": "2026-05-04T09:06:30.810Z"
+  },
+  "lapiadineria.png": {
+    "hash": "567280b58c43c6873919b10dd557fef2ba559a17ff36f633adb4dc48e157d942",
+    "originalSize": 11620,
+    "tinifiedSize": 4280,
+    "date": "2026-05-04T09:06:31.360Z"
+  },
+  "leclerc.png": {
+    "hash": "fe0ca6634f6e78a46aa678e89f1a9e487fdf30c0dac67242e01e7e05e0c30824",
+    "originalSize": 45436,
+    "tinifiedSize": 12578,
+    "date": "2026-05-04T09:06:32.329Z"
+  },
+  "leroy-merlin.png": {
+    "hash": "f081112103ed239e87e60c124e830dc28f8f96e6c490f2b8c2df9c2ec1695637",
+    "originalSize": 63760,
+    "tinifiedSize": 20589,
+    "date": "2026-05-04T09:06:33.475Z"
+  },
+  "lidl.png": {
+    "hash": "f695b5ecdcd3b8900bdf6b8fb68323042d7f08b5a0c8bf8e2af98c97ee62b93b",
+    "originalSize": 108310,
+    "tinifiedSize": 35456,
+    "date": "2026-05-04T09:06:35.031Z"
+  },
+  "mango.png": {
+    "hash": "a4a9f5841caa405d0c02eff8d5cc6cb0d6f0578eb372264949214f6a4ce75ecb",
+    "originalSize": 32658,
+    "tinifiedSize": 12290,
+    "date": "2026-05-04T09:06:35.813Z"
+  },
+  "marks-and-spencer.png": {
+    "hash": "2425c3b977a3ddb0e49083446f13c89dfb1cdadd9fea818dca6f347901aa4980",
+    "originalSize": 95142,
+    "tinifiedSize": 33383,
+    "date": "2026-05-04T09:06:37.711Z"
+  },
+  "media-world.png": {
+    "hash": "381596f3d8317ef0bf174e7c615e32f3c37a654a2f0ac1c749d326f51a1e581e",
+    "originalSize": 59713,
+    "tinifiedSize": 26867,
+    "date": "2026-05-04T09:06:38.730Z"
+  },
+  "mediamarkt.png": {
+    "hash": "8b31f502086af0c2e66dd31b11bc33dd8064cc47fbe0dcf9f25218be06562b8c",
+    "originalSize": 63481,
+    "tinifiedSize": 20630,
+    "date": "2026-05-04T09:06:39.675Z"
+  },
+  "mercadona.png": {
+    "hash": "b7e9f82012d7785bbb1e4a5236ac851281ff61fbe8df204fe8c667573c2a6218",
+    "originalSize": 30253,
+    "tinifiedSize": 11129,
+    "date": "2026-05-04T09:06:40.472Z"
+  },
+  "mondadori.png": {
+    "hash": "2f3f57a9dd0e8aee16bf5df952a99bb5345bfa158e1a277ed51c553ebbc9611c",
+    "originalSize": 34060,
+    "tinifiedSize": 11229,
+    "date": "2026-05-04T09:06:41.244Z"
+  },
+  "monoprix.png": {
+    "hash": "1e946294a8e561599c50283464427ebca79a023feb848a672fca98b871d439d2",
+    "originalSize": 42349,
+    "tinifiedSize": 12055,
+    "date": "2026-05-04T09:06:42.024Z"
+  },
+  "morrisons.png": {
+    "hash": "5d19baa200b698693fd4d4227ed981182f304981d331c5e3b547763b79bfe320",
+    "originalSize": 85473,
+    "tinifiedSize": 29098,
+    "date": "2026-05-04T09:06:43.291Z"
+  },
+  "netto.png": {
+    "hash": "2cdf1d6e4490c799586c268a892b6e2c39f6f474973c4628c9fa9bb581a80812",
+    "originalSize": 91750,
+    "tinifiedSize": 30889,
+    "date": "2026-05-04T09:06:44.355Z"
+  },
+  "nocibe.png": {
+    "hash": "5d845ea1771b286c6ebb3f20e8d0b81171716406b4f9d8cd0516c9520ef8542b",
+    "originalSize": 70758,
+    "tinifiedSize": 19145,
+    "date": "2026-05-04T09:06:45.274Z"
+  },
+  "obi.png": {
+    "hash": "7cae87d97b5d7f21ac99d52b8f6db769ea1fbccd32c6eb18efe466cc16100805",
+    "originalSize": 26234,
+    "tinifiedSize": 7878,
+    "date": "2026-05-04T09:06:45.854Z"
+  },
+  "ovs.png": {
+    "hash": "1a9381d40d0efa432025d0be2a3cec477402c6f288904b8ad81d9fc3edf74a33",
+    "originalSize": 49254,
+    "tinifiedSize": 29943,
+    "date": "2026-05-04T09:06:46.913Z"
+  },
+  "pam.png": {
+    "hash": "fbc414fa716c6ed8ef7bb3d370fd3a3ace63b814b20d60f60036ca8462052b85",
+    "originalSize": 52040,
+    "tinifiedSize": 14727,
+    "date": "2026-05-04T09:06:47.909Z"
+  },
+  "penny.png": {
+    "hash": "1f7b5327b4c5b9da95d8f2c3e085bb3ad190012ecdeb42e8fcb5d34622e05ac1",
+    "originalSize": 46666,
+    "tinifiedSize": 12465,
+    "date": "2026-05-04T09:06:48.980Z"
+  },
+  "pret-a-manger.png": {
+    "hash": "4f90ef94a34950dedb1017fdcd20c1df7419032eac8a4d9aa1f14d9686cc6605",
+    "originalSize": 48085,
+    "tinifiedSize": 11357,
+    "date": "2026-05-04T09:06:49.813Z"
+  },
+  "rewe.png": {
+    "hash": "d91b393500fc0cff14934a65d594f3f8d819a24493d66d98091417aa8466fb86",
+    "originalSize": 39012,
+    "tinifiedSize": 12397,
+    "date": "2026-05-04T09:06:50.636Z"
+  },
+  "rossmann.png": {
+    "hash": "a5bc61ad9227d9267d11f6e792a48834b4f89b2fc0c0400f7be00296c46a8109",
+    "originalSize": 101923,
+    "tinifiedSize": 20532,
+    "date": "2026-05-04T09:06:51.543Z"
+  },
+  "sainsburys.png": {
+    "hash": "1dd4a4c42364bf9d510a217c54789aeb0e694f7b0be322af26e6904cd5200b13",
+    "originalSize": 53539,
+    "tinifiedSize": 12891,
+    "date": "2026-05-04T09:06:52.208Z"
+  },
+  "saturn.png": {
+    "hash": "086f433c62f59c5e8a6c6f4524ada1119b623b827663716d7bd4e7c241db8b23",
+    "originalSize": 45517,
+    "tinifiedSize": 14831,
+    "date": "2026-05-04T09:06:52.934Z"
+  },
+  "sephora.png": {
+    "hash": "ea507b9d72bb9d20a37b6b795ef3f50a3a10c721e909a0f74851c03796952c9f",
+    "originalSize": 25832,
+    "tinifiedSize": 8966,
+    "date": "2026-05-04T09:06:53.508Z"
+  },
+  "superdrug.png": {
+    "hash": "971decba968652c6f9aafe27b112275ecfe887225fe05e8c8997ca125e50a8dc",
+    "originalSize": 50557,
+    "tinifiedSize": 14554,
+    "date": "2026-05-04T09:06:54.374Z"
+  },
+  "tchibo.png": {
+    "hash": "9cc673ae09efd46c118a4fd00e1e1c7ec285972fd2d777df605ac60571255f54",
+    "originalSize": 73356,
+    "tinifiedSize": 21828,
+    "date": "2026-05-04T09:06:55.520Z"
+  },
+  "tesco.png": {
+    "hash": "73f22c86951ff7b3e714b942f6f2bd397177fb398f22f86ba673784c9a6b31ba",
+    "originalSize": 44172,
+    "tinifiedSize": 15175,
+    "date": "2026-05-04T09:06:56.361Z"
+  },
+  "unieuro.png": {
+    "hash": "c87ae7bc391267dc567abbaf015763225cc5648e6adbbf66a0c594ae26dcb251",
+    "originalSize": 12020,
+    "tinifiedSize": 3068,
+    "date": "2026-05-04T09:06:56.753Z"
+  },
+  "waitrose.png": {
+    "hash": "1aed9992736cf439b5f53a7530517d19cdcdfdc6f68d71ffd831a3149056b912",
+    "originalSize": 53409,
+    "tinifiedSize": 13181,
+    "date": "2026-05-04T09:06:57.489Z"
+  },
+  "whsmith.png": {
+    "hash": "ecaec6e2f5981bb63afddf35b2a4148ae09c41fe102077ece1401af37851af33",
+    "originalSize": 42695,
+    "tinifiedSize": 12186,
+    "date": "2026-05-04T09:06:58.171Z"
+  },
+  "yves-rocher.png": {
+    "hash": "b6a758c20c35460097557492b820f09010d1494e77619dfe1df28c31062c3f64",
+    "originalSize": 46466,
+    "tinifiedSize": 13676,
+    "date": "2026-05-04T09:06:59.295Z"
+  },
+  "zara.png": {
+    "hash": "e12fc7212171b71ad47a9538e7cd89d67b42c60df1d7d307a17ff6ad061d6e59",
+    "originalSize": 59941,
+    "tinifiedSize": 20836,
+    "date": "2026-05-04T09:07:00.150Z"
+  }
+}
