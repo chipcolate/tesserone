@@ -65,7 +65,6 @@
         "expo-image-picker",
         {
           "photosPermission": "Tesserone uses your photo library so you can pick a custom logo for a card.",
-          "cameraPermission": false,
           "microphonePermission": false
         }
       ],
