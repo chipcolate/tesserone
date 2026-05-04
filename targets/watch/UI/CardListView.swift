@@ -5,8 +5,13 @@ struct CardListView: View {
 
     var body: some View {
         List(snapshotStore.sortedCards) { card in
-            CardRowView(card: card)
+            NavigationLink(value: card) {
+                CardRowView(card: card)
+            }
         }
         .navigationTitle("Tesserone")
+        .navigationDestination(for: WatchSnapshotCard.self) { card in
+            BarcodeView(card: card)
+        }
     }
 }
