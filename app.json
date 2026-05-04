@@ -15,6 +15,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.chipcolate.tesserone",
+      "appleTeamId": "HNF5BY9XXV",
       "buildNumber": "9",
       "icon": {
         "light": "./assets/icon.png",
