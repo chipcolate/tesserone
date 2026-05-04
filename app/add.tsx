@@ -284,6 +284,8 @@ export default function AddCardScreen() {
             placeholder={t('add.placeholderName')}
             placeholderTextColor={colors.textSecondary}
             autoCapitalize="words"
+            autoCorrect={false}
+            spellCheck={false}
           />
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelLogo')}</Text>

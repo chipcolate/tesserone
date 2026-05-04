@@ -13,6 +13,7 @@ import { initI18n } from '../src/i18n';
 import { useSettingsStore } from '../src/stores/settings';
 import { useCardsStore } from '../src/stores/cards';
 import { sweepOrphanLogos } from '../src/services/logos';
+import { startWatchSync } from '../src/services/watch';
 
 function Inner({ cardsReady }: { cardsReady: boolean }) {
   const { dark, colors } = useTheme();
@@ -94,6 +95,15 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (cardsReady) sweepOrphanLogos(useCardsStore.getState().cards);
+  }, [cardsReady]);
+
+  useEffect(() => {
+    if (!cardsReady) return;
+    let cleanup: (() => void) | undefined;
+    startWatchSync().then((c) => {
+      cleanup = c;
+    });
+    return () => cleanup?.();
   }, [cardsReady]);
 
   if (!ready) return null;

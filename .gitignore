@@ -40,6 +40,9 @@ yarn-error.*
 /ios
 /android
 
+# generated apple-targets assets (regenerated from expo-target.config.js)
+/targets/*/Assets.xcassets/
+
 # build artifacts
 *.ipa
 *.apk

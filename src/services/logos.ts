@@ -2,6 +2,7 @@ import { ImageSourcePropType } from 'react-native';
 import Fuse from 'fuse.js';
 import * as ImagePicker from 'expo-image-picker';
 import { Directory, File, Paths } from 'expo-file-system';
+import { Asset } from 'expo-asset';
 import brandIndexData from '../../data/brand-index.json';
 import type { BrandEntry, FidelityCard } from '../types';
 
@@ -120,6 +121,27 @@ export function getBrandLogo(slug: string): ImageSourcePropType | undefined {
   const brand = getBrand(slug);
   if (!brand) return undefined;
   return BUNDLED_LOGOS[brand.logo];
+}
+
+const bundledLogoUriCache = new Map<string, string>();
+
+/**
+ * Resolve a bundled brand logo (require() handle) to an on-disk file URI.
+ * Used by the watch sync layer to feed `transferFile`, which needs a real
+ * path. Cached in-process; safe to call repeatedly.
+ */
+export async function resolveBundledLogoUri(brandSlug: string): Promise<string | undefined> {
+  const brand = getBrand(brandSlug);
+  if (!brand) return undefined;
+  const cached = bundledLogoUriCache.get(brand.logo);
+  if (cached) return cached;
+  const handle = BUNDLED_LOGOS[brand.logo];
+  if (typeof handle !== 'number') return undefined;
+  const asset = Asset.fromModule(handle);
+  if (!asset.localUri) await asset.downloadAsync();
+  const uri = asset.localUri ?? asset.uri;
+  if (uri) bundledLogoUriCache.set(brand.logo, uri);
+  return uri ?? undefined;
 }
 
 const FALLBACK_CARD_BG = '#333333';

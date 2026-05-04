@@ -55,3 +55,25 @@ export interface BarcodeFormatOption {
   value: BarcodeFormat;
   label: string;
 }
+
+export const WATCH_SCHEMA_VERSION = 1;
+
+export interface WatchSnapshotCard {
+  id: CardId;
+  name: string;
+  code: string;
+  format: BarcodeFormat;
+  color?: string;
+  logoSlug?: string;
+  hasCustomLogo: boolean;
+  sortIndex: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WatchSnapshot {
+  schemaVersion: number;
+  cards: WatchSnapshotCard[];
+  sortMode: SortMode;
+  themeMode: ThemeMode;
+}
