@@ -185,6 +185,8 @@ export default function CardDetailScreen() {
           placeholder={t('card.placeholderName')}
           placeholderTextColor={colors.textSecondary}
           autoCapitalize="words"
+          autoCorrect={false}
+          spellCheck={false}
         />
 
         <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelLogo')}</Text>
