@@ -7,7 +7,8 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "tinify-logos": "bun run scripts/tinify-logos.ts"
   },
   "dependencies": {
     "@kichiyaki/react-native-barcode-generator": "^0.6.7",
@@ -45,7 +46,9 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@types/node": "^25.6.0",
     "@types/react": "~19.2.10",
+    "tinify": "^1.8.2",
     "typescript": "~5.9.3"
   },
   "private": true
