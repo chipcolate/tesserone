@@ -22,7 +22,9 @@ struct BarcodeRenderer: View {
             renderOneD(Code39.encode(code))
         case .ITF14:
             renderOneD(ITF14.encode(code))
-        case .QR, .AZTEC, .CODE128, .PDF417, .UPCE, .DATAMATRIX:
+        case .CODE128:
+            renderOneD(Code128.encode(code))
+        case .QR, .AZTEC, .PDF417, .UPCE, .DATAMATRIX:
             UnsupportedFormatView(format: format)
         }
     }
