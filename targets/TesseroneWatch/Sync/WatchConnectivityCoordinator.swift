@@ -64,6 +64,14 @@ extension WatchConnectivityCoordinator: WCSessionDelegate {
         snapshotStore.update(from: applicationContext)
     }
 
+    func sessionReachabilityDidChange(_ session: WCSession) {
+        NSLog("[TesseroneWatch] reachability changed: %@",
+              session.isReachable ? "YES" : "NO")
+        if session.isReachable && snapshotStore.snapshot == nil {
+            requestInitialSync()
+        }
+    }
+
     func session(_ session: WCSession, didReceive file: WCSessionFile) {
         let metadata = file.metadata ?? [:]
         guard let kind = metadata["kind"] as? String, kind == "logo",

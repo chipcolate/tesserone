@@ -211,6 +211,16 @@ async function handleWatchMessage(
   }
 }
 
+function forceFreshPush(reason: 'reachable' | 'installed'): void {
+  lastSnapshotJson = null;
+  if (reason === 'installed') {
+    // Newly installed watch has no logos; force re-transfer.
+    knownLogos = {};
+    void persistKnownLogos();
+  }
+  schedulePush();
+}
+
 /**
  * Boot the iOS watch sync. No-op on Android. Returns a cleanup function;
  * the root layout never unmounts in normal use, so cleanup runs only on
@@ -226,6 +236,12 @@ export async function startWatchSync(): Promise<() => void> {
   const unsubMessages = watchEvents.on('message', (payload, reply) => {
     void handleWatchMessage(payload, reply);
   });
+  const unsubReachable = watchEvents.on('reachability', (reachable) => {
+    if (reachable) forceFreshPush('reachable');
+  });
+  const unsubInstalled = watchEvents.on('installed', (installed) => {
+    if (installed) forceFreshPush('installed');
+  });
 
   schedulePush();
 
@@ -237,5 +253,7 @@ export async function startWatchSync(): Promise<() => void> {
     unsubCards();
     unsubSettings();
     unsubMessages();
+    unsubReachable();
+    unsubInstalled();
   };
 }
