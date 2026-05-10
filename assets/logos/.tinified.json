@@ -1,482 +1,642 @@
 {
   "acqua-e-sapone.png": {
-    "hash": "c8a415af6de0dd858740b873732f67d6e923820203355089395fb61540232e7f",
-    "originalSize": 118477,
-    "tinifiedSize": 32391,
-    "date": "2026-05-04T09:05:31.499Z"
+    "hash": "e2792c4cd605099a3b9adcc98fde655ff945828caed4917733d2f25825f5b4bd",
+    "originalSize": 32391,
+    "tinifiedSize": 10192,
+    "width": 512,
+    "height": 161,
+    "date": "2026-05-10T19:35:44.908Z"
   },
   "alcampo.png": {
-    "hash": "0f889f0b1627f73291b31da38c7272090ec81901e2db9f83b6c55f674915e49e",
-    "originalSize": 33166,
-    "tinifiedSize": 13080,
-    "date": "2026-05-04T09:05:32.350Z"
+    "hash": "c640d905c0f3296dc6fc6d1fe40be91974807ae4a3a09e134c83120c4c5abfcc",
+    "originalSize": 13080,
+    "tinifiedSize": 3706,
+    "width": 512,
+    "height": 195,
+    "date": "2026-05-10T19:35:47.863Z"
   },
   "aldi.png": {
-    "hash": "a626c665014ba72d1583696e6b9a5b6eeed7b7ba4d01cb37c62556375688121a",
-    "originalSize": 252410,
-    "tinifiedSize": 60701,
-    "date": "2026-05-04T09:05:34.272Z"
+    "hash": "6917bbceb8e327d7cf0a9af5bebdd9e1d96db8b410b4e152e21e991ab353ec82",
+    "originalSize": 60701,
+    "tinifiedSize": 9585,
+    "width": 427,
+    "height": 512,
+    "date": "2026-05-10T19:35:50.293Z"
   },
   "argos.png": {
-    "hash": "11ff8e28451aa69bc154b598da805df1f70942f4509d5dc18c745b5d53b72b6b",
-    "originalSize": 58262,
-    "tinifiedSize": 18358,
-    "date": "2026-05-04T09:05:35.643Z"
+    "hash": "745d692dc7c6c274c935fa6e6e8cfab33102c69a1b952fd16bd9fed893766fc5",
+    "originalSize": 18358,
+    "tinifiedSize": 5156,
+    "width": 512,
+    "height": 350,
+    "date": "2026-05-10T19:35:51.503Z"
   },
   "asda.png": {
-    "hash": "3228e41a3da5e072f946a4d472d17371728916143137d672646a1a7faaee5842",
-    "originalSize": 41917,
-    "tinifiedSize": 14468,
-    "date": "2026-05-04T09:05:36.613Z"
+    "hash": "beffb5257219295dc2787a7bd8b41c838025115fb24789133fd795059107d53a",
+    "originalSize": 14468,
+    "tinifiedSize": 3654,
+    "width": 512,
+    "height": 152,
+    "date": "2026-05-10T19:35:52.363Z"
   },
   "auchan.png": {
-    "hash": "5045c9127cb75364fa50275afc1456502e54ee0907881aad29a74847e486e371",
-    "originalSize": 35515,
-    "tinifiedSize": 9285,
-    "date": "2026-05-04T09:05:37.355Z"
+    "hash": "ec47516a6ac2ed71f1d1cd3dbd77cfaff53ed7f414644419c0d6592243f2b636",
+    "originalSize": 9285,
+    "tinifiedSize": 2744,
+    "width": 512,
+    "height": 88,
+    "date": "2026-05-10T19:35:52.920Z"
   },
   "bennet.png": {
-    "hash": "5d2f8669b456c6dc70e2980dfd4922eeb5d590194ca52e84f9eba5f5cbe723d4",
-    "originalSize": 24538,
-    "tinifiedSize": 13554,
-    "date": "2026-05-04T09:05:37.996Z"
+    "hash": "00cecb469e5203d873ab8b0b6790dbf25043c742647e7aa236169a9013b3f99e",
+    "originalSize": 13554,
+    "tinifiedSize": 2434,
+    "width": 512,
+    "height": 93,
+    "date": "2026-05-10T19:35:53.689Z"
   },
   "bershka.png": {
-    "hash": "98bd19f22ca69ca543df2e25383e1935631652e46b958fbc29adb247d94d6a92",
-    "originalSize": 30208,
-    "tinifiedSize": 9443,
-    "date": "2026-05-04T09:05:38.923Z"
+    "hash": "ac7378900808fb98a8f52acfeb1daf7e1290c499598be98ce40870081ff93c65",
+    "originalSize": 9443,
+    "tinifiedSize": 2815,
+    "width": 512,
+    "height": 77,
+    "date": "2026-05-10T19:35:54.369Z"
   },
   "bonpreu.png": {
-    "hash": "d8a46f427f238d3eb0a1c2f02a0d64d8e06daaaa9ae17ec12a0d01552a756c95",
-    "originalSize": 35998,
-    "tinifiedSize": 9802,
-    "date": "2026-05-04T09:05:39.663Z"
+    "hash": "7b62f7e2c93262b16ed211c278b1ef62fdd7ca96fe6de08d849bca8b5f8ef686",
+    "originalSize": 9802,
+    "tinifiedSize": 3256,
+    "width": 512,
+    "height": 75,
+    "date": "2026-05-10T19:35:54.866Z"
   },
   "boulanger.png": {
-    "hash": "99bdc812c05d394a476b1c60a1c63c40c365dcd69b849c1088f9190d40a49d0e",
-    "originalSize": 27919,
-    "tinifiedSize": 8461,
-    "date": "2026-05-04T09:05:40.383Z"
+    "hash": "293e30dbda793af197485619a3c1878a2b03009fc6843dad5d9fcc684104f412",
+    "originalSize": 8461,
+    "tinifiedSize": 2572,
+    "width": 512,
+    "height": 70,
+    "date": "2026-05-10T19:35:55.536Z"
   },
   "budni.png": {
-    "hash": "e0d28dd2f89870f769ea9e77777539b3e96878b2e5eb3f844469940c2a702a00",
-    "originalSize": 98756,
-    "tinifiedSize": 28025,
-    "date": "2026-05-04T09:05:41.759Z"
+    "hash": "7a55306c2efbadf2e75ff545a17264bafc3b0544cca6ae2626c2733336c9b163",
+    "originalSize": 28025,
+    "tinifiedSize": 7698,
+    "width": 512,
+    "height": 419,
+    "date": "2026-05-10T19:35:58.055Z"
   },
   "caprabo.png": {
-    "hash": "3e4b4eec454e3331e61d866fb5b5a7e83f9be0f1bdb955033b9ffdd3bc692ab5",
-    "originalSize": 30120,
-    "tinifiedSize": 9383,
-    "date": "2026-05-04T09:05:42.462Z"
+    "hash": "91a550a4d3afcaf8ecc2c1d9b5f360e4da77dc846a72a6127957198accdb0840",
+    "originalSize": 9383,
+    "tinifiedSize": 2851,
+    "width": 512,
+    "height": 78,
+    "date": "2026-05-10T19:35:58.610Z"
   },
   "carrefour.png": {
-    "hash": "86fb645ec914443443395ee65fd9350630ad0d4fe3c6c71805fb8b40251f1a9b",
-    "originalSize": 5347,
-    "tinifiedSize": 2658,
-    "date": "2026-05-04T09:05:43.025Z"
+    "hash": "70da759616d8211ac3b7769317e8aaa2fabf2842771d0edba8f80d9ca6d3e712",
+    "originalSize": 2658,
+    "tinifiedSize": 1948,
+    "width": 132,
+    "height": 108,
+    "date": "2026-05-10T19:35:58.807Z"
   },
   "castorama.png": {
-    "hash": "4b9197ad5ab3cbb492dcb4a652f6ca4f44b26c6638d71aa8d9864d6e744b28c4",
-    "originalSize": 29161,
-    "tinifiedSize": 9986,
-    "date": "2026-05-04T09:05:43.948Z"
+    "hash": "8e2a2236f8b9a58d1031b4207642aad12a0286dd21945441cfbed6a90e89ee54",
+    "originalSize": 9986,
+    "tinifiedSize": 3011,
+    "width": 512,
+    "height": 89,
+    "date": "2026-05-10T19:35:59.308Z"
   },
   "celio.png": {
-    "hash": "caf26331ae117b7886e23765fadfc24c852b625196a737104ca385a5f97e3d13",
-    "originalSize": 36030,
-    "tinifiedSize": 11615,
-    "date": "2026-05-04T09:05:44.645Z"
+    "hash": "5bff2ac1afc8f889dc88bdae00b05e5b58bfe765e72a5354bdd6edaf127fdd17",
+    "originalSize": 11615,
+    "tinifiedSize": 3237,
+    "width": 512,
+    "height": 144,
+    "date": "2026-05-10T19:35:59.979Z"
   },
   "conad.png": {
-    "hash": "07ca1974aeec4af09ebc4b06f44906c244bfa8b1726321d168faa535a5a6caae",
-    "originalSize": 11242,
-    "tinifiedSize": 4581,
-    "date": "2026-05-04T09:05:45.191Z"
+    "hash": "e0d1a3ee16fceac55bda9af97da731af9e137b3883dd690f1ceba05bda0debf7",
+    "originalSize": 4581,
+    "tinifiedSize": 4909,
+    "width": 512,
+    "height": 102,
+    "date": "2026-05-10T19:36:00.399Z"
   },
   "consum.png": {
-    "hash": "a7ba705e0961e632bdc7ee50ed6048a28f317cfd4463c689c7eba6ce730a3f99",
-    "originalSize": 32325,
-    "tinifiedSize": 14309,
-    "date": "2026-05-04T09:05:45.855Z"
+    "hash": "3ef75a7531f489181475d049a8d8257e11b6e542ac7cf6ac0d2060dac0462e49",
+    "originalSize": 14309,
+    "tinifiedSize": 7755,
+    "width": 512,
+    "height": 302,
+    "date": "2026-05-10T19:36:01.128Z"
   },
   "cortefiel.png": {
-    "hash": "644b82562ac42824b5473c27b439562fb7b690dbc5c24084c71d4462b78887b4",
-    "originalSize": 26450,
-    "tinifiedSize": 7061,
-    "date": "2026-05-04T09:05:46.421Z"
+    "hash": "c023e0fa120a1a254b5c3c9d4bc4532543f562880fd25b3bfca65290f2ca5cb2",
+    "originalSize": 7061,
+    "tinifiedSize": 1910,
+    "width": 512,
+    "height": 68,
+    "date": "2026-05-10T19:36:01.598Z"
   },
   "costa-coffee.png": {
-    "hash": "2d3cb38c1d5c8451f934bb829205666a16bf0a00e878798203e1c490ac3fad8c",
-    "originalSize": 12127,
-    "tinifiedSize": 4331,
-    "date": "2026-05-04T09:05:47.012Z"
+    "hash": "71c50a0d7cfee68e22763ad8b426411e43ac8acd50354fe3a2b9202f8676fa4a",
+    "originalSize": 4331,
+    "tinifiedSize": 2468,
+    "width": 512,
+    "height": 136,
+    "date": "2026-05-10T19:36:02.018Z"
   },
   "cultura.png": {
-    "hash": "6f02a1704cc98137d41a8d933a8e90ceb43543b9d3c429dc3f3c860f8a87e7e2",
-    "originalSize": 64056,
-    "tinifiedSize": 14665,
-    "date": "2026-05-04T09:05:48.027Z"
+    "hash": "92477743bb617c89106bc7fd87ee0d8db285158f849232c82b5d91f3c1e3fb7d",
+    "originalSize": 14665,
+    "tinifiedSize": 3711,
+    "width": 512,
+    "height": 444,
+    "date": "2026-05-10T19:36:03.886Z"
   },
   "darty.png": {
-    "hash": "b62673366ed259eb9913b0207b500d49c52b27d288c2f942c47d69591eb24983",
-    "originalSize": 32266,
-    "tinifiedSize": 10261,
-    "date": "2026-05-04T09:05:49.001Z"
+    "hash": "f4c2eeb3165c5a665e5a5172a9a5a236537e2e2b527b864fc5e2725e55d37f23",
+    "originalSize": 10261,
+    "tinifiedSize": 3104,
+    "width": 512,
+    "height": 99,
+    "date": "2026-05-10T19:36:04.474Z"
   },
   "decathlon.png": {
-    "hash": "3dbc2ef194249b22eed1cb5e4fd6e005d4e6186b1b81a3f16103bbe9657e1952",
-    "originalSize": 223309,
-    "tinifiedSize": 86218,
-    "date": "2026-05-04T09:05:51.274Z"
+    "hash": "5aefa3fed9fb7b60806008403faa92ef562c1d1bed9c9850ac46fcfc6389f24f",
+    "originalSize": 86218,
+    "tinifiedSize": 3195,
+    "width": 512,
+    "height": 77,
+    "date": "2026-05-10T19:36:08.561Z"
   },
   "deichmann.png": {
-    "hash": "feaab53f6f604170796cb7586221e891390e91b61c13d543a3a5a5dffafd0639",
-    "originalSize": 71458,
-    "tinifiedSize": 22619,
-    "date": "2026-05-04T09:05:52.347Z"
+    "hash": "d51a652971172019e66fb97c2b8fd5ee7ecaa600275067a27fd21febe5833f9b",
+    "originalSize": 22619,
+    "tinifiedSize": 5824,
+    "width": 512,
+    "height": 511,
+    "date": "2026-05-10T19:36:09.926Z"
   },
   "dia.png": {
-    "hash": "abf3ab1311043017298289e68d73e90fc4406fc80907f417f22de700e3a27751",
-    "originalSize": 50482,
-    "tinifiedSize": 12842,
-    "date": "2026-05-04T09:05:53.097Z"
+    "hash": "4b330cd0ceb5398d4f39013ae5aff04db1b5deee983ccf0b5d79a92c581a7321",
+    "originalSize": 12842,
+    "tinifiedSize": 3524,
+    "width": 512,
+    "height": 162,
+    "date": "2026-05-10T19:36:10.961Z"
   },
   "dm.png": {
-    "hash": "1aa9c3ea25fb2f9fc250b19f0e902960c0d32774b6290faa8bea0f914b59e397",
-    "originalSize": 74832,
-    "tinifiedSize": 25740,
-    "date": "2026-05-04T09:05:54.282Z"
+    "hash": "2a10fc8876394be0f5ddd0c7148be46ec7d6d729b397564b0361963e5dbe4dc6",
+    "originalSize": 25740,
+    "tinifiedSize": 6995,
+    "width": 512,
+    "height": 339,
+    "date": "2026-05-10T19:36:12.106Z"
   },
   "edeka.png": {
-    "hash": "d84407dd964ee22649f3acb216124777bcfcc8b4b5cc898a6d91c6aa3026c610",
-    "originalSize": 50268,
-    "tinifiedSize": 12918,
-    "date": "2026-05-04T09:05:55.527Z"
+    "hash": "85f827b338cc14216a9533271c23c577a674f2c54f9ec4b91a564894ed493fd5",
+    "originalSize": 12918,
+    "tinifiedSize": 2473,
+    "width": 422,
+    "height": 512,
+    "date": "2026-05-10T19:36:13.861Z"
   },
   "el-corte-ingles.png": {
-    "hash": "b55ae53f2d42c818a9e48a6cde344f24b051574a31b2dd125f014fd086694df9",
-    "originalSize": 65210,
-    "tinifiedSize": 20787,
-    "date": "2026-05-04T09:05:56.805Z"
+    "hash": "1938cd9ed035500c86b3163e78ad9a6bf1409ebaed5b560465323766c0b0c442",
+    "originalSize": 20787,
+    "tinifiedSize": 5827,
+    "width": 512,
+    "height": 289,
+    "date": "2026-05-10T19:36:15.037Z"
   },
   "eroski.png": {
-    "hash": "bef65dd28958d7a1e4f096a04c5b072669e9bcd28828d2575f836a24a95b7fef",
-    "originalSize": 42208,
-    "tinifiedSize": 14615,
-    "date": "2026-05-04T09:05:57.644Z"
+    "hash": "47b911353c0ea59c23d418939bd7fa4fbf12ea676e9b8ef52411b09c6ef87018",
+    "originalSize": 14615,
+    "tinifiedSize": 4165,
+    "width": 512,
+    "height": 128,
+    "date": "2026-05-10T19:36:15.760Z"
   },
   "esselunga.png": {
-    "hash": "3772cebeeb4d5f6be628e6395c4de6fb07ad65d28448eb1c6e82aa22f4dfdb87",
-    "originalSize": 6539,
-    "tinifiedSize": 3369,
-    "date": "2026-05-04T09:05:58.197Z"
+    "hash": "d0912ccfd03cda041fd086487e773120fe0ba86210f70e6d377064e6c6307a54",
+    "originalSize": 3369,
+    "tinifiedSize": 2757,
+    "width": 512,
+    "height": 64,
+    "date": "2026-05-10T19:36:16.131Z"
   },
   "euronics.png": {
-    "hash": "e18f49ee8aa18121bc02f55c90139aa7186f2e9868a9ffc173adad960a9ad4d6",
-    "originalSize": 51797,
-    "tinifiedSize": 15370,
-    "date": "2026-05-04T09:05:58.963Z"
+    "hash": "46dfd2f4c3996204e3efa8cb35b7be1327e4d6223afd9073aaeee0ae9e9aa47c",
+    "originalSize": 15370,
+    "tinifiedSize": 4613,
+    "width": 512,
+    "height": 88,
+    "date": "2026-05-10T19:36:16.758Z"
   },
   "eurospin.png": {
-    "hash": "35f101d363c64051ca72a10375df0837e74521376c828a52013c8ded1b8823f3",
-    "originalSize": 2318990,
-    "tinifiedSize": 462804,
-    "date": "2026-05-04T09:06:03.943Z"
+    "hash": "5a5b9c40441bbed478caedea0de916019a257ed24a8c58cdb57a99171b3611f9",
+    "originalSize": 462804,
+    "tinifiedSize": 52650,
+    "width": 512,
+    "height": 512,
+    "date": "2026-05-10T19:36:22.152Z"
   },
   "feltrinelli.png": {
-    "hash": "68a6a6e4807f91c9843b122b350455885a62258a90b401cfe96042d04b233d71",
-    "originalSize": 57085,
-    "tinifiedSize": 14456,
-    "date": "2026-05-04T09:06:04.866Z"
+    "hash": "808efce08bdfea0cc1ed70b6eb4f5999b13ba452f609e95666f97723db32db8f",
+    "originalSize": 14456,
+    "tinifiedSize": 4444,
+    "width": 512,
+    "height": 209,
+    "date": "2026-05-10T19:36:22.979Z"
   },
   "fnac.png": {
-    "hash": "272c6dcce8306109684068a1a857f1a5f0f80d5f48ca58549bc0c041b5de3081",
-    "originalSize": 89857,
-    "tinifiedSize": 21778,
-    "date": "2026-05-04T09:06:06.026Z"
+    "hash": "dfba2b57449c0110911b09dedb9c36e499ce1e072bf60941f9cf4b1eb3683a97",
+    "originalSize": 21778,
+    "tinifiedSize": 5022,
+    "width": 496,
+    "height": 512,
+    "date": "2026-05-10T19:36:24.338Z"
   },
   "franprix.png": {
-    "hash": "30bbd151d7d8e083b740866afb33f05f942fb08d9e5c4cfb63dbf18d34e67137",
-    "originalSize": 37683,
-    "tinifiedSize": 9878,
-    "date": "2026-05-04T09:06:06.893Z"
+    "hash": "c3c169b90f9447fbe6164f51a84d7e0b577e842ba6dbb4eaca293529e255b177",
+    "originalSize": 9878,
+    "tinifiedSize": 2918,
+    "width": 512,
+    "height": 100,
+    "date": "2026-05-10T19:36:24.992Z"
   },
   "geant-casino.png": {
-    "hash": "2d718c33454d9cc0fe9a2875f9e421b6263a9a93f4048245849f9792c432bc12",
-    "originalSize": 61027,
-    "tinifiedSize": 18322,
-    "date": "2026-05-04T09:06:07.925Z"
+    "hash": "9a607ebb71cc3b29bcf751362b5bdc838e98184704187fa67586b0db48f943ac",
+    "originalSize": 18322,
+    "tinifiedSize": 5112,
+    "width": 512,
+    "height": 191,
+    "date": "2026-05-10T19:36:25.996Z"
   },
   "globus.png": {
-    "hash": "e50bd3b7f10f175eebaa2a8ff9fb4edf3c5e56a8202a31a09f7dfd7aae52cb5e",
-    "originalSize": 43328,
-    "tinifiedSize": 15505,
-    "date": "2026-05-04T09:06:08.809Z"
+    "hash": "8e0e18402a8ad697e4cfd2149e29d9c81da36fcfad3f1b6d77d9e9609fd2904b",
+    "originalSize": 15505,
+    "tinifiedSize": 5295,
+    "width": 512,
+    "height": 93,
+    "date": "2026-05-10T19:36:26.740Z"
   },
   "grand-frais.png": {
-    "hash": "622d28afef45fb0151cd9f5539593e5e028899fbb2829b277c21d0a50c32c2fe",
-    "originalSize": 66498,
-    "tinifiedSize": 20799,
-    "date": "2026-05-04T09:06:09.904Z"
+    "hash": "e3398c4e7080c2d92ad34d229f09a8a7969a0d00b671c02610097950691365bc",
+    "originalSize": 20799,
+    "tinifiedSize": 10715,
+    "width": 512,
+    "height": 512,
+    "date": "2026-05-10T19:36:27.969Z"
   },
   "halfords.png": {
-    "hash": "a0d17e4a9af5e05c3cf9e48386536dfb31b9cbe1e9ab6c8075d8926d87c0c690",
-    "originalSize": 48670,
-    "tinifiedSize": 12453,
-    "date": "2026-05-04T09:06:10.666Z"
+    "hash": "bea2d1c0b34f558ef15d8d96685640b11c9e99926efcb2f367bf9933c039bcd3",
+    "originalSize": 12453,
+    "tinifiedSize": 3644,
+    "width": 512,
+    "height": 106,
+    "date": "2026-05-10T19:36:28.610Z"
   },
   "hipercor.png": {
-    "hash": "b94f44be3874cbbed5ec8ceb4686ed602978b5a025b93b24c7efcf6312b265f4",
-    "originalSize": 42389,
-    "tinifiedSize": 10486,
-    "date": "2026-05-04T09:06:11.397Z"
+    "hash": "64205e6c83e217215ff607823304cf8fecede5d6aed741c520a92d90cfe3caef",
+    "originalSize": 10486,
+    "tinifiedSize": 2967,
+    "width": 512,
+    "height": 105,
+    "date": "2026-05-10T19:36:29.531Z"
   },
   "hornbach.png": {
-    "hash": "453573cd60ff088c73c671fdfd668e8b34832278664f5ffb4386185cb24276bf",
-    "originalSize": 55912,
-    "tinifiedSize": 16150,
-    "date": "2026-05-04T09:06:12.612Z"
+    "hash": "5712c9fbb71f548bb9f1e8c8dab21eea4177b59158eb4209870166d24dba3344",
+    "originalSize": 16150,
+    "tinifiedSize": 5612,
+    "width": 512,
+    "height": 85,
+    "date": "2026-05-10T19:36:30.246Z"
   },
   "iceland-foods.png": {
-    "hash": "8762efd586550ae374961464ad30fbece32275f19ea7f1664c322c0d4131f5c4",
-    "originalSize": 49454,
-    "tinifiedSize": 12292,
-    "date": "2026-05-04T09:06:13.781Z"
+    "hash": "f05db4eb1950e93dd1d88b8bc6cbacfeb7300e1b2c12569c6cfefe59d1f69576",
+    "originalSize": 12292,
+    "tinifiedSize": 3886,
+    "width": 512,
+    "height": 84,
+    "date": "2026-05-10T19:36:30.740Z"
   },
   "ikea.png": {
-    "hash": "e29ced21e2cd18bb78111af4421154d0dda1792b508b686710e4d30361456de3",
-    "originalSize": 33703,
-    "tinifiedSize": 14860,
-    "date": "2026-05-04T09:06:14.590Z"
+    "hash": "a9e0565b9d03104a0d0ff5b1cf67f63c41e3805d43f2aa2e6789fd4964000d4c",
+    "originalSize": 14860,
+    "tinifiedSize": 3786,
+    "width": 512,
+    "height": 192,
+    "date": "2026-05-10T19:36:31.542Z"
   },
   "intermarche.png": {
-    "hash": "ce138fa1bcfa3e71418fb2f07ce2e82529b052421e6c6c44c459252aed49a0fe",
-    "originalSize": 75335,
-    "tinifiedSize": 20693,
-    "date": "2026-05-04T09:06:15.731Z"
+    "hash": "7d9b2dbd65fae92d3bf935e73784b8b730a4619d0ce93f05895c62ef52edab7b",
+    "originalSize": 20693,
+    "tinifiedSize": 6059,
+    "width": 512,
+    "height": 95,
+    "date": "2026-05-10T19:36:32.272Z"
   },
   "iperal.png": {
-    "hash": "c3b835bd5f4724d8ebff84b58d907f4fce0b2f3e12472401678c74f8cbb6f801",
-    "originalSize": 202463,
-    "tinifiedSize": 76372,
-    "date": "2026-05-04T09:06:19.226Z"
+    "hash": "fd3bc78952ee68352aa4ddbb771fb9403aa65c6e111c56b3b044dd0bbfc30b7f",
+    "originalSize": 76372,
+    "tinifiedSize": 10477,
+    "width": 512,
+    "height": 231,
+    "date": "2026-05-10T19:36:34.483Z"
   },
   "john-lewis.png": {
-    "hash": "41c5001d9dcfe815668039c072d7fdfece188f3c98acd1b23de5baccff20f719",
-    "originalSize": 57718,
-    "tinifiedSize": 13727,
-    "date": "2026-05-04T09:06:20.002Z"
+    "hash": "75660c30b6ca732a7e0815bd14e890db44918f3c8a45806fac1e4f94e488cb46",
+    "originalSize": 13727,
+    "tinifiedSize": 4085,
+    "width": 512,
+    "height": 178,
+    "date": "2026-05-10T19:36:35.193Z"
   },
   "kaufland.png": {
-    "hash": "d035d3abcdf52d2b5997cf225e817b6e10376739447575ec8acdd73e639edd0b",
-    "originalSize": 74381,
-    "tinifiedSize": 14647,
-    "date": "2026-05-04T09:06:21.628Z"
+    "hash": "5245c37f4b53246d91193d8dd465d90fd5113d1acbe790daa87bc91ec2a147af",
+    "originalSize": 14647,
+    "tinifiedSize": 3465,
+    "width": 512,
+    "height": 512,
+    "date": "2026-05-10T19:36:36.459Z"
   },
   "kiabi.png": {
-    "hash": "c54468a7f86dff025ceeee42ca3d6652acd9fe3ae9985914053b5756a0744683",
-    "originalSize": 71678,
-    "tinifiedSize": 20287,
-    "date": "2026-05-04T09:06:22.521Z"
+    "hash": "aea4de6153718de024d0e3e29fde757692acf6a838fbb5eea528783884a5f608",
+    "originalSize": 20287,
+    "tinifiedSize": 5904,
+    "width": 512,
+    "height": 219,
+    "date": "2026-05-10T19:36:37.359Z"
   },
   "kik.png": {
-    "hash": "b79bf3faae1e95c40a4bcdb3f5e6b9a2787d14ce6ba1ba969cb7f19db2562dec",
-    "originalSize": 455019,
-    "tinifiedSize": 118437,
-    "date": "2026-05-04T09:06:30.810Z"
+    "hash": "ddf43128c99ad70f5575201574e7e1881275e3db657299cbffcfd314771275b8",
+    "originalSize": 118437,
+    "tinifiedSize": 21512,
+    "width": 512,
+    "height": 512,
+    "date": "2026-05-10T19:36:41.197Z"
   },
   "lapiadineria.png": {
-    "hash": "567280b58c43c6873919b10dd557fef2ba559a17ff36f633adb4dc48e157d942",
-    "originalSize": 11620,
-    "tinifiedSize": 4280,
-    "date": "2026-05-04T09:06:31.360Z"
+    "hash": "5de9d3add1e44dc3ff89e5c348c87d8891dcfaf03d4a9aba32741549b74211ec",
+    "originalSize": 4280,
+    "tinifiedSize": 3049,
+    "width": 512,
+    "height": 98,
+    "date": "2026-05-10T19:36:41.637Z"
   },
   "leclerc.png": {
-    "hash": "fe0ca6634f6e78a46aa678e89f1a9e487fdf30c0dac67242e01e7e05e0c30824",
-    "originalSize": 45436,
-    "tinifiedSize": 12578,
-    "date": "2026-05-04T09:06:32.329Z"
+    "hash": "20c975967f8b9bc254861b1742c322ca22b143c89f86b8c5dc66f1e21558a06b",
+    "originalSize": 12578,
+    "tinifiedSize": 3649,
+    "width": 512,
+    "height": 127,
+    "date": "2026-05-10T19:36:42.215Z"
   },
   "leroy-merlin.png": {
-    "hash": "f081112103ed239e87e60c124e830dc28f8f96e6c490f2b8c2df9c2ec1695637",
-    "originalSize": 63760,
-    "tinifiedSize": 20589,
-    "date": "2026-05-04T09:06:33.475Z"
+    "hash": "3713867a44eb2b5f90d42b957b4d0b882e629309cfcce1afab4be4c03ac7bedf",
+    "originalSize": 20589,
+    "tinifiedSize": 6164,
+    "width": 512,
+    "height": 308,
+    "date": "2026-05-10T19:36:43.255Z"
   },
   "lidl.png": {
-    "hash": "f695b5ecdcd3b8900bdf6b8fb68323042d7f08b5a0c8bf8e2af98c97ee62b93b",
-    "originalSize": 108310,
-    "tinifiedSize": 35456,
-    "date": "2026-05-04T09:06:35.031Z"
+    "hash": "ece002d0a45dd9a0325e382ae832ea62c1c03cc34162f65f9a518c322d838157",
+    "originalSize": 35456,
+    "tinifiedSize": 9220,
+    "width": 512,
+    "height": 512,
+    "date": "2026-05-10T19:36:45.225Z"
   },
   "mango.png": {
-    "hash": "a4a9f5841caa405d0c02eff8d5cc6cb0d6f0578eb372264949214f6a4ce75ecb",
-    "originalSize": 32658,
-    "tinifiedSize": 12290,
-    "date": "2026-05-04T09:06:35.813Z"
+    "hash": "f2ea5fedaa5a85ea0dde7fe0144fa72aa96d4a575b02c3815c0a0d3f95c51b7c",
+    "originalSize": 12290,
+    "tinifiedSize": 3580,
+    "width": 512,
+    "height": 85,
+    "date": "2026-05-10T19:36:46.124Z"
   },
   "marks-and-spencer.png": {
-    "hash": "2425c3b977a3ddb0e49083446f13c89dfb1cdadd9fea818dca6f347901aa4980",
-    "originalSize": 95142,
-    "tinifiedSize": 33383,
-    "date": "2026-05-04T09:06:37.711Z"
+    "hash": "7bd26d45e541c6980c253822acfa2be829c4b64beb28bc5a6c914722b5e2ec5f",
+    "originalSize": 33383,
+    "tinifiedSize": 9567,
+    "width": 512,
+    "height": 201,
+    "date": "2026-05-10T19:36:47.237Z"
   },
   "media-world.png": {
-    "hash": "381596f3d8317ef0bf174e7c615e32f3c37a654a2f0ac1c749d326f51a1e581e",
-    "originalSize": 59713,
-    "tinifiedSize": 26867,
-    "date": "2026-05-04T09:06:38.730Z"
+    "hash": "8dfd866342ae0fa2cf4a35f8fdb3030e263ecbb695221ae9262697bf245020aa",
+    "originalSize": 26867,
+    "tinifiedSize": 6057,
+    "width": 512,
+    "height": 70,
+    "date": "2026-05-10T19:36:48.076Z"
   },
   "mediamarkt.png": {
-    "hash": "8b31f502086af0c2e66dd31b11bc33dd8064cc47fbe0dcf9f25218be06562b8c",
-    "originalSize": 63481,
-    "tinifiedSize": 20630,
-    "date": "2026-05-04T09:06:39.675Z"
+    "hash": "8cc2ec6987709110041bc61f1c2e6384ac0e32f38188a9025fe307b851701638",
+    "originalSize": 20630,
+    "tinifiedSize": 5529,
+    "width": 512,
+    "height": 171,
+    "date": "2026-05-10T19:36:48.865Z"
   },
   "mercadona.png": {
-    "hash": "b7e9f82012d7785bbb1e4a5236ac851281ff61fbe8df204fe8c667573c2a6218",
-    "originalSize": 30253,
-    "tinifiedSize": 11129,
-    "date": "2026-05-04T09:06:40.472Z"
+    "hash": "3268b95cd4c6263ca61b9f438633c036b0d979bc433ec43ca601ab7da0e6326a",
+    "originalSize": 11129,
+    "tinifiedSize": 3286,
+    "width": 512,
+    "height": 81,
+    "date": "2026-05-10T19:36:49.548Z"
   },
   "mondadori.png": {
-    "hash": "2f3f57a9dd0e8aee16bf5df952a99bb5345bfa158e1a277ed51c553ebbc9611c",
-    "originalSize": 34060,
-    "tinifiedSize": 11229,
-    "date": "2026-05-04T09:06:41.244Z"
+    "hash": "3253d9c7feb24113f04d21581e5e7f151e4ef2d3b7b39c1bc2fc27478abf3443",
+    "originalSize": 11229,
+    "tinifiedSize": 3999,
+    "width": 512,
+    "height": 47,
+    "date": "2026-05-10T19:36:52.168Z"
   },
   "monoprix.png": {
-    "hash": "1e946294a8e561599c50283464427ebca79a023feb848a672fca98b871d439d2",
-    "originalSize": 42349,
-    "tinifiedSize": 12055,
-    "date": "2026-05-04T09:06:42.024Z"
+    "hash": "ad96df60250c27edf00089ad0290c887ef6122618bebeaee3a0d5ac05dfa9d1c",
+    "originalSize": 12055,
+    "tinifiedSize": 3327,
+    "width": 512,
+    "height": 118,
+    "date": "2026-05-10T19:36:52.853Z"
   },
   "morrisons.png": {
-    "hash": "5d19baa200b698693fd4d4227ed981182f304981d331c5e3b547763b79bfe320",
-    "originalSize": 85473,
-    "tinifiedSize": 29098,
-    "date": "2026-05-04T09:06:43.291Z"
+    "hash": "073add32333d53cae8faf7f1657c1c730eb7b411d392c53c375afcebb3d33d37",
+    "originalSize": 29098,
+    "tinifiedSize": 8031,
+    "width": 512,
+    "height": 305,
+    "date": "2026-05-10T19:36:54.689Z"
   },
   "netto.png": {
-    "hash": "2cdf1d6e4490c799586c268a892b6e2c39f6f474973c4628c9fa9bb581a80812",
-    "originalSize": 91750,
-    "tinifiedSize": 30889,
-    "date": "2026-05-04T09:06:44.355Z"
+    "hash": "a0bcbe3cce5dc4b29f2748f7043dcbe5bfe24df14902448dca49fe20a0867e51",
+    "originalSize": 30889,
+    "tinifiedSize": 8102,
+    "width": 512,
+    "height": 226,
+    "date": "2026-05-10T19:36:55.815Z"
   },
   "nocibe.png": {
-    "hash": "5d845ea1771b286c6ebb3f20e8d0b81171716406b4f9d8cd0516c9520ef8542b",
-    "originalSize": 70758,
-    "tinifiedSize": 19145,
-    "date": "2026-05-04T09:06:45.274Z"
+    "hash": "f6c20e289b57b7410d77be008d175d7c931f208434cc8989bb00e9d54f69d828",
+    "originalSize": 19145,
+    "tinifiedSize": 5565,
+    "width": 512,
+    "height": 207,
+    "date": "2026-05-10T19:36:56.824Z"
   },
   "obi.png": {
-    "hash": "7cae87d97b5d7f21ac99d52b8f6db769ea1fbccd32c6eb18efe466cc16100805",
-    "originalSize": 26234,
-    "tinifiedSize": 7878,
-    "date": "2026-05-04T09:06:45.854Z"
+    "hash": "dd80f9b067e3cc5a9933faa9efbe2c96f2ce6130f575ba2706b66aeefb6eec05",
+    "originalSize": 7878,
+    "tinifiedSize": 2034,
+    "width": 512,
+    "height": 121,
+    "date": "2026-05-10T19:36:57.439Z"
   },
   "ovs.png": {
-    "hash": "1a9381d40d0efa432025d0be2a3cec477402c6f288904b8ad81d9fc3edf74a33",
-    "originalSize": 49254,
-    "tinifiedSize": 29943,
-    "date": "2026-05-04T09:06:46.913Z"
+    "hash": "dd6bd38ce0219321bb32660981f9983c760f5754feb29c1bdcd1c05582869957",
+    "originalSize": 29943,
+    "tinifiedSize": 5776,
+    "width": 512,
+    "height": 217,
+    "date": "2026-05-10T19:36:58.431Z"
   },
   "pam.png": {
-    "hash": "fbc414fa716c6ed8ef7bb3d370fd3a3ace63b814b20d60f60036ca8462052b85",
-    "originalSize": 52040,
-    "tinifiedSize": 14727,
-    "date": "2026-05-04T09:06:47.909Z"
+    "hash": "670ba57f0127576f5ebfe4c3e43d3ea702a797f754e431af47bc862a6ecb4613",
+    "originalSize": 14727,
+    "tinifiedSize": 3959,
+    "width": 512,
+    "height": 195,
+    "date": "2026-05-10T19:36:59.446Z"
   },
   "penny.png": {
-    "hash": "1f7b5327b4c5b9da95d8f2c3e085bb3ad190012ecdeb42e8fcb5d34622e05ac1",
-    "originalSize": 46666,
-    "tinifiedSize": 12465,
-    "date": "2026-05-04T09:06:48.980Z"
+    "hash": "0564670f3bb58efbaebfb65d19c31dc91730073d688702c792c03ad91ca859ea",
+    "originalSize": 12465,
+    "tinifiedSize": 3311,
+    "width": 512,
+    "height": 512,
+    "date": "2026-05-10T19:37:01.619Z"
   },
   "pret-a-manger.png": {
-    "hash": "4f90ef94a34950dedb1017fdcd20c1df7419032eac8a4d9aa1f14d9686cc6605",
-    "originalSize": 48085,
-    "tinifiedSize": 11357,
-    "date": "2026-05-04T09:06:49.813Z"
+    "hash": "570ef408e4836e5cd7faf00c466d04f535297c853aed10bcf903bd39723eee3b",
+    "originalSize": 11357,
+    "tinifiedSize": 3382,
+    "width": 512,
+    "height": 70,
+    "date": "2026-05-10T19:37:02.131Z"
   },
   "rewe.png": {
-    "hash": "d91b393500fc0cff14934a65d594f3f8d819a24493d66d98091417aa8466fb86",
-    "originalSize": 39012,
-    "tinifiedSize": 12397,
-    "date": "2026-05-04T09:06:50.636Z"
+    "hash": "d9cb98510de43f74a1b7c6442baca7a3e909742284c178bc5df99db9aee9117e",
+    "originalSize": 12397,
+    "tinifiedSize": 3262,
+    "width": 512,
+    "height": 178,
+    "date": "2026-05-10T19:37:03.085Z"
   },
   "rossmann.png": {
-    "hash": "a5bc61ad9227d9267d11f6e792a48834b4f89b2fc0c0400f7be00296c46a8109",
-    "originalSize": 101923,
-    "tinifiedSize": 20532,
-    "date": "2026-05-04T09:06:51.543Z"
+    "hash": "da33e5ac455cc645eaedcd6d8295d1d11303f5702315cc3297a9ba21c483b147",
+    "originalSize": 20532,
+    "tinifiedSize": 4466,
+    "width": 512,
+    "height": 74,
+    "date": "2026-05-10T19:37:03.819Z"
   },
   "sainsburys.png": {
-    "hash": "1dd4a4c42364bf9d510a217c54789aeb0e694f7b0be322af26e6904cd5200b13",
-    "originalSize": 53539,
-    "tinifiedSize": 12891,
-    "date": "2026-05-04T09:06:52.208Z"
+    "hash": "74c1d832737bf8bc0492316b5e4c058ca4c6a1a5497addbb25a7c4e9f4f566c0",
+    "originalSize": 12891,
+    "tinifiedSize": 3798,
+    "width": 512,
+    "height": 97,
+    "date": "2026-05-10T19:37:04.407Z"
   },
   "saturn.png": {
-    "hash": "086f433c62f59c5e8a6c6f4524ada1119b623b827663716d7bd4e7c241db8b23",
-    "originalSize": 45517,
-    "tinifiedSize": 14831,
-    "date": "2026-05-04T09:06:52.934Z"
+    "hash": "2dfdab0f4c442503c9d566a0cf3ce67e72aeb2b4857144c74967426bfc7e29ee",
+    "originalSize": 14831,
+    "tinifiedSize": 4259,
+    "width": 512,
+    "height": 111,
+    "date": "2026-05-10T19:37:05.098Z"
   },
   "sephora.png": {
-    "hash": "ea507b9d72bb9d20a37b6b795ef3f50a3a10c721e909a0f74851c03796952c9f",
-    "originalSize": 25832,
-    "tinifiedSize": 8966,
-    "date": "2026-05-04T09:06:53.508Z"
+    "hash": "359d18dc285a42ea868178b1ac268b207ab0bee71fa0819378259e995905f730",
+    "originalSize": 8966,
+    "tinifiedSize": 2515,
+    "width": 512,
+    "height": 66,
+    "date": "2026-05-10T19:37:05.574Z"
   },
   "superdrug.png": {
-    "hash": "971decba968652c6f9aafe27b112275ecfe887225fe05e8c8997ca125e50a8dc",
-    "originalSize": 50557,
-    "tinifiedSize": 14554,
-    "date": "2026-05-04T09:06:54.374Z"
+    "hash": "0d1b151ad0654cdc9b7554929de28b7b056f791245ed16d88f40809091e5901e",
+    "originalSize": 14554,
+    "tinifiedSize": 4212,
+    "width": 512,
+    "height": 115,
+    "date": "2026-05-10T19:37:06.144Z"
   },
   "tchibo.png": {
-    "hash": "9cc673ae09efd46c118a4fd00e1e1c7ec285972fd2d777df605ac60571255f54",
-    "originalSize": 73356,
-    "tinifiedSize": 21828,
-    "date": "2026-05-04T09:06:55.520Z"
+    "hash": "dbc37a61432f2ddce91702b7ad3c9111cc976fd054a38ce2e9d230019f8b46df",
+    "originalSize": 21828,
+    "tinifiedSize": 5657,
+    "width": 512,
+    "height": 512,
+    "date": "2026-05-10T19:37:08.007Z"
   },
   "tesco.png": {
-    "hash": "73f22c86951ff7b3e714b942f6f2bd397177fb398f22f86ba673784c9a6b31ba",
-    "originalSize": 44172,
-    "tinifiedSize": 15175,
-    "date": "2026-05-04T09:06:56.361Z"
+    "hash": "e74e8293f0ec7466b0287001cb39e0484f2900205edef5f7d1a536bb7525d207",
+    "originalSize": 15175,
+    "tinifiedSize": 3869,
+    "width": 512,
+    "height": 148,
+    "date": "2026-05-10T19:37:08.683Z"
   },
   "unieuro.png": {
-    "hash": "c87ae7bc391267dc567abbaf015763225cc5648e6adbbf66a0c594ae26dcb251",
-    "originalSize": 12020,
-    "tinifiedSize": 3068,
-    "date": "2026-05-04T09:06:56.753Z"
+    "hash": "67693cc93f8ded2076e7222556c57adf8e7f9a7c240f850e0845ac7cbbd2c1fe",
+    "originalSize": 3068,
+    "tinifiedSize": 2807,
+    "width": 486,
+    "height": 108,
+    "date": "2026-05-10T19:37:08.945Z"
   },
   "waitrose.png": {
-    "hash": "1aed9992736cf439b5f53a7530517d19cdcdfdc6f68d71ffd831a3149056b912",
-    "originalSize": 53409,
-    "tinifiedSize": 13181,
-    "date": "2026-05-04T09:06:57.489Z"
+    "hash": "1b0395d5eff294cafadca6fd904fdc3f063440cbbc5cbd589f3742bb2c686711",
+    "originalSize": 13181,
+    "tinifiedSize": 3978,
+    "width": 512,
+    "height": 116,
+    "date": "2026-05-10T19:37:09.650Z"
   },
   "whsmith.png": {
-    "hash": "ecaec6e2f5981bb63afddf35b2a4148ae09c41fe102077ece1401af37851af33",
-    "originalSize": 42695,
-    "tinifiedSize": 12186,
-    "date": "2026-05-04T09:06:58.171Z"
+    "hash": "6421d89c4f255adb07c405ba2234ccb22d0804316611aa040ca94dc03c9798d4",
+    "originalSize": 12186,
+    "tinifiedSize": 3820,
+    "width": 512,
+    "height": 87,
+    "date": "2026-05-10T19:37:10.186Z"
   },
   "yves-rocher.png": {
-    "hash": "b6a758c20c35460097557492b820f09010d1494e77619dfe1df28c31062c3f64",
-    "originalSize": 46466,
-    "tinifiedSize": 13676,
-    "date": "2026-05-04T09:06:59.295Z"
+    "hash": "6b21a8a292ff5e58cffb237aa839cee3a187d33af4afd8225d5a68dac973c0d1",
+    "originalSize": 13676,
+    "tinifiedSize": 4155,
+    "width": 512,
+    "height": 108,
+    "date": "2026-05-10T19:37:10.832Z"
   },
   "zara.png": {
-    "hash": "e12fc7212171b71ad47a9538e7cd89d67b42c60df1d7d307a17ff6ad061d6e59",
-    "originalSize": 59941,
-    "tinifiedSize": 20836,
-    "date": "2026-05-04T09:07:00.150Z"
+    "hash": "8fc2b7922248795dfa5d73694ba9a42e27d76e5d7edf162cfbdbfba25ad3bc92",
+    "originalSize": 20836,
+    "tinifiedSize": 5389,
+    "width": 512,
+    "height": 215,
+    "date": "2026-05-10T19:37:11.659Z"
   }
 }
