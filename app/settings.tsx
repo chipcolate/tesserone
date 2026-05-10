@@ -16,7 +16,7 @@ import { useTheme, typography, textOnColor } from '../src/theme';
 import { useSettingsStore } from '../src/stores/settings';
 import { useCardsStore, getSortedCards } from '../src/stores/cards';
 import { useTutorialStore } from '../src/stores/tutorial';
-import { ThemeMode } from '../src/types';
+import { ThemeMode, AnimationsLevel } from '../src/types';
 import { APP_LANGUAGES, LANGUAGE_LABELS, type LanguagePreference } from '../src/i18n';
 import {
   exportCards,
@@ -27,6 +27,7 @@ import {
 
 const THEME_VALUES: ThemeMode[] = ['system', 'light', 'dark'];
 const LANGUAGE_VALUES: LanguagePreference[] = ['system', ...APP_LANGUAGES];
+const ANIMATIONS_VALUES: AnimationsLevel[] = ['none', 'reduced', 'normal'];
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
@@ -36,6 +37,8 @@ export default function SettingsScreen() {
   const setThemeMode = useSettingsStore((s) => s.setThemeMode);
   const language = useSettingsStore((s) => s.language);
   const setLanguage = useSettingsStore((s) => s.setLanguage);
+  const animationsLevel = useSettingsStore((s) => s.animationsLevel);
+  const setAnimationsLevel = useSettingsStore((s) => s.setAnimationsLevel);
   const sortMode = useSettingsStore((s) => s.sortMode);
   const cards = useCardsStore((s) => s.cards);
   const clearAll = useCardsStore((s) => s.clearAll);
@@ -54,6 +57,12 @@ export default function SettingsScreen() {
   const languageLabel = (pref: LanguagePreference) => {
     if (pref === 'system') return t('settings.languageSystem');
     return LANGUAGE_LABELS[pref];
+  };
+
+  const animationsLabel = (level: AnimationsLevel) => {
+    if (level === 'none') return t('settings.animationsNone');
+    if (level === 'reduced') return t('settings.animationsReduced');
+    return t('settings.animationsNormal');
   };
 
   const handleExport = async () => {
@@ -181,6 +190,35 @@ export default function SettingsScreen() {
             </Text>
             <Text style={[typography.body, { color: colors.textSecondary }]}>›</Text>
           </Pressable>
+        </View>
+
+        <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>
+          {t('settings.sectionAnimations')}
+        </Text>
+        <View style={[styles.segmented, { backgroundColor: colors.surface }]}>
+          {ANIMATIONS_VALUES.map((level) => (
+            <Pressable
+              key={level}
+              style={[
+                styles.segmentItem,
+                animationsLevel === level && { backgroundColor: colors.accent },
+              ]}
+              onPress={() => setAnimationsLevel(level)}
+            >
+              <Text
+                style={[
+                  typography.label,
+                  {
+                    color:
+                      animationsLevel === level ? textOnColor(colors.accent) : colors.text,
+                    fontWeight: animationsLevel === level ? '700' : '400',
+                  },
+                ]}
+              >
+                {animationsLabel(level)}
+              </Text>
+            </Pressable>
+          ))}
         </View>
 
         <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>

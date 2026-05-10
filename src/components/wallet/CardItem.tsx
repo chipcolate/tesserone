@@ -20,6 +20,7 @@ import { isLightColor } from '../../theme';
 import {
   CARD_STACK,
   SPRING_SELECT,
+  SPRING_SELECT_REDUCED,
   SPRING_REORDER,
   CardStackState,
   frontFaceOpacity,
@@ -58,13 +59,14 @@ export const CardItem = React.memo(function CardItem({
     return state.selectedCardIndex.value === index ? state.flipProgress.value : 0;
   }, [index]);
 
-  // Wobble animation for reorder mode
+  // Wobble animation for reorder mode — only when animations are 'normal'.
   const wobble = useSharedValue(0);
   useEffect(() => {
-    if (reorderMode) {
+    cancelAnimation(wobble);
+    if (reorderMode && state.animLevel.value === 2) {
       // Random-ish phase offset per card so they don't sync
       const delay = (index % 3) * 50;
-      setTimeout(() => {
+      const t = setTimeout(() => {
         wobble.value = withRepeat(
           withSequence(
             withTiming(-2, { duration: 100, easing: Easing.inOut(Easing.ease) }),
@@ -75,18 +77,24 @@ export const CardItem = React.memo(function CardItem({
           true
         );
       }, delay);
-    } else {
-      cancelAnimation(wobble);
-      wobble.value = withTiming(0, { duration: 150 });
+      return () => clearTimeout(t);
     }
-  }, [reorderMode]);
+    wobble.value = 0;
+    return undefined;
+  }, [reorderMode, index, wobble, state.animLevel]);
 
   const animatedStyle = useAnimatedStyle(() => {
     const selected = state.selectedCardIndex.value;
     const vh = state.viewportHeight.value;
     const isDragged = state.draggedIndex.value === index;
+    const pulse = state.transitionPulse.value;
+    const lvl = state.animLevel.value;
+    // springOrRaw: pick spring during the post-transition pulse, raw otherwise.
+    // This keeps scroll 1:1 with the finger and only animates when state changes.
+    const transitioning = pulse > 0.01 && lvl !== 0;
+    const spring = lvl === 1 ? SPRING_SELECT_REDUCED : SPRING_SELECT;
 
-    // --- Dragged card follows finger ---
+    // --- Dragged card follows finger (raw) ---
     if (isDragged) {
       return {
         transform: [
@@ -118,7 +126,7 @@ export const CardItem = React.memo(function CardItem({
       const targetY = adjustedIndex * CARD_STACK.STACK_SPACING - state.scrollOffset.value;
       return {
         transform: [
-          { translateY: withSpring(targetY, SPRING_REORDER) },
+          { translateY: lvl === 0 ? targetY : withSpring(targetY, SPRING_REORDER) },
           { rotate: `${wobble.value}deg` },
         ],
         height: CARD_STACK.CARD_HEIGHT,
@@ -127,16 +135,15 @@ export const CardItem = React.memo(function CardItem({
       };
     }
 
-    // --- Normal stack mode (including wobble when reorder is on) ---
+    // --- Normal stack mode ---
     if (selected === -1) {
       const targetY = index * CARD_STACK.STACK_SPACING - state.scrollOffset.value;
-      const stiff = { damping: 80, stiffness: 1200 };
       return {
         transform: [
-          { translateY: withSpring(targetY, stiff) },
+          { translateY: transitioning ? withSpring(targetY, spring) : targetY },
           { rotate: `${wobble.value}deg` },
         ],
-        height: withSpring(CARD_STACK.CARD_HEIGHT, stiff),
+        height: CARD_STACK.CARD_HEIGHT,
         borderRadius: CARD_STACK.CARD_RADIUS,
         zIndex: index,
       };
@@ -149,17 +156,13 @@ export const CardItem = React.memo(function CardItem({
         vh * 0.2
       );
       const expandedHeight = vh - CARD_STACK.EXPANDED_TOP - miniStackHeight - 10;
+      const targetY = CARD_STACK.EXPANDED_TOP + state.dismissTranslateY.value;
       return {
         transform: [
-          {
-            translateY: withSpring(
-              CARD_STACK.EXPANDED_TOP + state.dismissTranslateY.value,
-              SPRING_SELECT
-            ),
-          },
+          { translateY: lvl === 0 ? targetY : withSpring(targetY, spring) },
           { rotate: '0deg' },
         ],
-        height: withSpring(expandedHeight, SPRING_SELECT),
+        height: lvl === 0 ? expandedHeight : withSpring(expandedHeight, spring),
         borderRadius: CARD_STACK.CARD_RADIUS,
         zIndex: 1000,
       };
@@ -172,7 +175,7 @@ export const CardItem = React.memo(function CardItem({
     const miniY = miniStackBottom - (numMiniCards - miniIndex) * CARD_STACK.MINI_PEEK;
     return {
       transform: [
-        { translateY: withSpring(miniY, SPRING_SELECT) },
+        { translateY: lvl === 0 ? miniY : withSpring(miniY, spring) },
         { rotate: '0deg' },
       ],
       height: CARD_STACK.CARD_HEIGHT,
@@ -208,26 +211,29 @@ export const CardItem = React.memo(function CardItem({
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View style={[styles.item, animatedStyle]}>
-        <CardFlip card={card} flipProgress={effectiveFlip} />
-        <Animated.View style={[styles.handleWrap, handleFrontStyle]} pointerEvents="none">
-          <View style={[styles.handle, { backgroundColor: handleTint }]} />
-        </Animated.View>
-        <Animated.View style={[styles.handleWrap, handleBackStyle]} pointerEvents="none">
-          <View style={[styles.handle, { backgroundColor: 'rgba(0,0,0,0.35)' }]} />
-        </Animated.View>
+      <Animated.View style={[styles.shadowWrap, { backgroundColor: bg }, animatedStyle]}>
+        <View style={styles.clip}>
+          <CardFlip card={card} flipProgress={effectiveFlip} />
+          <Animated.View style={[styles.handleWrap, handleFrontStyle]} pointerEvents="none">
+            <View style={[styles.handle, { backgroundColor: handleTint }]} />
+          </Animated.View>
+          <Animated.View style={[styles.handleWrap, handleBackStyle]} pointerEvents="none">
+            <View style={[styles.handle, { backgroundColor: 'rgba(0,0,0,0.35)' }]} />
+          </Animated.View>
+        </View>
       </Animated.View>
     </GestureDetector>
   );
 });
 
 const styles = StyleSheet.create({
-  item: {
+  // Outer view owns the shadow — must NOT have overflow:hidden, otherwise
+  // the iOS shadow gets clipped before it can render outside the bounds.
+  shadowWrap: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    overflow: 'hidden',
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -239,6 +245,13 @@ const styles = StyleSheet.create({
         elevation: 12,
       },
     }),
+  },
+  // Inner view clips child content (faces, handles) to the card radius.
+  // The radius is propagated via the outer view's animatedStyle.
+  clip: {
+    flex: 1,
+    borderRadius: CARD_STACK.CARD_RADIUS,
+    overflow: 'hidden',
   },
   handleWrap: {
     position: 'absolute',

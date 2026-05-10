@@ -29,7 +29,8 @@ export default function HomeScreen() {
   const cards = useCardsStore((s) => s.cards);
   const reorderCard = useCardsStore((s) => s.reorderCard);
   const sortMode = useSettingsStore((s) => s.sortMode);
-  const stackState = useCardStack();
+  const animationsLevel = useSettingsStore((s) => s.animationsLevel);
+  const stackState = useCardStack(animationsLevel);
   const [reorderMode, setReorderMode] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
   const [selectedCardIdx, setSelectedCardIdx] = useState(-1);

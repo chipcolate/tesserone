@@ -1,9 +1,19 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { AppState, Platform } from 'react-native';
-import { useSharedValue, withDecay, withSpring, runOnJS, interpolate } from 'react-native-reanimated';
+import {
+  useSharedValue,
+  useAnimatedReaction,
+  withDecay,
+  withSpring,
+  withTiming,
+  cancelAnimation,
+  runOnJS,
+  interpolate,
+} from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import * as Brightness from 'expo-brightness';
+import type { AnimationsLevel } from '../../types';
 
 function triggerHaptic() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -21,11 +31,20 @@ export const CARD_STACK = {
   EXPANDED_TOP: 20,
 } as const;
 
+// Spring configs per animations level. Stiffer = settles faster = feels snappier.
 export const SPRING_SELECT = { damping: 25, stiffness: 180 } as const;
+export const SPRING_SELECT_REDUCED = { damping: 30, stiffness: 380 } as const;
 const SPRING_DISMISS = { damping: 35, stiffness: 200 } as const;
+const SPRING_DISMISS_REDUCED = { damping: 35, stiffness: 420 } as const;
 const SPRING_BOUNCE = { damping: 20, stiffness: 300 } as const;
 const SPRING_FLIP = { damping: 26, stiffness: 300 } as const;
+const SPRING_FLIP_REDUCED = { damping: 30, stiffness: 600 } as const;
 export const SPRING_REORDER = { damping: 20, stiffness: 250 } as const;
+
+// Approximate spring settle time in ms — used to keep `transitionPulse` high
+// until the spring is essentially done, after which we resume raw 1:1 tracking.
+const TRANSITION_MS_NORMAL = 450;
+const TRANSITION_MS_REDUCED = 240;
 
 const DISMISS_DISTANCE = 100;
 const DISMISS_VELOCITY = 500;
@@ -59,7 +78,12 @@ export function stackContentHeight(numCards: number): number {
   return (numCards - 1) * CARD_STACK.STACK_SPACING + CARD_STACK.CARD_HEIGHT;
 }
 
-export function useCardStack() {
+// Level encoded as a number for shared-value use: 0=none, 1=reduced, 2=normal
+export function animLevelToNumber(level: AnimationsLevel): number {
+  return level === 'none' ? 0 : level === 'reduced' ? 1 : 2;
+}
+
+export function useCardStack(animationsLevel: AnimationsLevel) {
   // iOS: UIScreen.main.brightness is the device brightness — we save and restore it.
   // Android: setBrightnessAsync only installs a per-window override; releasing it
   // via restoreSystemBrightnessAsync hands control back to adaptive brightness,
@@ -104,6 +128,34 @@ export function useCardStack() {
   const maxScroll = useSharedValue(0);
   const viewportHeight = useSharedValue(0);
   const selectedCardIndex = useSharedValue(-1);
+
+  // Mirrors animationsLevel for worklet access.
+  const animLevel = useSharedValue(animLevelToNumber(animationsLevel));
+  useEffect(() => {
+    animLevel.value = animLevelToNumber(animationsLevel);
+  }, [animationsLevel, animLevel]);
+
+  // Pulses to 1 the moment a state transition starts and decays to 0 once
+  // the spring should be done. CardItem reads this to decide between
+  // springed translateY (during the pulse) and raw translateY (during pure
+  // scroll), avoiding the per-frame re-target lag that produces the
+  // "throttled finger" feel.
+  const transitionPulse = useSharedValue(0);
+
+  useAnimatedReaction(
+    () => selectedCardIndex.value,
+    (curr, prev) => {
+      if (prev === null || curr === prev) return;
+      if (animLevel.value === 0) {
+        // No animations: leave pulse at 0 so CardItem snaps with no spring.
+        return;
+      }
+      const ms = animLevel.value === 1 ? TRANSITION_MS_REDUCED : TRANSITION_MS_NORMAL;
+      cancelAnimation(transitionPulse);
+      transitionPulse.value = 1;
+      transitionPulse.value = withTiming(0, { duration: ms });
+    }
+  );
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', (next) => {
@@ -155,11 +207,13 @@ export function useCardStack() {
       if (selectedCardIndex.value === -1) {
         const max = maxScroll.value;
         if (scrollOffset.value < 0) {
-          scrollOffset.value = withSpring(0, SPRING_BOUNCE);
-          runOnJS(triggerLightHaptic)();
+          scrollOffset.value = animLevel.value === 0 ? 0 : withSpring(0, SPRING_BOUNCE);
+          if (animLevel.value !== 0) runOnJS(triggerLightHaptic)();
         } else if (scrollOffset.value > max) {
-          scrollOffset.value = withSpring(max, SPRING_BOUNCE);
-          runOnJS(triggerLightHaptic)();
+          scrollOffset.value = animLevel.value === 0 ? max : withSpring(max, SPRING_BOUNCE);
+          if (animLevel.value !== 0) runOnJS(triggerLightHaptic)();
+        } else if (animLevel.value === 0) {
+          // No decay glide — leave the offset where the finger left it.
         } else {
           scrollOffset.value = withDecay({
             velocity: -event.velocityY,
@@ -168,16 +222,28 @@ export function useCardStack() {
           });
         }
       } else {
+        const dismissSpring =
+          animLevel.value === 1 ? SPRING_DISMISS_REDUCED : SPRING_DISMISS;
+        const flipSpring =
+          animLevel.value === 1 ? SPRING_FLIP_REDUCED : SPRING_FLIP;
         if (
           dismissTranslateY.value < -DISMISS_DISTANCE ||
           event.velocityY < -DISMISS_VELOCITY
         ) {
           selectedCardIndex.value = -1;
-          dismissTranslateY.value = withSpring(0, SPRING_DISMISS);
-          flipProgress.value = withSpring(0, SPRING_FLIP);
+          if (animLevel.value === 0) {
+            dismissTranslateY.value = 0;
+            flipProgress.value = 0;
+          } else {
+            dismissTranslateY.value = withSpring(0, dismissSpring);
+            flipProgress.value = withSpring(0, flipSpring);
+          }
           runOnJS(restoreBrightness)();
         } else {
-          dismissTranslateY.value = withSpring(0, SPRING_SELECT);
+          const selectSpring =
+            animLevel.value === 1 ? SPRING_SELECT_REDUCED : SPRING_SELECT;
+          dismissTranslateY.value =
+            animLevel.value === 0 ? 0 : withSpring(0, selectSpring);
         }
       }
     });
@@ -185,14 +251,18 @@ export function useCardStack() {
   const makeTapGesture = (index: number) =>
     Gesture.Tap().onEnd(() => {
       if (reorderMode.value === 1) return;
+      const flipSpring =
+        animLevel.value === 1 ? SPRING_FLIP_REDUCED : SPRING_FLIP;
       if (selectedCardIndex.value === -1) {
         selectedCardIndex.value = index;
-        flipProgress.value = withSpring(Math.PI, SPRING_FLIP);
+        flipProgress.value =
+          animLevel.value === 0 ? Math.PI : withSpring(Math.PI, flipSpring);
         runOnJS(triggerHaptic)();
         runOnJS(maxBrightness)();
       } else if (selectedCardIndex.value === index) {
         selectedCardIndex.value = -1;
-        flipProgress.value = withSpring(0, SPRING_FLIP);
+        flipProgress.value =
+          animLevel.value === 0 ? 0 : withSpring(0, flipSpring);
         runOnJS(triggerHaptic)();
         runOnJS(restoreBrightness)();
       }
@@ -204,9 +274,12 @@ export function useCardStack() {
       .onStart(() => {
         if (reorderMode.value === 1) return; // drag handles reorder
         if (selectedCardIndex.value === -1) return;
+        const flipSpring =
+          animLevel.value === 1 ? SPRING_FLIP_REDUCED : SPRING_FLIP;
         runOnJS(triggerHaptic)();
         selectedCardIndex.value = -1;
-        flipProgress.value = withSpring(0, SPRING_FLIP);
+        flipProgress.value =
+          animLevel.value === 0 ? 0 : withSpring(0, flipSpring);
         runOnJS(restoreBrightness)();
         runOnJS(onEdit)();
       });
@@ -250,6 +323,8 @@ export function useCardStack() {
     draggedIndex,
     dragTranslateY,
     dragStartY,
+    animLevel,
+    transitionPulse,
     panGesture,
     makeTapGesture,
     makeLongPressGesture,

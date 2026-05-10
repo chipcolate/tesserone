@@ -17,6 +17,8 @@ export type SortMode = 'manual' | 'alphabetical' | 'dateCreated';
 
 export type ThemeMode = 'system' | 'light' | 'dark';
 
+export type AnimationsLevel = 'none' | 'reduced' | 'normal';
+
 export interface FidelityCard {
   id: CardId;
   name: string;
@@ -37,6 +39,7 @@ export interface Settings {
   themeMode: ThemeMode;
   sortMode: SortMode;
   language: LanguagePreference;
+  animationsLevel: AnimationsLevel;
 }
 
 /** Shape of each entry in data/brand-index.json. */
