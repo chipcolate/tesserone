@@ -54,5 +54,8 @@
     "tinify": "^1.8.2",
     "typescript": "~5.9.3"
   },
-  "private": true
+  "private": true,
+  "patchedDependencies": {
+    "react-native-watch-connectivity@2.0.0": "patches/react-native-watch-connectivity@2.0.0.patch"
+  }
 }
