@@ -177,7 +177,10 @@ export function useCardStack(animationsLevel: AnimationsLevel) {
   const dragStartY = useSharedValue(0);
 
   const panGesture = Gesture.Pan()
-    .activeOffsetY([-10, 10])
+    // Small activation threshold so the velocity tracker starts sampling
+    // immediately — a larger window swallows the early high-velocity samples
+    // and onEnd sees a low velocity, producing the "no inertia" feel.
+    .activeOffsetY([-2, 2])
     .onStart(() => {
       if (selectedCardIndex.value === -1) {
         savedOffset.value = scrollOffset.value;
@@ -217,6 +220,9 @@ export function useCardStack(animationsLevel: AnimationsLevel) {
         } else {
           scrollOffset.value = withDecay({
             velocity: -event.velocityY,
+            // Mild amplification compensates for gesture-handler under-reporting
+            // velocity on fast flicks (more visible on Android).
+            velocityFactor: 1.2,
             clamp: [0, max],
             deceleration: 0.998,
           });
