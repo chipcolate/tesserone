@@ -55,6 +55,8 @@ export const it: Translations = {
     title: 'Modifica tessera',
     notFound: 'Tessera non trovata',
     previewPlaceholder: 'Nome tessera',
+    share: "Condividi tessera",
+    shareFailed: "Condivisione non riuscita",
     labelName: 'Nome',
     labelLogo: 'Logo',
     labelBarcode: 'Codice',

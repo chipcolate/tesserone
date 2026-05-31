@@ -55,6 +55,8 @@ export const es: Translations = {
     title: 'Editar tarjeta',
     notFound: 'Tarjeta no encontrada',
     previewPlaceholder: 'Nombre de la tarjeta',
+    share: "Compartir tarjeta",
+    shareFailed: "No se pudo compartir",
     labelName: 'Nombre',
     labelLogo: 'Logo',
     labelBarcode: 'Código',

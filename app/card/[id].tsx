@@ -24,6 +24,7 @@ import {
 } from '../../src/services/logos';
 import { BARCODE_FORMAT_OPTIONS } from '../../src/services/scanner';
 import { LogoSelector } from '../../src/components/ui/LogoSelector';
+import { shareCard } from '../../src/services/importExport';
 import { formatDate } from '../../src/i18n/format';
 
 const ACTION_BAR_HEIGHT = 68;
@@ -107,6 +108,13 @@ export default function CardDetailScreen() {
       return undefined;
     });
     setBrandResults([]);
+  };
+
+  const handleShare = async () => {
+    const result = await shareCard(card);
+    if (!result.success && result.error) {
+      Alert.alert(t('card.shareFailed'), result.error);
+    }
   };
 
   const handleSave = () => {
@@ -271,6 +279,15 @@ export default function CardDetailScreen() {
             updated: formatDate(card.updatedAt),
           })}
         </Text>
+
+        <Pressable
+          style={[styles.shareButton, { borderColor: colors.accent }]}
+          onPress={handleShare}
+        >
+          <Text style={[typography.body, { color: colors.accent, fontWeight: '600' }]}>
+            {t('card.share')}
+          </Text>
+        </Pressable>
       </KeyboardAwareScrollView>
 
       <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
@@ -335,6 +352,13 @@ const styles = StyleSheet.create({
   notesInput: {
     height: 80,
     paddingTop: 12,
+  },
+  shareButton: {
+    marginTop: 24,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
   },
   formatRow: {
     flexGrow: 0,

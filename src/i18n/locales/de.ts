@@ -55,6 +55,8 @@ export const de: Translations = {
     title: 'Karte bearbeiten',
     notFound: 'Karte nicht gefunden',
     previewPlaceholder: 'Kartenname',
+    share: "Karte teilen",
+    shareFailed: "Teilen fehlgeschlagen",
     labelName: 'Name',
     labelLogo: 'Logo',
     labelBarcode: 'Barcode',
