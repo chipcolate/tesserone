@@ -53,6 +53,8 @@ export const en = {
     title: 'Edit Card',
     notFound: 'Card not found',
     previewPlaceholder: 'Card Name',
+    share: "Share Card",
+    shareFailed: "Share Failed",
     labelName: 'Name',
     labelLogo: 'Logo',
     labelBarcode: 'Barcode',

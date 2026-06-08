@@ -187,7 +187,8 @@ async function inlineCustomLogos(cards: FidelityCard[]): Promise<FidelityCard[]>
 
 export async function exportCards(
   cards: FidelityCard[],
-  settings: Partial<Settings>
+  settings: Partial<Settings>,
+  fileName = `tesserone-backup-${new Date().toISOString().split('T')[0]}.json`
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const exportable = await inlineCustomLogos(cards);
@@ -198,7 +199,6 @@ export async function exportCards(
       version: '2.1.0',
     };
     const json = JSON.stringify(data, null, 2);
-    const fileName = `tesserone-backup-${new Date().toISOString().split('T')[0]}.json`;
     const file = new File(Paths.cache, fileName);
     file.create({ overwrite: true });
     file.write(json);
@@ -215,6 +215,22 @@ export async function exportCards(
     const detail = e instanceof Error ? e.message : String(e);
     return { success: false, error: `Failed to export data: ${detail}` };
   }
+}
+
+function cardFileName(name: string): string {
+  const slug = name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return `tesserone-${slug || 'card'}.json`;
+}
+
+/** Share a single card as a standalone export file (no settings included). */
+export async function shareCard(
+  card: FidelityCard
+): Promise<{ success: boolean; error?: string }> {
+  return exportCards([card], {}, cardFileName(card.name));
 }
 
 export async function importCards(): Promise<ImportResult> {

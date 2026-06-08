@@ -55,6 +55,8 @@ export const fr: Translations = {
     title: 'Modifier la carte',
     notFound: 'Carte introuvable',
     previewPlaceholder: 'Nom de la carte',
+    share: "Partager la carte",
+    shareFailed: "Échec du partage",
     labelName: 'Nom',
     labelLogo: 'Logo',
     labelBarcode: 'Code-barres',
