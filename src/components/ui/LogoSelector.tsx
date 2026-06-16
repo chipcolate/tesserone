@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { useTheme, typography, textOnColor } from '../../theme';
@@ -11,7 +10,6 @@ import {
   getBrand,
   pickCustomLogoFromLibrary,
   customLogoSource,
-  type BrandEntry,
 } from '../../services/logos';
 
 interface LogoSelectorProps {
@@ -19,8 +17,6 @@ interface LogoSelectorProps {
   customLogoUri?: string;
   cardName: string;
   cardColor: string;
-  brandResults: BrandEntry[];
-  onBrandSelect: (brand: BrandEntry) => void;
   onCustomLogoPick: (ref: string) => void;
   onClear: () => void;
 }
@@ -30,8 +26,6 @@ export function LogoSelector({
   customLogoUri,
   cardName,
   cardColor,
-  brandResults,
-  onBrandSelect,
   onCustomLogoPick,
   onClear,
 }: LogoSelectorProps) {
@@ -109,34 +103,6 @@ export function LogoSelector({
             : t('logoSelector.uploadPhoto')}
         </Text>
       </Pressable>
-
-      {brandResults.length > 0 && (
-        <Animated.View
-          entering={FadeIn.duration(150)}
-          style={[styles.resultsList, { backgroundColor: colors.surface, borderColor: colors.border }]}
-        >
-          {brandResults.map((b, idx) => {
-            const selected = b.slug === logoSlug;
-            return (
-              <Pressable
-                key={b.slug}
-                style={[
-                  styles.resultRow,
-                  idx > 0 && { borderTopWidth: 1, borderTopColor: colors.border },
-                  selected && { backgroundColor: colors.bg },
-                ]}
-                onPress={() => onBrandSelect(b)}
-              >
-                <View style={[styles.resultDot, { backgroundColor: b.primaryColor }]} />
-                <Text style={[typography.label, { color: colors.text, flex: 1 }]}>{b.name}</Text>
-                {selected ? (
-                  <Text style={[typography.label, { color: colors.accent }]}>✓</Text>
-                ) : null}
-              </Pressable>
-            );
-          })}
-        </Animated.View>
-      )}
     </View>
   );
 }
@@ -181,22 +147,5 @@ const styles = StyleSheet.create({
   uploadLabel: {
     fontFamily: mono.medium,
     fontSize: 14,
-  },
-  resultsList: {
-    borderRadius: CHROME_RADIUS,
-    borderWidth: 1,
-    overflow: 'hidden',
-  },
-  resultRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-  },
-  resultDot: {
-    width: 24,
-    height: 24,
-    borderRadius: CHROME_RADIUS,
   },
 });

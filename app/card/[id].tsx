@@ -27,6 +27,7 @@ import {
 } from '../../src/services/logos';
 import { BARCODE_FORMAT_OPTIONS } from '../../src/services/scanner';
 import { LogoSelector } from '../../src/components/ui/LogoSelector';
+import { BrandResults } from '../../src/components/ui/BrandResults';
 import { Button } from '../../src/components/ui/Button';
 import { ActionBar } from '../../src/components/ui/ActionBar';
 import { useToast } from '../../src/components/ui/Toast';
@@ -199,6 +200,7 @@ export default function CardDetailScreen() {
           autoCorrect={false}
           spellCheck={false}
         />
+        <BrandResults results={brandResults} selectedSlug={logoSlug} onSelect={handleBrandSelect} />
 
         <Text style={[styles.label, { color: colors.textSecondary }]}>{t('card.labelLogo')}</Text>
         <LogoSelector
@@ -206,8 +208,6 @@ export default function CardDetailScreen() {
           customLogoUri={customLogoUri}
           cardName={name}
           cardColor={color}
-          brandResults={brandResults}
-          onBrandSelect={handleBrandSelect}
           onCustomLogoPick={handleCustomLogoPick}
           onClear={handleClearLogo}
         />

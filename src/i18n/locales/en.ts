@@ -17,11 +17,21 @@ export const en = {
     emptyState: 'Add your first card',
     menuAriaLabel: 'Menu',
     settings: 'Settings',
-    reorder: 'Reorder',
+    sort: 'Sort',
     reorderDone: 'Done',
+    reordering: 'Reordering',
+    moveUp: 'Move up',
+    moveDown: 'Move down',
     addCard: 'Add Card',
     cardCount_one: '{{count}} card',
     cardCount_other: '{{count}} cards',
+  },
+  sort: {
+    title: 'Sort by',
+    alphabetical: 'Alphabetical',
+    dateAdded: 'Date added',
+    dateModified: 'Date modified',
+    manual: 'Manual',
   },
   add: {
     title: 'Add Card',
@@ -143,10 +153,10 @@ export const en = {
       'Got a card open in another app? Screenshot it, then share the image with Tesserone — the barcode is detected automatically.',
     homeReorderHintTitle: 'Rearrange your cards',
     homeReorderHintMessage:
-      'Tap Reorder to enter reorder mode, then drag cards to your preferred order.',
-    reorderDragTitle: 'Drag to rearrange',
+      'Tap Sort, then Manual, to arrange your cards by hand.',
+    reorderDragTitle: 'Move your cards',
     reorderDragMessage:
-      'Long-press a card and drag it to a new spot. Tap Done when you are finished.',
+      'Use the ▲ and ▼ buttons (or drag) to move a card. Tap Done when finished.',
   },
 };
 

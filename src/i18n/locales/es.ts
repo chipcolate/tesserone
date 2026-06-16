@@ -19,11 +19,21 @@ export const es: Translations = {
     emptyState: 'Añade tu primera tarjeta',
     menuAriaLabel: 'Menú',
     settings: 'Ajustes',
-    reorder: 'Reordenar',
+    sort: 'Ordenar',
     reorderDone: 'Listo',
+    reordering: 'Reordenando',
+    moveUp: 'Subir',
+    moveDown: 'Bajar',
     addCard: 'Añadir tarjeta',
     cardCount_one: '{{count}} tarjeta',
     cardCount_other: '{{count}} tarjetas',
+  },
+  sort: {
+    title: 'Ordenar por',
+    alphabetical: 'Alfabético',
+    dateAdded: 'Fecha de adición',
+    dateModified: 'Fecha de modificación',
+    manual: 'Manual',
   },
   add: {
     title: 'Añadir tarjeta',
@@ -147,9 +157,9 @@ export const es: Translations = {
       '¿Tienes una tarjeta abierta en otra app? Haz una captura y comparte la imagen con Tesserone — el código se detecta automáticamente.',
     homeReorderHintTitle: 'Reordena tus tarjetas',
     homeReorderHintMessage:
-      'Pulsa Reordenar para activar el modo y arrastra las tarjetas al orden que prefieras.',
-    reorderDragTitle: 'Arrastra para reordenar',
+      'Pulsa Ordenar y luego Manual para organizar tus tarjetas a mano.',
+    reorderDragTitle: 'Mueve tus tarjetas',
     reorderDragMessage:
-      'Manténla pulsada y arrástrala a una nueva posición. Pulsa Listo cuando termines.',
+      'Usa los botones ▲ y ▼ (o arrastra) para mover una tarjeta. Pulsa Listo cuando termines.',
   },
 };

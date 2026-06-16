@@ -27,6 +27,7 @@ import { scanBarcodeFromImage } from '../src/services/imageScan';
 import { searchBrands, getBrandColors, deleteCustomLogo } from '../src/services/logos';
 import type { BrandEntry } from '../src/types';
 import { LogoSelector } from '../src/components/ui/LogoSelector';
+import { BrandResults } from '../src/components/ui/BrandResults';
 import { Button } from '../src/components/ui/Button';
 import { ActionBar } from '../src/components/ui/ActionBar';
 
@@ -300,6 +301,7 @@ export default function AddCardScreen() {
             autoCorrect={false}
             spellCheck={false}
           />
+          <BrandResults results={brandResults} selectedSlug={logoSlug} onSelect={handleBrandSelect} />
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelLogo')}</Text>
           <LogoSelector
@@ -307,8 +309,6 @@ export default function AddCardScreen() {
             customLogoUri={customLogoUri}
             cardName={name}
             cardColor={color}
-            brandResults={brandResults}
-            onBrandSelect={handleBrandSelect}
             onCustomLogoPick={handleCustomLogoPick}
             onClear={handleClearLogo}
           />

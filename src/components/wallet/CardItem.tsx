@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
+import { StyleSheet, Platform, View, Text, Pressable } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
@@ -8,10 +8,12 @@ import Animated, {
 } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { FidelityCard } from '../../types';
 import { CardFlip } from './CardFlip';
 import { resolveCardColor } from '../../services/logos';
-import { isLightColor, useTheme } from '../../theme';
+import { isLightColor, textOnColor, useTheme } from '../../theme';
+import { mono } from '../../theme/fonts';
 import {
   CARD_STACK,
   SPRING_SELECT,
@@ -39,6 +41,7 @@ export const CardItem = React.memo(function CardItem({
   onReorder,
 }: CardItemProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const tapGesture = state.makeTapGesture(index);
   const longPressGesture = state.makeLongPressGesture(() => {
@@ -157,7 +160,13 @@ export const CardItem = React.memo(function CardItem({
   }, [index, total]);
 
   const bg = resolveCardColor(card.color, card.logoSlug);
+  const fg = textOnColor(bg);
   const handleTint = isLightColor(bg) ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.55)';
+
+  const atTop = index === 0;
+  const atBottom = index === total - 1;
+  const moveUp = () => { if (!atTop) onReorder(index, index - 1); };
+  const moveDown = () => { if (!atBottom) onReorder(index, index + 1); };
 
   const handleFrontStyle = useAnimatedStyle(() => {
     const isSelected = state.selectedCardIndex.value === index;
@@ -200,6 +209,30 @@ export const CardItem = React.memo(function CardItem({
           pointerEvents="none"
           style={[styles.armed, { borderColor: colors.accent }, armedStyle]}
         />
+        {reorderMode ? (
+          <View style={styles.reorderCtrls} pointerEvents="box-none">
+            <Pressable
+              onPress={moveUp}
+              disabled={atTop}
+              hitSlop={6}
+              accessibilityRole="button"
+              accessibilityLabel={t('home.moveUp')}
+              style={[styles.reorderBtn, { backgroundColor: fg, opacity: atTop ? 0.3 : 1 }]}
+            >
+              <Text style={[styles.reorderChevron, { color: bg }]}>▲</Text>
+            </Pressable>
+            <Pressable
+              onPress={moveDown}
+              disabled={atBottom}
+              hitSlop={6}
+              accessibilityRole="button"
+              accessibilityLabel={t('home.moveDown')}
+              style={[styles.reorderBtn, { backgroundColor: fg, opacity: atBottom ? 0.3 : 1 }]}
+            >
+              <Text style={[styles.reorderChevron, { color: bg }]}>▼</Text>
+            </Pressable>
+          </View>
+        ) : null}
       </Animated.View>
     </GestureDetector>
   );
@@ -241,5 +274,24 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     borderWidth: 2,
     borderRadius: CARD_STACK.CARD_RADIUS,
+  },
+  reorderCtrls: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    gap: 8,
+    zIndex: 20,
+  },
+  reorderBtn: {
+    width: 40,
+    height: 34,
+    borderRadius: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  reorderChevron: {
+    fontFamily: mono.bold,
+    fontSize: 16,
+    lineHeight: 18,
   },
 });

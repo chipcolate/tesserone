@@ -109,6 +109,8 @@ export function getSortedCards(
       return list.sort((a, b) => a.name.localeCompare(b.name));
     case 'dateCreated':
       return list.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    case 'dateModified':
+      return list.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   }
 }
 

@@ -18,7 +18,9 @@ import { useSettingsStore } from '../src/stores/settings';
 import { useTheme, textOnColor } from '../src/theme';
 import { CHROME_RADIUS } from '../src/theme/geometry';
 import { mono } from '../src/theme/fonts';
+import type { SortMode } from '../src/types';
 import { Wordmark } from '../src/components/ui/Wordmark';
+import { Sheet } from '../src/components/ui/Sheet';
 import { CardStack, useCardStack } from '../src/components/wallet/CardStack';
 import { TutorialOverlay, type TargetRect } from '../src/components/tutorial/TutorialOverlay';
 import { useActiveTutorialStep } from '../src/components/tutorial/useActiveTutorialStep';
@@ -27,6 +29,13 @@ import { useTutorialStore } from '../src/stores/tutorial';
 // Crisp, mechanical open/close — no spring bounce.
 const FAB_TIMING = { duration: 200, easing: Easing.out(Easing.cubic) } as const;
 
+const SORT_OPTIONS: { mode: SortMode; key: string }[] = [
+  { mode: 'alphabetical', key: 'sort.alphabetical' },
+  { mode: 'dateCreated', key: 'sort.dateAdded' },
+  { mode: 'dateModified', key: 'sort.dateModified' },
+  { mode: 'manual', key: 'sort.manual' },
+];
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
@@ -34,9 +43,11 @@ export default function HomeScreen() {
   const cards = useCardsStore((s) => s.cards);
   const reorderCard = useCardsStore((s) => s.reorderCard);
   const sortMode = useSettingsStore((s) => s.sortMode);
+  const setSortMode = useSettingsStore((s) => s.setSortMode);
   const stackState = useCardStack();
   const [reorderMode, setReorderMode] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
+  const [sortSheetOpen, setSortSheetOpen] = useState(false);
   const [selectedCardIdx, setSelectedCardIdx] = useState(-1);
 
   // Sync React state to shared value so gesture worklets can read it
@@ -68,10 +79,21 @@ export default function HomeScreen() {
 
   const cardsList = getSortedCards(cards, sortMode);
 
-  const toggleReorder = useCallback(() => {
+  const openSort = useCallback(() => {
     close();
-    setReorderMode((v) => !v);
+    setSortSheetOpen(true);
   }, [close]);
+
+  const chooseSort = useCallback(
+    (mode: SortMode) => {
+      setSortMode(mode);
+      setReorderMode(mode === 'manual');
+      setSortSheetOpen(false);
+    },
+    [setSortMode]
+  );
+
+  const exitReorder = useCallback(() => setReorderMode(false), []);
 
   const handleReorder = useCallback(
     (from: number, to: number) => {
@@ -170,9 +192,29 @@ export default function HomeScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <Wordmark />
-        <Text style={[styles.headerCount, { color: colors.textSecondary }]}>
-          {t('home.cardCount', { count: cardsList.length }).toUpperCase()}
+        <View style={styles.headerRow}>
+          <Wordmark />
+          {reorderMode ? (
+            <Pressable
+              onPress={exitReorder}
+              style={[styles.doneBtn, { backgroundColor: colors.accent }]}
+              accessibilityRole="button"
+            >
+              <Text style={[styles.doneLabel, { color: textOnColor(colors.accent) }]}>
+                {t('home.reorderDone')}
+              </Text>
+            </Pressable>
+          ) : null}
+        </View>
+        <Text
+          style={[
+            styles.headerCount,
+            { color: reorderMode ? colors.accent : colors.textSecondary },
+          ]}
+        >
+          {reorderMode
+            ? t('home.reordering').toUpperCase()
+            : t('home.cardCount', { count: cardsList.length }).toUpperCase()}
         </Text>
       </View>
 
@@ -211,22 +253,22 @@ export default function HomeScreen() {
         </Animated.View>
         <Animated.View style={menuItem2Style}>
           <Pressable
-            ref={reorderItemRef}
-            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
-            onPress={toggleReorder}
-          >
-            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
-              {reorderMode ? t('home.reorderDone') : t('home.reorder')}
-            </Text>
-          </Pressable>
-        </Animated.View>
-        <Animated.View style={menuItem1Style}>
-          <Pressable
             style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
             onPress={() => { close(); router.push('/add'); }}
           >
             <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
               {t('home.addCard')}
+            </Text>
+          </Pressable>
+        </Animated.View>
+        <Animated.View style={menuItem1Style}>
+          <Pressable
+            ref={reorderItemRef}
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            onPress={openSort}
+          >
+            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
+              {t('home.sort')}
             </Text>
           </Pressable>
         </Animated.View>
@@ -248,6 +290,21 @@ export default function HomeScreen() {
           </Animated.Text>
         </Pressable>
       </View>
+
+      <Sheet
+        visible={sortSheetOpen}
+        onClose={() => setSortSheetOpen(false)}
+        title={t('sort.title')}
+      >
+        {SORT_OPTIONS.map((o) => (
+          <Pressable key={o.mode} style={styles.sortRow} onPress={() => chooseSort(o.mode)}>
+            <Text style={[styles.sortRowLabel, { color: colors.text }]}>{t(o.key)}</Text>
+            {sortMode === o.mode ? (
+              <Text style={[styles.sortRowLabel, { color: colors.accent }]}>✓</Text>
+            ) : null}
+          </Pressable>
+        ))}
+      </Sheet>
 
       <TutorialOverlay
         visible={!!activeStep}
@@ -276,11 +333,37 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     borderBottomWidth: 1,
   },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   headerCount: {
     fontFamily: mono.regular,
     fontSize: 12,
     letterSpacing: 1,
     marginTop: 4,
+  },
+  doneBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 7,
+    borderRadius: CHROME_RADIUS,
+  },
+  doneLabel: {
+    fontFamily: mono.bold,
+    fontSize: 13,
+    letterSpacing: 0.5,
+  },
+  sortRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  sortRowLabel: {
+    fontFamily: mono.regular,
+    fontSize: 16,
   },
   stackWrap: {
     flex: 1,
@@ -319,7 +402,7 @@ const styles = StyleSheet.create({
   },
   fabMenu: {
     position: 'absolute',
-    right: 20,
+    right: 16,
     gap: 10,
     alignItems: 'flex-end',
     zIndex: 95,
@@ -337,7 +420,7 @@ const styles = StyleSheet.create({
   fabWrap: {
     position: 'absolute',
     bottom: 0,
-    right: 20,
+    right: 16,
     zIndex: 100,
   },
   fab: {

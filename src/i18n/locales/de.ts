@@ -19,11 +19,21 @@ export const de: Translations = {
     emptyState: 'Füge deine erste Karte hinzu',
     menuAriaLabel: 'Menü',
     settings: 'Einstellungen',
-    reorder: 'Neu anordnen',
+    sort: 'Sortieren',
     reorderDone: 'Fertig',
+    reordering: 'Anordnen',
+    moveUp: 'Nach oben',
+    moveDown: 'Nach unten',
     addCard: 'Karte hinzufügen',
     cardCount_one: '{{count}} Karte',
     cardCount_other: '{{count}} Karten',
+  },
+  sort: {
+    title: 'Sortieren nach',
+    alphabetical: 'Alphabetisch',
+    dateAdded: 'Hinzugefügt am',
+    dateModified: 'Geändert am',
+    manual: 'Manuell',
   },
   add: {
     title: 'Karte hinzufügen',
@@ -151,9 +161,9 @@ export const de: Translations = {
       'Karte in einer anderen App geöffnet? Mach einen Screenshot und teile das Bild mit Tesserone — der Barcode wird automatisch erkannt.',
     homeReorderHintTitle: 'Karten neu anordnen',
     homeReorderHintMessage:
-      'Tippe auf „Neu anordnen", um den Sortiermodus zu aktivieren, und ziehe die Karten in deine gewünschte Reihenfolge.',
-    reorderDragTitle: 'Zum Umsortieren ziehen',
+      'Tippe auf „Sortieren" und dann „Manuell", um deine Karten von Hand zu ordnen.',
+    reorderDragTitle: 'Karten verschieben',
     reorderDragMessage:
-      'Halte eine Karte lange gedrückt und ziehe sie an eine neue Position. Tippe auf „Fertig", wenn du fertig bist.',
+      'Nutze die Tasten ▲ und ▼ (oder ziehen), um eine Karte zu verschieben. Tippe auf „Fertig", wenn du fertig bist.',
   },
 };

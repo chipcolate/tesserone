@@ -19,11 +19,21 @@ export const it: Translations = {
     emptyState: 'Aggiungi la tua prima tessera',
     menuAriaLabel: 'Menu',
     settings: 'Impostazioni',
-    reorder: 'Riordina',
+    sort: 'Ordina',
     reorderDone: 'Fatto',
+    reordering: 'Riordino',
+    moveUp: 'Sposta su',
+    moveDown: 'Sposta giù',
     addCard: 'Aggiungi tessera',
     cardCount_one: '{{count}} tessera',
     cardCount_other: '{{count}} tessere',
+  },
+  sort: {
+    title: 'Ordina per',
+    alphabetical: 'Alfabetico',
+    dateAdded: 'Data di aggiunta',
+    dateModified: 'Data di modifica',
+    manual: 'Manuale',
   },
   add: {
     title: 'Aggiungi tessera',
@@ -146,9 +156,9 @@ export const it: Translations = {
       "Hai una tessera aperta in un'altra app? Fai uno screenshot e condividi l'immagine con Tesserone — il codice viene riconosciuto in automatico.",
     homeReorderHintTitle: 'Riordina le tue tessere',
     homeReorderHintMessage:
-      'Tocca Riordina per entrare in modalità riordino, poi trascina le tessere come preferisci.',
-    reorderDragTitle: 'Trascina per riordinare',
+      'Tocca Ordina, poi Manuale, per disporre le tessere a mano.',
+    reorderDragTitle: 'Sposta le tessere',
     reorderDragMessage:
-      'Tieni premuta una tessera e trascinala in una nuova posizione. Tocca Fatto quando hai finito.',
+      'Usa i pulsanti ▲ e ▼ (o trascina) per spostare una tessera. Tocca Fatto quando hai finito.',
   },
 };

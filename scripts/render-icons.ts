@@ -25,4 +25,5 @@ await render(appIcon, 1024, 'icon-dark.png');     // iOS dark slot (kept light p
 await render(appIcon, 196, 'favicon.png');        // web favicon
 await render(foreground, 1024, 'adaptive-icon.png'); // Android adaptive foreground (over #0A0A0A)
 await render(foreground, 1024, 'splash-icon.png');   // splash (contain, over #0A0A0A)
+await render(foreground, 320, 'logo.png');           // README mark (transparent, adapts to GitHub theme)
 console.log('done.');
