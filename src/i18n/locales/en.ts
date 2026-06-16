@@ -113,7 +113,7 @@ export const en = {
     replayTutorial: 'Replay Tutorial',
     deleteAll: 'Delete All Cards',
     aboutVersion: 'v{{version}}',
-    aboutTagline: 'The loyalty card manager that feels alive.\nOpen source · Made by Chipcolate',
+    aboutTagline: 'The loyalty card manager that just works.\nOpen source · Made by Chipcolate',
     aboutDisclaimer:
       'Not affiliated with any of the brands or merchants shown in the app. Brand names and logos are trademarks of their respective owners.',
     exportFailed: 'Export Failed',

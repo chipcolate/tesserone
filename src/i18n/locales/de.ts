@@ -116,7 +116,7 @@ export const de: Translations = {
     deleteAll: 'Alle Karten löschen',
     aboutVersion: 'v{{version}}',
     aboutTagline:
-      'Der Kundenkarten-Manager, der lebendig wirkt.\nOpen Source · Entwickelt von Chipcolate',
+      'Der Kundenkarten-Manager, der einfach funktioniert.\nOpen Source · Entwickelt von Chipcolate',
     aboutDisclaimer:
       'Nicht mit den in der App gezeigten Marken oder Händlern verbunden. Markennamen und Logos sind Eigentum der jeweiligen Inhaber.',
     exportFailed: 'Export fehlgeschlagen',

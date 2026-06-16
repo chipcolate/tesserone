@@ -115,7 +115,7 @@ export const it: Translations = {
     replayTutorial: 'Rivedi il tutorial',
     deleteAll: 'Elimina tutte le tessere',
     aboutVersion: 'v{{version}}',
-    aboutTagline: 'Il gestore di tessere fedeltà che sembra vivo.\nOpen source · Creato da Chipcolate',
+    aboutTagline: 'Il gestore di tessere fedeltà che funziona e basta.\nOpen source · Creato da Chipcolate',
     aboutDisclaimer:
       "Non affiliato con i marchi o esercenti mostrati nell'app. Nomi e loghi dei marchi sono marchi registrati dei rispettivi proprietari.",
     exportFailed: 'Esportazione non riuscita',

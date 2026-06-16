@@ -116,7 +116,7 @@ export const fr: Translations = {
     deleteAll: 'Supprimer toutes les cartes',
     aboutVersion: 'v{{version}}',
     aboutTagline:
-      'Le gestionnaire de cartes de fidélité qui a du souffle.\nOpen source · Créé par Chipcolate',
+      'Le gestionnaire de cartes de fidélité qui fonctionne, tout simplement.\nOpen source · Créé par Chipcolate',
     aboutDisclaimer:
       "Sans lien avec les marques ni commerçants présentés dans l'application. Les noms et logos de marques appartiennent à leurs propriétaires respectifs.",
     exportFailed: "Échec de l'exportation",

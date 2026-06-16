@@ -116,7 +116,7 @@ export const es: Translations = {
     deleteAll: 'Eliminar todas las tarjetas',
     aboutVersion: 'v{{version}}',
     aboutTagline:
-      'El gestor de tarjetas de fidelidad que se siente vivo.\nCódigo abierto · Hecho por Chipcolate',
+      'El gestor de tarjetas de fidelidad que simplemente funciona.\nCódigo abierto · Hecho por Chipcolate',
     aboutDisclaimer:
       'Sin afiliación con ninguna de las marcas ni comercios mostrados en la app. Los nombres y logos son marcas de sus respectivos propietarios.',
     exportFailed: 'Error al exportar',
