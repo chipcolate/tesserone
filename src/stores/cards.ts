@@ -42,8 +42,10 @@ export const useCardsStore = create<CardsState>()(
 
       removeCard: (id) =>
         set((s) => {
-          const { [id]: removed, ...rest } = s.cards;
-          if (removed) deleteCustomLogo(removed.customLogoUri);
+          // Keep the custom-logo file on disk so an "undo" can fully restore the
+          // card (logo included). Orphaned files are reclaimed by
+          // sweepOrphanLogos() on next launch.
+          const { [id]: _removed, ...rest } = s.cards;
           return { cards: rest };
         }),
 
@@ -107,6 +109,8 @@ export function getSortedCards(
       return list.sort((a, b) => a.name.localeCompare(b.name));
     case 'dateCreated':
       return list.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    case 'dateModified':
+      return list.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   }
 }
 

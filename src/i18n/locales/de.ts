@@ -8,18 +8,32 @@ export const de: Translations = {
     done: 'Fertig',
     remove: 'Entfernen',
     gotIt: 'Verstanden',
+    undo: 'Rückgängig',
   },
   error: {
     title: 'Etwas ist schiefgelaufen',
     retry: 'Erneut versuchen',
+    goHome: 'Startseite',
   },
   home: {
     emptyState: 'Füge deine erste Karte hinzu',
     menuAriaLabel: 'Menü',
     settings: 'Einstellungen',
-    reorder: 'Neu anordnen',
+    sort: 'Sortieren',
     reorderDone: 'Fertig',
+    reordering: 'Anordnen',
+    moveUp: 'Nach oben',
+    moveDown: 'Nach unten',
     addCard: 'Karte hinzufügen',
+    cardCount_one: '{{count}} Karte',
+    cardCount_other: '{{count}} Karten',
+  },
+  sort: {
+    title: 'Sortieren nach',
+    alphabetical: 'Alphabetisch',
+    dateAdded: 'Hinzugefügt am',
+    dateModified: 'Geändert am',
+    manual: 'Manuell',
   },
   add: {
     title: 'Karte hinzufügen',
@@ -69,6 +83,7 @@ export const de: Translations = {
     timestamps: 'Erstellt am {{created}} · Aktualisiert am {{updated}}',
     deleteConfirmTitle: 'Karte löschen',
     deleteConfirmBody: '„{{name}}" aus deinem Geldbeutel entfernen?',
+    deletedToast: '{{name}} gelöscht',
     missingNameTitle: 'Name fehlt',
     missingNameBody: 'Der Kartenname ist erforderlich.',
   },
@@ -101,7 +116,7 @@ export const de: Translations = {
     deleteAll: 'Alle Karten löschen',
     aboutVersion: 'v{{version}}',
     aboutTagline:
-      'Der Kundenkarten-Manager, der lebendig wirkt.\nOpen Source · Entwickelt von Chipcolate',
+      'Der Kundenkarten-Manager, der einfach funktioniert.\nOpen Source · Entwickelt von Chipcolate',
     aboutDisclaimer:
       'Nicht mit den in der App gezeigten Marken oder Händlern verbunden. Markennamen und Logos sind Eigentum der jeweiligen Inhaber.',
     exportFailed: 'Export fehlgeschlagen',
@@ -128,6 +143,8 @@ export const de: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Tipp schließen',
+    stepIndicator: 'Schritt {{current}} / {{total}}',
+    skip: 'Überspringen',
     homeAddFirstTitle: 'Füge deine erste Karte hinzu',
     homeAddFirstMessage:
       'Tippe auf den Menü-Button und wähle „Karte hinzufügen", um zu starten.',
@@ -144,9 +161,9 @@ export const de: Translations = {
       'Karte in einer anderen App geöffnet? Mach einen Screenshot und teile das Bild mit Tesserone — der Barcode wird automatisch erkannt.',
     homeReorderHintTitle: 'Karten neu anordnen',
     homeReorderHintMessage:
-      'Tippe auf „Neu anordnen", um den Sortiermodus zu aktivieren, und ziehe die Karten in deine gewünschte Reihenfolge.',
-    reorderDragTitle: 'Zum Umsortieren ziehen',
+      'Tippe auf „Sortieren" und dann „Manuell", um deine Karten von Hand zu ordnen.',
+    reorderDragTitle: 'Karten verschieben',
     reorderDragMessage:
-      'Halte eine Karte lange gedrückt und ziehe sie an eine neue Position. Tippe auf „Fertig", wenn du fertig bist.',
+      'Nutze die Tasten ▲ und ▼ (oder ziehen), um eine Karte zu verschieben. Tippe auf „Fertig", wenn du fertig bist.',
   },
 };

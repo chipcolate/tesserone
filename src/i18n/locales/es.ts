@@ -8,18 +8,32 @@ export const es: Translations = {
     done: 'Listo',
     remove: 'Quitar',
     gotIt: 'Entendido',
+    undo: 'Deshacer',
   },
   error: {
     title: 'Algo salió mal',
     retry: 'Reintentar',
+    goHome: 'Inicio',
   },
   home: {
     emptyState: 'Añade tu primera tarjeta',
     menuAriaLabel: 'Menú',
     settings: 'Ajustes',
-    reorder: 'Reordenar',
+    sort: 'Ordenar',
     reorderDone: 'Listo',
+    reordering: 'Reordenando',
+    moveUp: 'Subir',
+    moveDown: 'Bajar',
     addCard: 'Añadir tarjeta',
+    cardCount_one: '{{count}} tarjeta',
+    cardCount_other: '{{count}} tarjetas',
+  },
+  sort: {
+    title: 'Ordenar por',
+    alphabetical: 'Alfabético',
+    dateAdded: 'Fecha de adición',
+    dateModified: 'Fecha de modificación',
+    manual: 'Manual',
   },
   add: {
     title: 'Añadir tarjeta',
@@ -69,6 +83,7 @@ export const es: Translations = {
     timestamps: 'Creada el {{created}} · Actualizada el {{updated}}',
     deleteConfirmTitle: 'Eliminar tarjeta',
     deleteConfirmBody: '¿Quitar «{{name}}» de tu cartera?',
+    deletedToast: '{{name}} eliminada',
     missingNameTitle: 'Falta el nombre',
     missingNameBody: 'El nombre de la tarjeta es obligatorio.',
   },
@@ -101,7 +116,7 @@ export const es: Translations = {
     deleteAll: 'Eliminar todas las tarjetas',
     aboutVersion: 'v{{version}}',
     aboutTagline:
-      'El gestor de tarjetas de fidelidad que se siente vivo.\nCódigo abierto · Hecho por Chipcolate',
+      'El gestor de tarjetas de fidelidad que simplemente funciona.\nCódigo abierto · Hecho por Chipcolate',
     aboutDisclaimer:
       'Sin afiliación con ninguna de las marcas ni comercios mostrados en la app. Los nombres y logos son marcas de sus respectivos propietarios.',
     exportFailed: 'Error al exportar',
@@ -126,6 +141,8 @@ export const es: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Cerrar consejo',
+    stepIndicator: 'Paso {{current}} / {{total}}',
+    skip: 'Omitir',
     homeAddFirstTitle: 'Añade tu primera tarjeta',
     homeAddFirstMessage: 'Pulsa el botón de menú y elige Añadir tarjeta para empezar.',
     homeTapExpandTitle: 'Abre una tarjeta',
@@ -140,9 +157,9 @@ export const es: Translations = {
       '¿Tienes una tarjeta abierta en otra app? Haz una captura y comparte la imagen con Tesserone — el código se detecta automáticamente.',
     homeReorderHintTitle: 'Reordena tus tarjetas',
     homeReorderHintMessage:
-      'Pulsa Reordenar para activar el modo y arrastra las tarjetas al orden que prefieras.',
-    reorderDragTitle: 'Arrastra para reordenar',
+      'Pulsa Ordenar y luego Manual para organizar tus tarjetas a mano.',
+    reorderDragTitle: 'Mueve tus tarjetas',
     reorderDragMessage:
-      'Manténla pulsada y arrástrala a una nueva posición. Pulsa Listo cuando termines.',
+      'Usa los botones ▲ y ▼ (o arrastra) para mover una tarjeta. Pulsa Listo cuando termines.',
   },
 };

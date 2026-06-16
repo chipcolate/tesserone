@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tesserone",
     "slug": "tesserone",
-    "version": "1.2.7",
+    "version": "1.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "tesserone",
@@ -16,7 +16,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.chipcolate.tesserone",
       "appleTeamId": "HNF5BY9XXV",
-      "buildNumber": "12",
+      "buildNumber": "13",
       "icon": {
         "light": "./assets/icon.png",
         "dark": "./assets/icon-dark.png"
@@ -28,10 +28,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#0A0A0A"
+        "backgroundColor": "#FAFAF8"
       },
       "package": "com.chipcolate.tesserone",
-      "versionCode": 12,
+      "versionCode": 13,
       "softwareKeyboardLayoutMode": "resize",
       "permissions": [
         "android.permission.CAMERA"
@@ -77,10 +77,13 @@
           "iosActivationRules": {
             "NSExtensionActivationSupportsImageWithMaxCount": 1
           },
-          "androidIntentFilters": ["image/*"]
+          "androidIntentFilters": [
+            "image/*"
+          ]
         }
       ],
-      "@bacons/apple-targets"
+      "@bacons/apple-targets",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

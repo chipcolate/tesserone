@@ -8,18 +8,32 @@ export const fr: Translations = {
     done: 'OK',
     remove: 'Retirer',
     gotIt: "C'est compris",
+    undo: 'Annuler',
   },
   error: {
     title: "Quelque chose s'est mal passé",
     retry: 'Réessayer',
+    goHome: 'Accueil',
   },
   home: {
     emptyState: 'Ajoute ta première carte',
     menuAriaLabel: 'Menu',
     settings: 'Réglages',
-    reorder: 'Réorganiser',
+    sort: 'Trier',
     reorderDone: 'Terminé',
+    reordering: 'Réorganisation',
+    moveUp: 'Monter',
+    moveDown: 'Descendre',
     addCard: 'Ajouter une carte',
+    cardCount_one: '{{count}} carte',
+    cardCount_other: '{{count}} cartes',
+  },
+  sort: {
+    title: 'Trier par',
+    alphabetical: 'Alphabétique',
+    dateAdded: 'Date d’ajout',
+    dateModified: 'Date de modification',
+    manual: 'Manuel',
   },
   add: {
     title: 'Ajouter une carte',
@@ -69,6 +83,7 @@ export const fr: Translations = {
     timestamps: 'Créée le {{created}} · Mise à jour le {{updated}}',
     deleteConfirmTitle: 'Supprimer la carte',
     deleteConfirmBody: 'Retirer « {{name}} » de ton portefeuille ?',
+    deletedToast: '{{name}} supprimée',
     missingNameTitle: 'Nom manquant',
     missingNameBody: 'Le nom de la carte est obligatoire.',
   },
@@ -101,7 +116,7 @@ export const fr: Translations = {
     deleteAll: 'Supprimer toutes les cartes',
     aboutVersion: 'v{{version}}',
     aboutTagline:
-      'Le gestionnaire de cartes de fidélité qui a du souffle.\nOpen source · Créé par Chipcolate',
+      'Le gestionnaire de cartes de fidélité qui fonctionne, tout simplement.\nOpen source · Créé par Chipcolate',
     aboutDisclaimer:
       "Sans lien avec les marques ni commerçants présentés dans l'application. Les noms et logos de marques appartiennent à leurs propriétaires respectifs.",
     exportFailed: "Échec de l'exportation",
@@ -126,6 +141,8 @@ export const fr: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Fermer le conseil',
+    stepIndicator: 'Étape {{current}} / {{total}}',
+    skip: 'Passer',
     homeAddFirstTitle: 'Ajoute ta première carte',
     homeAddFirstMessage: 'Touche le bouton menu, puis choisis Ajouter une carte pour commencer.',
     homeTapExpandTitle: 'Ouvre une carte',
@@ -141,9 +158,9 @@ export const fr: Translations = {
       "Une carte ouverte dans une autre app ? Fais une capture d'écran et partage l'image avec Tesserone — le code-barres est détecté automatiquement.",
     homeReorderHintTitle: 'Réorganise tes cartes',
     homeReorderHintMessage:
-      'Touche Réorganiser pour activer le mode, puis fais glisser les cartes dans ton ordre préféré.',
-    reorderDragTitle: 'Fais glisser pour réorganiser',
+      'Touche Trier, puis Manuel, pour organiser tes cartes à la main.',
+    reorderDragTitle: 'Déplace tes cartes',
     reorderDragMessage:
-      "Appuie longuement sur une carte et déplace-la à l'emplacement voulu. Touche Terminé quand tu as fini.",
+      'Utilise les boutons ▲ et ▼ (ou fais glisser) pour déplacer une carte. Touche Terminé quand tu as fini.',
   },
 };

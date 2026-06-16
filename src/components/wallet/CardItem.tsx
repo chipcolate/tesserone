@@ -1,22 +1,19 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Platform, View, Text, Pressable } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
-  useSharedValue,
   withSpring,
-  withRepeat,
-  withSequence,
   withTiming,
-  cancelAnimation,
-  Easing,
 } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { FidelityCard } from '../../types';
 import { CardFlip } from './CardFlip';
 import { resolveCardColor } from '../../services/logos';
-import { isLightColor } from '../../theme';
+import { isLightColor, textOnColor, useTheme } from '../../theme';
+import { mono } from '../../theme/fonts';
 import {
   CARD_STACK,
   SPRING_SELECT,
@@ -43,6 +40,9 @@ export const CardItem = React.memo(function CardItem({
   reorderMode,
   onReorder,
 }: CardItemProps) {
+  const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const tapGesture = state.makeTapGesture(index);
   const longPressGesture = state.makeLongPressGesture(() => {
     router.push(`/card/${card.id}`);
@@ -57,29 +57,6 @@ export const CardItem = React.memo(function CardItem({
   const effectiveFlip = useDerivedValue(() => {
     return state.selectedCardIndex.value === index ? state.flipProgress.value : 0;
   }, [index]);
-
-  // Wobble animation for reorder mode
-  const wobble = useSharedValue(0);
-  useEffect(() => {
-    if (reorderMode) {
-      // Random-ish phase offset per card so they don't sync
-      const delay = (index % 3) * 50;
-      setTimeout(() => {
-        wobble.value = withRepeat(
-          withSequence(
-            withTiming(-2, { duration: 100, easing: Easing.inOut(Easing.ease) }),
-            withTiming(2, { duration: 200, easing: Easing.inOut(Easing.ease) }),
-            withTiming(0, { duration: 100, easing: Easing.inOut(Easing.ease) }),
-          ),
-          -1,
-          true
-        );
-      }, delay);
-    } else {
-      cancelAnimation(wobble);
-      wobble.value = withTiming(0, { duration: 150 });
-    }
-  }, [reorderMode]);
 
   const animatedStyle = useAnimatedStyle(() => {
     const selected = state.selectedCardIndex.value;
@@ -119,7 +96,7 @@ export const CardItem = React.memo(function CardItem({
       return {
         transform: [
           { translateY: withSpring(targetY, SPRING_REORDER) },
-          { rotate: `${wobble.value}deg` },
+          { scale: withSpring(1.02, SPRING_REORDER) },
         ],
         height: CARD_STACK.CARD_HEIGHT,
         borderRadius: CARD_STACK.CARD_RADIUS,
@@ -127,14 +104,15 @@ export const CardItem = React.memo(function CardItem({
       };
     }
 
-    // --- Normal stack mode (including wobble when reorder is on) ---
+    // --- Normal stack mode (armed lift when reorder is on) ---
     if (selected === -1) {
       const targetY = index * CARD_STACK.STACK_SPACING - state.scrollOffset.value;
       const stiff = { damping: 80, stiffness: 1200 };
+      const armed = state.reorderMode.value === 1;
       return {
         transform: [
           { translateY: withSpring(targetY, stiff) },
-          { rotate: `${wobble.value}deg` },
+          { scale: withSpring(armed ? 1.02 : 1, stiff) },
         ],
         height: withSpring(CARD_STACK.CARD_HEIGHT, stiff),
         borderRadius: CARD_STACK.CARD_RADIUS,
@@ -182,7 +160,13 @@ export const CardItem = React.memo(function CardItem({
   }, [index, total]);
 
   const bg = resolveCardColor(card.color, card.logoSlug);
+  const fg = textOnColor(bg);
   const handleTint = isLightColor(bg) ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.55)';
+
+  const atTop = index === 0;
+  const atBottom = index === total - 1;
+  const moveUp = () => { if (!atTop) onReorder(index, index - 1); };
+  const moveDown = () => { if (!atBottom) onReorder(index, index + 1); };
 
   const handleFrontStyle = useAnimatedStyle(() => {
     const isSelected = state.selectedCardIndex.value === index;
@@ -206,6 +190,11 @@ export const CardItem = React.memo(function CardItem({
     };
   }, [index]);
 
+  // Static "armed" cue for reorder mode — a crisp accent outline, no jiggle.
+  const armedStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(state.reorderMode.value === 1 ? 1 : 0, { duration: 150 }),
+  }));
+
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.item, animatedStyle]}>
@@ -216,6 +205,34 @@ export const CardItem = React.memo(function CardItem({
         <Animated.View style={[styles.handleWrap, handleBackStyle]} pointerEvents="none">
           <View style={[styles.handle, { backgroundColor: 'rgba(0,0,0,0.35)' }]} />
         </Animated.View>
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.armed, { borderColor: colors.accent }, armedStyle]}
+        />
+        {reorderMode ? (
+          <View style={styles.reorderCtrls} pointerEvents="box-none">
+            <Pressable
+              onPress={moveUp}
+              disabled={atTop}
+              hitSlop={6}
+              accessibilityRole="button"
+              accessibilityLabel={t('home.moveUp')}
+              style={[styles.reorderBtn, { backgroundColor: fg, opacity: atTop ? 0.3 : 1 }]}
+            >
+              <Text style={[styles.reorderChevron, { color: bg }]}>▲</Text>
+            </Pressable>
+            <Pressable
+              onPress={moveDown}
+              disabled={atBottom}
+              hitSlop={6}
+              accessibilityRole="button"
+              accessibilityLabel={t('home.moveDown')}
+              style={[styles.reorderBtn, { backgroundColor: fg, opacity: atBottom ? 0.3 : 1 }]}
+            >
+              <Text style={[styles.reorderChevron, { color: bg }]}>▼</Text>
+            </Pressable>
+          </View>
+        ) : null}
       </Animated.View>
     </GestureDetector>
   );
@@ -231,12 +248,12 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.35,
-        shadowRadius: 16,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.18,
+        shadowRadius: 10,
       },
       android: {
-        elevation: 12,
+        elevation: 6,
       },
     }),
   },
@@ -252,5 +269,29 @@ const styles = StyleSheet.create({
     width: 36,
     height: 5,
     borderRadius: 2.5,
+  },
+  armed: {
+    ...StyleSheet.absoluteFillObject,
+    borderWidth: 2,
+    borderRadius: CARD_STACK.CARD_RADIUS,
+  },
+  reorderCtrls: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    gap: 8,
+    zIndex: 20,
+  },
+  reorderBtn: {
+    width: 40,
+    height: 34,
+    borderRadius: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  reorderChevron: {
+    fontFamily: mono.bold,
+    fontSize: 16,
+    lineHeight: 18,
   },
 });

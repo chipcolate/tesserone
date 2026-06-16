@@ -8,18 +8,32 @@ export const it: Translations = {
     done: 'Fatto',
     remove: 'Rimuovi',
     gotIt: 'Ho capito',
+    undo: 'Annulla',
   },
   error: {
     title: 'Qualcosa è andato storto',
     retry: 'Riprova',
+    goHome: 'Vai alla home',
   },
   home: {
     emptyState: 'Aggiungi la tua prima tessera',
     menuAriaLabel: 'Menu',
     settings: 'Impostazioni',
-    reorder: 'Riordina',
+    sort: 'Ordina',
     reorderDone: 'Fatto',
+    reordering: 'Riordino',
+    moveUp: 'Sposta su',
+    moveDown: 'Sposta giù',
     addCard: 'Aggiungi tessera',
+    cardCount_one: '{{count}} tessera',
+    cardCount_other: '{{count}} tessere',
+  },
+  sort: {
+    title: 'Ordina per',
+    alphabetical: 'Alfabetico',
+    dateAdded: 'Data di aggiunta',
+    dateModified: 'Data di modifica',
+    manual: 'Manuale',
   },
   add: {
     title: 'Aggiungi tessera',
@@ -69,6 +83,7 @@ export const it: Translations = {
     timestamps: 'Creata il {{created}} · Aggiornata il {{updated}}',
     deleteConfirmTitle: 'Elimina tessera',
     deleteConfirmBody: 'Rimuovere "{{name}}" dal tuo portafoglio?',
+    deletedToast: '{{name}} eliminata',
     missingNameTitle: 'Nome mancante',
     missingNameBody: 'Il nome della tessera è obbligatorio.',
   },
@@ -100,7 +115,7 @@ export const it: Translations = {
     replayTutorial: 'Rivedi il tutorial',
     deleteAll: 'Elimina tutte le tessere',
     aboutVersion: 'v{{version}}',
-    aboutTagline: 'Il gestore di tessere fedeltà che sembra vivo.\nOpen source · Creato da Chipcolate',
+    aboutTagline: 'Il gestore di tessere fedeltà che funziona e basta.\nOpen source · Creato da Chipcolate',
     aboutDisclaimer:
       "Non affiliato con i marchi o esercenti mostrati nell'app. Nomi e loghi dei marchi sono marchi registrati dei rispettivi proprietari.",
     exportFailed: 'Esportazione non riuscita',
@@ -125,6 +140,8 @@ export const it: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Chiudi il suggerimento',
+    stepIndicator: 'Passo {{current}} / {{total}}',
+    skip: 'Salta',
     homeAddFirstTitle: 'Aggiungi la tua prima tessera',
     homeAddFirstMessage: 'Tocca il pulsante menu, poi scegli Aggiungi tessera per iniziare.',
     homeTapExpandTitle: 'Apri una tessera',
@@ -139,9 +156,9 @@ export const it: Translations = {
       "Hai una tessera aperta in un'altra app? Fai uno screenshot e condividi l'immagine con Tesserone — il codice viene riconosciuto in automatico.",
     homeReorderHintTitle: 'Riordina le tue tessere',
     homeReorderHintMessage:
-      'Tocca Riordina per entrare in modalità riordino, poi trascina le tessere come preferisci.',
-    reorderDragTitle: 'Trascina per riordinare',
+      'Tocca Ordina, poi Manuale, per disporre le tessere a mano.',
+    reorderDragTitle: 'Sposta le tessere',
     reorderDragMessage:
-      'Tieni premuta una tessera e trascinala in una nuova posizione. Tocca Fatto quando hai finito.',
+      'Usa i pulsanti ▲ e ▼ (o trascina) per spostare una tessera. Tocca Fatto quando hai finito.',
   },
 };

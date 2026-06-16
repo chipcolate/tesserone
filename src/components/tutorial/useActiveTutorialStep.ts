@@ -14,7 +14,22 @@ export type TutorialStepDef = {
   message: string;
   /** Which UI element to spotlight (null = centered, no cutout). */
   target: 'fab' | 'reorderItem' | null;
+  /** 0-based position in the overall tutorial sequence. */
+  index: number;
+  /** Total number of tutorial steps. */
+  total: number;
 };
+
+/** Canonical order of the coaching steps, used for the "step N of M" indicator. */
+const STEP_ORDER: TutorialStepId[] = [
+  'home-add-first',
+  'home-tap-expand',
+  'expanded-tips',
+  'home-scroll',
+  'home-share-tip',
+  'home-reorder-hint',
+  'reorder-drag',
+];
 
 const STEP_TARGETS: Record<TutorialStepId, TutorialStepDef['target']> = {
   'home-add-first': 'fab',
@@ -74,6 +89,8 @@ export function useActiveTutorialStep(ctx: TutorialContext): TutorialStepDef | n
     title: t(STEP_KEY[id].title),
     message: t(STEP_KEY[id].message),
     target: STEP_TARGETS[id],
+    index: STEP_ORDER.indexOf(id),
+    total: STEP_ORDER.length,
   });
 
   if (ctx.reorderMode && !seen('reorder-drag')) return make('reorder-drag');

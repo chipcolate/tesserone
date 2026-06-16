@@ -10,6 +10,7 @@ import {
   Image,
 } from 'react-native';
 import { KeyboardAwareScrollView, type KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
+import Svg, { Defs, LinearGradient, Stop, Rect } from 'react-native-svg';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
@@ -17,6 +18,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from 'react-i18next';
 import { useCardsStore, nextSortIndex } from '../src/stores/cards';
 import { useTheme, typography, CARD_COLORS, textOnColor, DEFAULT_CARD_COLOR } from '../src/theme';
+import { CHROME_RADIUS } from '../src/theme/geometry';
+import { mono } from '../src/theme/fonts';
 import { BarcodeFormat, FidelityCard } from '../src/types';
 import * as Haptics from 'expo-haptics';
 import { mapBarcodeType, validateBarcode, fixScannedCode, BARCODE_FORMAT_OPTIONS } from '../src/services/scanner';
@@ -24,6 +27,9 @@ import { scanBarcodeFromImage } from '../src/services/imageScan';
 import { searchBrands, getBrandColors, deleteCustomLogo } from '../src/services/logos';
 import type { BrandEntry } from '../src/types';
 import { LogoSelector } from '../src/components/ui/LogoSelector';
+import { BrandResults } from '../src/components/ui/BrandResults';
+import { Button } from '../src/components/ui/Button';
+import { ActionBar } from '../src/components/ui/ActionBar';
 
 type Mode = 'edit' | 'camera';
 type ScanStatus = 'idle' | 'scanning' | 'notFound';
@@ -211,17 +217,17 @@ export default function AddCardScreen() {
 
   const renderActionTile = (label: string, onPress: () => void) => (
     <Pressable
-      style={[styles.actionTile, { backgroundColor: colors.surface }]}
+      style={[styles.actionTile, { backgroundColor: colors.surface, borderColor: colors.border }]}
       onPress={onPress}
       accessibilityRole="button"
     >
-      <Text style={[typography.body, { color: colors.text, fontWeight: '700' }]}>{label}</Text>
+      <Text style={[styles.actionTileLabel, { color: colors.text }]}>{label}</Text>
     </Pressable>
   );
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.bg }]}>
-      <View style={styles.header}>
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
         <Text style={[typography.cardName, { color: colors.text }]}>{t('add.title')}</Text>
       </View>
 
@@ -247,6 +253,14 @@ export default function AddCardScreen() {
             <View style={styles.viewfinder} />
             <Text style={styles.scanHint}>{t('add.scanHint')}</Text>
           </View>
+          <Pressable
+            style={[styles.cameraBack, { top: insets.top + 12 }]}
+            onPress={() => setMode('edit')}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.cancel')}
+          >
+            <Text style={styles.cameraBackText}>✕</Text>
+          </Pressable>
         </View>
       ) : (
         <KeyboardAwareScrollView
@@ -258,12 +272,12 @@ export default function AddCardScreen() {
           bottomOffset={ACTION_BAR_HEIGHT + insets.bottom}
         >
           {scanStatus === 'scanning' && (
-            <View style={[styles.scanBanner, { backgroundColor: colors.surface }]}>
+            <View style={[styles.scanBanner, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Text style={[typography.body, { color: colors.text }]}>{t('add.scanningImage')}</Text>
             </View>
           )}
           {scanStatus === 'notFound' && pickedImageUri && (
-            <View style={[styles.scanResultRow, { backgroundColor: colors.surface }]}>
+            <View style={[styles.scanResultRow, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Image
                 source={{ uri: pickedImageUri }}
                 style={styles.thumbnail}
@@ -278,7 +292,7 @@ export default function AddCardScreen() {
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelName')}</Text>
           <TextInput
             ref={nameInputRef}
-            style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
+            style={[styles.input, { backgroundColor: colors.surface, color: colors.text, borderColor: colors.border }]}
             value={name}
             onChangeText={handleNameChange}
             placeholder={t('add.placeholderName')}
@@ -287,6 +301,7 @@ export default function AddCardScreen() {
             autoCorrect={false}
             spellCheck={false}
           />
+          <BrandResults results={brandResults} selectedSlug={logoSlug} onSelect={handleBrandSelect} />
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelLogo')}</Text>
           <LogoSelector
@@ -294,15 +309,13 @@ export default function AddCardScreen() {
             customLogoUri={customLogoUri}
             cardName={name}
             cardColor={color}
-            brandResults={brandResults}
-            onBrandSelect={handleBrandSelect}
             onCustomLogoPick={handleCustomLogoPick}
             onClear={handleClearLogo}
           />
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelBarcode')}</Text>
           <TextInput
-            style={[styles.input, { backgroundColor: colors.surface, color: colors.text }]}
+            style={[styles.input, { backgroundColor: colors.surface, color: colors.text, borderColor: colors.border }]}
             value={code}
             onChangeText={setCode}
             placeholder={t('add.placeholderBarcode')}
@@ -312,30 +325,47 @@ export default function AddCardScreen() {
           />
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelFormat')}</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
-            {BARCODE_FORMAT_OPTIONS.map((opt) => (
-              <Pressable
-                key={opt.value}
-                style={[
-                  styles.formatChip,
-                  { backgroundColor: format === opt.value ? colors.accent : colors.surface },
-                ]}
-                onPress={() => setFormat(opt.value)}
-              >
-                <Text
+          <View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.formatRow}>
+              {BARCODE_FORMAT_OPTIONS.map((opt) => (
+                <Pressable
+                  key={opt.value}
                   style={[
-                    typography.caption,
+                    styles.formatChip,
                     {
-                      color: format === opt.value ? textOnColor(colors.accent) : colors.text,
-                      fontWeight: format === opt.value ? '700' : '400',
+                      backgroundColor: format === opt.value ? colors.accent : colors.surface,
+                      borderColor: format === opt.value ? colors.accent : colors.border,
                     },
                   ]}
+                  onPress={() => setFormat(opt.value)}
                 >
-                  {opt.label}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
+                  <Text
+                    style={{
+                      fontFamily: format === opt.value ? mono.bold : mono.regular,
+                      fontSize: 12,
+                      color: format === opt.value ? textOnColor(colors.accent) : colors.text,
+                    }}
+                  >
+                    {opt.label}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+            <Svg
+              pointerEvents="none"
+              style={styles.formatFade}
+              width={28}
+              height="100%"
+            >
+              <Defs>
+                <LinearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+                  <Stop offset="0" stopColor={colors.bg} stopOpacity="0" />
+                  <Stop offset="1" stopColor={colors.bg} stopOpacity="1" />
+                </LinearGradient>
+              </Defs>
+              <Rect x="0" y="0" width="28" height="100%" fill="url(#fade)" />
+            </Svg>
+          </View>
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelColor')}</Text>
           <View style={styles.colorGrid}>
@@ -344,9 +374,8 @@ export default function AddCardScreen() {
                 key={c}
                 style={[
                   styles.colorDot,
-                  { backgroundColor: c },
-                  c === '#FFFFFF' && styles.colorLight,
-                  color === c && styles.colorSelected,
+                  { backgroundColor: c, borderColor: colors.border },
+                  color === c && { borderColor: colors.text, borderWidth: 3 },
                 ]}
                 onPress={() => setColor(c)}
               />
@@ -355,7 +384,7 @@ export default function AddCardScreen() {
 
           <Text style={[styles.label, { color: colors.textSecondary }]}>{t('add.labelNotes')}</Text>
           <TextInput
-            style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text }]}
+            style={[styles.input, styles.notesInput, { backgroundColor: colors.surface, color: colors.text, borderColor: colors.border }]}
             value={notes}
             onChangeText={setNotes}
             placeholder={t('add.placeholderNotes')}
@@ -366,49 +395,47 @@ export default function AddCardScreen() {
         </KeyboardAwareScrollView>
       )}
 
-      <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 12 }]}>
-        <Pressable
-          style={[styles.actionButton, { backgroundColor: colors.surface }]}
-          onPress={() => router.back()}
-        >
-          <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>{t('common.cancel')}</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.actionButton, { backgroundColor: colors.accent }]}
-          onPress={handleSave}
-        >
-          <Text style={[typography.body, { color: '#fff', fontWeight: '700' }]}>{t('add.save')}</Text>
-        </Pressable>
-      </View>
+      <ActionBar>
+        <Button title={t('common.cancel')} variant="secondary" onPress={() => router.back()} style={styles.flex} />
+        <Button title={t('add.save')} variant="primary" onPress={handleSave} style={styles.flex} />
+      </ActionBar>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1 },
+  flex: { flex: 1 },
   header: {
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 12,
+    borderBottomWidth: 1,
   },
   actionsRow: {
     flexDirection: 'row',
     marginHorizontal: 20,
     gap: 10,
+    marginTop: 16,
     marginBottom: 16,
   },
   actionTile: {
     flex: 1,
     height: 72,
-    borderRadius: 14,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  actionTileLabel: {
+    fontFamily: mono.bold,
+    fontSize: 14,
   },
   cameraWrap: {
     flex: 1,
     marginHorizontal: 20,
-    borderRadius: 16,
+    borderRadius: CHROME_RADIUS,
     overflow: 'hidden',
     marginBottom: 20,
   },
@@ -423,13 +450,28 @@ const styles = StyleSheet.create({
     height: 160,
     borderWidth: 2,
     borderColor: 'rgba(255,255,255,0.6)',
-    borderRadius: 12,
+    borderRadius: CHROME_RADIUS,
   },
   scanHint: {
     color: '#fff',
+    fontFamily: mono.medium,
     fontSize: 14,
     marginTop: 16,
-    fontWeight: '600',
+  },
+  cameraBack: {
+    position: 'absolute',
+    left: 12,
+    width: 40,
+    height: 40,
+    borderRadius: CHROME_RADIUS,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cameraBackText: {
+    color: '#fff',
+    fontSize: 20,
+    fontFamily: mono.regular,
   },
   form: { flex: 1 },
   formContent: {
@@ -439,7 +481,8 @@ const styles = StyleSheet.create({
   scanBanner: {
     paddingHorizontal: 14,
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     marginBottom: 12,
   },
   scanResultRow: {
@@ -447,21 +490,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     padding: 12,
-    borderRadius: 12,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     marginBottom: 12,
   },
   thumbnail: {
     width: 64,
     height: 64,
-    borderRadius: 8,
+    borderRadius: CHROME_RADIUS,
     backgroundColor: '#0006',
   },
   scanResultText: {
     flex: 1,
   },
   label: {
+    fontFamily: mono.bold,
     fontSize: 13,
-    fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: 0.8,
     marginBottom: 6,
@@ -469,9 +513,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 48,
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     paddingHorizontal: 14,
     fontSize: 16,
+    fontFamily: mono.regular,
   },
   notesInput: {
     height: 80,
@@ -481,10 +527,17 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     marginBottom: 4,
   },
+  formatFade: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
   formatChip: {
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     marginRight: 8,
   },
   colorGrid: {
@@ -495,26 +548,7 @@ const styles = StyleSheet.create({
   colorDot: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-  },
-  colorLight: {
+    borderRadius: CHROME_RADIUS,
     borderWidth: 1,
-    borderColor: '#ccc',
-  },
-  colorSelected: {
-    borderWidth: 3,
-    borderColor: '#fff',
-  },
-  bottomActions: {
-    flexDirection: 'row',
-    gap: 12,
-    paddingHorizontal: 20,
-    paddingTop: 12,
-  },
-  actionButton: {
-    flex: 1,
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: 'center',
   },
 });

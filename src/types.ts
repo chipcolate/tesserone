@@ -13,7 +13,7 @@ export type BarcodeFormat =
   | 'DATAMATRIX'
   | 'ITF14';
 
-export type SortMode = 'manual' | 'alphabetical' | 'dateCreated';
+export type SortMode = 'manual' | 'alphabetical' | 'dateCreated' | 'dateModified';
 
 export type ThemeMode = 'system' | 'light' | 'dark';
 

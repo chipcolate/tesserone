@@ -4,11 +4,17 @@ import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 import * as SystemUI from 'expo-system-ui';
+import { useFonts } from 'expo-font';
 import { useTranslation } from 'react-i18next';
 import { ShareIntentProvider, useShareIntentContext } from 'expo-share-intent';
 import { ThemeProvider, useTheme } from '../src/theme';
+import { darkColors, lightColors, DEFAULT_ACCENT, textOnColor } from '../src/theme/colors';
+import { mono } from '../src/theme/fonts';
+import { CHROME_RADIUS } from '../src/theme/geometry';
+import { fontAssets } from '../src/theme/fonts';
+import { ToastProvider } from '../src/components/ui/Toast';
 import { initI18n } from '../src/i18n';
 import { useSettingsStore } from '../src/stores/settings';
 import { useCardsStore } from '../src/stores/cards';
@@ -41,26 +47,28 @@ function Inner({ cardsReady }: { cardsReady: boolean }) {
       <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
         <SafeAreaProvider>
           <StatusBar style={dark ? 'light' : 'dark'} />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: colors.bg },
-            }}
-          >
-            <Stack.Screen name="index" />
-            <Stack.Screen
-              name="add"
-              options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-            />
-            <Stack.Screen
-              name="card/[id]"
-              options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-            />
-            <Stack.Screen
-              name="settings"
-              options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-            />
-          </Stack>
+          <ToastProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: colors.bg },
+              }}
+            >
+              <Stack.Screen name="index" />
+              <Stack.Screen
+                name="add"
+                options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+              />
+              <Stack.Screen
+                name="card/[id]"
+                options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+              />
+              <Stack.Screen
+                name="settings"
+                options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+              />
+            </Stack>
+          </ToastProvider>
         </SafeAreaProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>
@@ -68,6 +76,7 @@ function Inner({ cardsReady }: { cardsReady: boolean }) {
 }
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts(fontAssets);
   const language = useSettingsStore((s) => s.language);
   const hydrated = useSettingsStore.persist?.hasHydrated?.() ?? true;
   const [ready, setReady] = useState(hydrated);
@@ -106,7 +115,7 @@ export default function RootLayout() {
     return () => cleanup?.();
   }, [cardsReady]);
 
-  if (!ready) return null;
+  if (!ready || !fontsLoaded) return null;
 
   return (
     <ThemeProvider>
@@ -119,13 +128,31 @@ export default function RootLayout() {
 
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   const { t } = useTranslation();
+  const scheme = useColorScheme();
+  const c = scheme === 'dark' ? darkColors : lightColors;
+
   return (
-    <View style={styles.errorRoot}>
-      <Text style={styles.errorTitle}>{t('error.title')}</Text>
-      <Text style={styles.errorMessage}>{error.message}</Text>
-      <Pressable style={styles.errorButton} onPress={() => retry()}>
-        <Text style={styles.errorButtonText}>{t('error.retry')}</Text>
-      </Pressable>
+    <View style={[styles.errorRoot, { backgroundColor: c.bg }]}>
+      <Text style={[styles.errorTitle, { color: c.text }]}>{t('error.title')}</Text>
+      <Text style={[styles.errorMessage, { color: c.textSecondary }]}>{error.message}</Text>
+      <View style={styles.errorButtons}>
+        <Pressable
+          style={[styles.errorButton, { backgroundColor: DEFAULT_ACCENT }]}
+          onPress={() => retry()}
+        >
+          <Text style={[styles.errorButtonText, { color: textOnColor(DEFAULT_ACCENT) }]}>
+            {t('error.retry')}
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.errorButton, { borderColor: c.border, borderWidth: 1 }]}
+          onPress={() => router.replace('/')}
+        >
+          <Text style={[styles.errorButtonText, { color: c.text }]}>
+            {t('error.goHome', { defaultValue: 'Go Home' })}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -136,31 +163,30 @@ const styles = StyleSheet.create({
   },
   errorRoot: {
     flex: 1,
-    backgroundColor: '#0A0A0A',
     padding: 24,
     justifyContent: 'center',
     gap: 16,
   },
   errorTitle: {
-    color: '#fff',
+    fontFamily: mono.bold,
     fontSize: 22,
-    fontWeight: '700',
   },
   errorMessage: {
-    color: '#A0A0A0',
+    fontFamily: mono.regular,
     fontSize: 15,
     lineHeight: 22,
   },
+  errorButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
   errorButton: {
-    alignSelf: 'flex-start',
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: '#6C2DD7',
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
   },
   errorButtonText: {
-    color: '#fff',
+    fontFamily: mono.bold,
     fontSize: 15,
-    fontWeight: '700',
   },
 });

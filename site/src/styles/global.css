@@ -1,3 +1,4 @@
+@import "@fontsource-variable/jetbrains-mono";
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -10,9 +11,11 @@
   --color-border: #e7e5e4;
   --color-accent: #6c2dd7;
   --color-accent-hover: #5521a8;
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Raw aesthetic: all-in monospace (self-hosted, no external request). */
+  --font-sans: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+  /* Squared chrome — matches the app's CHROME_RADIUS. */
+  --radius: 4px;
 }
 
 :where(.dark) {
@@ -29,6 +32,7 @@ html {
   background-color: var(--color-bg);
   color: var(--color-fg);
   scroll-behavior: smooth;
+  letter-spacing: -0.01em;
 }
 
 body {

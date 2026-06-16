@@ -3,12 +3,13 @@ import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { useTheme, typography, textOnColor } from '../../theme';
+import { CHROME_RADIUS } from '../../theme/geometry';
+import { mono } from '../../theme/fonts';
 import {
   getBrandLogo,
   getBrand,
   pickCustomLogoFromLibrary,
   customLogoSource,
-  type BrandEntry,
 } from '../../services/logos';
 
 interface LogoSelectorProps {
@@ -16,8 +17,6 @@ interface LogoSelectorProps {
   customLogoUri?: string;
   cardName: string;
   cardColor: string;
-  brandResults: BrandEntry[];
-  onBrandSelect: (brand: BrandEntry) => void;
   onCustomLogoPick: (ref: string) => void;
   onClear: () => void;
 }
@@ -27,8 +26,6 @@ export function LogoSelector({
   customLogoUri,
   cardName,
   cardColor,
-  brandResults,
-  onBrandSelect,
   onCustomLogoPick,
   onClear,
 }: LogoSelectorProps) {
@@ -71,7 +68,7 @@ export function LogoSelector({
   return (
     <View style={styles.container}>
       <View style={styles.previewRow}>
-        <View style={[styles.logoPreview, { backgroundColor: cardColor }]}>
+        <View style={[styles.logoPreview, { backgroundColor: cardColor, borderColor: colors.border }]}>
           {logoSource ? (
             <Image source={logoSource} style={styles.logoImage} contentFit="contain" transition={150} />
           ) : (
@@ -86,7 +83,7 @@ export function LogoSelector({
           </Text>
           {hasAnyLogo && (
             <Pressable onPress={onClear} hitSlop={8}>
-              <Text style={[typography.caption, { color: '#EF5350' }]}>{t('common.remove')}</Text>
+              <Text style={[typography.caption, { color: colors.danger }]}>{t('common.remove')}</Text>
             </Pressable>
           )}
         </View>
@@ -95,25 +92,17 @@ export function LogoSelector({
       <Pressable
         onPress={handleUpload}
         disabled={picking}
-        style={[styles.uploadButton, { backgroundColor: colors.surface, opacity: picking ? 0.6 : 1 }]}
+        style={[
+          styles.uploadButton,
+          { backgroundColor: colors.surface, borderColor: colors.border, opacity: picking ? 0.6 : 1 },
+        ]}
       >
-        <Text style={[typography.label, { color: colors.text, fontWeight: '600' }]}>
+        <Text style={[styles.uploadLabel, { color: colors.text }]}>
           {customLogoUri
             ? t('logoSelector.replacePhoto')
             : t('logoSelector.uploadPhoto')}
         </Text>
       </Pressable>
-
-      {brandResults.length > 0 && (
-        <View style={[styles.resultsList, { backgroundColor: colors.surface }]}>
-          {brandResults.map((b) => (
-            <Pressable key={b.slug} style={styles.resultRow} onPress={() => onBrandSelect(b)}>
-              <View style={[styles.resultDot, { backgroundColor: b.primaryColor }]} />
-              <Text style={[typography.label, { color: colors.text }]}>{b.name}</Text>
-            </Pressable>
-          ))}
-        </View>
-      )}
     </View>
   );
 }
@@ -130,7 +119,8 @@ const styles = StyleSheet.create({
   logoPreview: {
     width: 48,
     height: 48,
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 4,
@@ -140,8 +130,8 @@ const styles = StyleSheet.create({
     height: 40,
   },
   initial: {
-    fontSize: 24,
-    fontWeight: '800',
+    fontFamily: mono.extrabold,
+    fontSize: 22,
   },
   previewInfo: {
     flex: 1,
@@ -151,22 +141,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 14,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
   },
-  resultsList: {
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  resultRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-  },
-  resultDot: {
-    width: 24,
-    height: 24,
-    borderRadius: 6,
+  uploadLabel: {
+    fontFamily: mono.medium,
+    fontSize: 14,
   },
 });

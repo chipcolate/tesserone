@@ -7,20 +7,34 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useAnimatedReaction,
-  withSpring,
+  withTiming,
   interpolate,
   runOnJS,
   Extrapolation,
+  Easing,
 } from 'react-native-reanimated';
 import { useCardsStore, getSortedCards } from '../src/stores/cards';
 import { useSettingsStore } from '../src/stores/settings';
-import { useTheme, typography, textOnColor } from '../src/theme';
+import { useTheme, textOnColor } from '../src/theme';
+import { CHROME_RADIUS } from '../src/theme/geometry';
+import { mono } from '../src/theme/fonts';
+import type { SortMode } from '../src/types';
+import { Wordmark } from '../src/components/ui/Wordmark';
+import { Sheet } from '../src/components/ui/Sheet';
 import { CardStack, useCardStack } from '../src/components/wallet/CardStack';
 import { TutorialOverlay, type TargetRect } from '../src/components/tutorial/TutorialOverlay';
 import { useActiveTutorialStep } from '../src/components/tutorial/useActiveTutorialStep';
 import { useTutorialStore } from '../src/stores/tutorial';
 
-const SPRING = { damping: 18, stiffness: 260 } as const;
+// Crisp, mechanical open/close — no spring bounce.
+const FAB_TIMING = { duration: 200, easing: Easing.out(Easing.cubic) } as const;
+
+const SORT_OPTIONS: { mode: SortMode; key: string }[] = [
+  { mode: 'alphabetical', key: 'sort.alphabetical' },
+  { mode: 'dateCreated', key: 'sort.dateAdded' },
+  { mode: 'dateModified', key: 'sort.dateModified' },
+  { mode: 'manual', key: 'sort.manual' },
+];
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
@@ -29,9 +43,11 @@ export default function HomeScreen() {
   const cards = useCardsStore((s) => s.cards);
   const reorderCard = useCardsStore((s) => s.reorderCard);
   const sortMode = useSettingsStore((s) => s.sortMode);
+  const setSortMode = useSettingsStore((s) => s.setSortMode);
   const stackState = useCardStack();
   const [reorderMode, setReorderMode] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
+  const [sortSheetOpen, setSortSheetOpen] = useState(false);
   const [selectedCardIdx, setSelectedCardIdx] = useState(-1);
 
   // Sync React state to shared value so gesture worklets can read it
@@ -52,21 +68,32 @@ export default function HomeScreen() {
 
   const toggle = useCallback(() => {
     const opening = fabProgress.value < 0.5;
-    fabProgress.value = withSpring(opening ? 1 : 0, SPRING);
+    fabProgress.value = withTiming(opening ? 1 : 0, FAB_TIMING);
     setFabOpen(opening);
   }, [fabProgress]);
 
   const close = useCallback(() => {
-    fabProgress.value = withSpring(0, SPRING);
+    fabProgress.value = withTiming(0, FAB_TIMING);
     setFabOpen(false);
   }, [fabProgress]);
 
   const cardsList = getSortedCards(cards, sortMode);
 
-  const toggleReorder = useCallback(() => {
+  const openSort = useCallback(() => {
     close();
-    setReorderMode((v) => !v);
+    setSortSheetOpen(true);
   }, [close]);
+
+  const chooseSort = useCallback(
+    (mode: SortMode) => {
+      setSortMode(mode);
+      setReorderMode(mode === 'manual');
+      setSortSheetOpen(false);
+    },
+    [setSortMode]
+  );
+
+  const exitReorder = useCallback(() => setReorderMode(false), []);
 
   const handleReorder = useCallback(
     (from: number, to: number) => {
@@ -126,6 +153,7 @@ export default function HomeScreen() {
   const [fabRect, setFabRect] = useState<TargetRect | null>(null);
   const [reorderItemRect, setReorderItemRect] = useState<TargetRect | null>(null);
   const markSeen = useTutorialStore((s) => s.markSeen);
+  const setTutorialEnabled = useTutorialStore((s) => s.setEnabled);
 
   const measureFab = useCallback(() => {
     fabRef.current?.measureInWindow((x, y, width, height) => {
@@ -163,18 +191,46 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <Text style={[typography.title, { color: colors.text }]}>Tesserone</Text>
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
+        <View style={styles.headerRow}>
+          <Wordmark />
+          {reorderMode ? (
+            <Pressable
+              onPress={exitReorder}
+              style={[styles.doneBtn, { backgroundColor: colors.accent }]}
+              accessibilityRole="button"
+            >
+              <Text style={[styles.doneLabel, { color: textOnColor(colors.accent) }]}>
+                {t('home.reorderDone')}
+              </Text>
+            </Pressable>
+          ) : null}
+        </View>
+        <Text
+          style={[
+            styles.headerCount,
+            { color: reorderMode ? colors.accent : colors.textSecondary },
+          ]}
+        >
+          {reorderMode
+            ? t('home.reordering').toUpperCase()
+            : t('home.cardCount', { count: cardsList.length }).toUpperCase()}
+        </Text>
       </View>
 
       <View style={styles.stackWrap}>
         {cardsList.length === 0 ? (
-          <Pressable style={styles.empty} onPress={() => router.push('/add')}>
-            <Text style={[styles.emptyIcon, { color: colors.textSecondary }]}>+</Text>
-            <Text style={[typography.body, { color: colors.textSecondary, textAlign: 'center' }]}>
-              {t('home.emptyState')}
-            </Text>
-          </Pressable>
+          <View style={styles.empty}>
+            <Pressable
+              style={[styles.emptySlot, { borderColor: colors.border }]}
+              onPress={() => router.push('/add')}
+            >
+              <Text style={[styles.emptyIcon, { color: colors.textSecondary }]}>+</Text>
+              <Text style={[styles.emptySlotLabel, { color: colors.textSecondary }]}>
+                {t('home.emptyState')}
+              </Text>
+            </Pressable>
+          </View>
         ) : (
           <CardStack cards={cardsList} state={stackState} reorderMode={reorderMode} onReorder={handleReorder} />
         )}
@@ -187,32 +243,32 @@ export default function HomeScreen() {
       <View style={[styles.fabMenu, { bottom: insets.bottom + 80 }]} pointerEvents="box-none">
         <Animated.View style={menuItem3Style}>
           <Pressable
-            style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
             onPress={() => { close(); router.push('/settings'); }}
           >
-            <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
               {t('home.settings')}
             </Text>
           </Pressable>
         </Animated.View>
         <Animated.View style={menuItem2Style}>
           <Pressable
-            ref={reorderItemRef}
-            style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
-            onPress={toggleReorder}
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            onPress={() => { close(); router.push('/add'); }}
           >
-            <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
-              {reorderMode ? t('home.reorderDone') : t('home.reorder')}
+            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
+              {t('home.addCard')}
             </Text>
           </Pressable>
         </Animated.View>
         <Animated.View style={menuItem1Style}>
           <Pressable
-            style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
-            onPress={() => { close(); router.push('/add'); }}
+            ref={reorderItemRef}
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            onPress={openSort}
           >
-            <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
-              {t('home.addCard')}
+            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
+              {t('home.sort')}
             </Text>
           </Pressable>
         </Animated.View>
@@ -235,15 +291,33 @@ export default function HomeScreen() {
         </Pressable>
       </View>
 
+      <Sheet
+        visible={sortSheetOpen}
+        onClose={() => setSortSheetOpen(false)}
+        title={t('sort.title')}
+      >
+        {SORT_OPTIONS.map((o) => (
+          <Pressable key={o.mode} style={styles.sortRow} onPress={() => chooseSort(o.mode)}>
+            <Text style={[styles.sortRowLabel, { color: colors.text }]}>{t(o.key)}</Text>
+            {sortMode === o.mode ? (
+              <Text style={[styles.sortRowLabel, { color: colors.accent }]}>✓</Text>
+            ) : null}
+          </Pressable>
+        ))}
+      </Sheet>
+
       <TutorialOverlay
         visible={!!activeStep}
         title={activeStep?.title}
         message={activeStep?.message ?? ''}
         targetRect={targetRect}
         cutoutRadius={cutoutRadius}
+        stepIndex={activeStep?.index}
+        stepTotal={activeStep?.total}
         onDismiss={() => {
           if (activeStep) markSeen(activeStep.id);
         }}
+        onSkip={() => setTutorialEnabled(false)}
       />
     </View>
   );
@@ -256,7 +330,40 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 24,
     paddingTop: 8,
-    paddingBottom: 16,
+    paddingBottom: 14,
+    borderBottomWidth: 1,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerCount: {
+    fontFamily: mono.regular,
+    fontSize: 12,
+    letterSpacing: 1,
+    marginTop: 4,
+  },
+  doneBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 7,
+    borderRadius: CHROME_RADIUS,
+  },
+  doneLabel: {
+    fontFamily: mono.bold,
+    fontSize: 13,
+    letterSpacing: 0.5,
+  },
+  sortRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  sortRowLabel: {
+    fontFamily: mono.regular,
+    fontSize: 16,
   },
   stackWrap: {
     flex: 1,
@@ -266,20 +373,36 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 12,
+  },
+  emptySlot: {
+    width: '100%',
+    height: 200,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderRadius: CHROME_RADIUS,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
   },
   emptyIcon: {
-    fontSize: 64,
-    fontWeight: '200',
+    fontFamily: mono.regular,
+    fontSize: 48,
+  },
+  emptySlotLabel: {
+    fontFamily: mono.regular,
+    fontSize: 13,
+    letterSpacing: 0.5,
+    textAlign: 'center',
+    paddingHorizontal: 24,
   },
   scrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     zIndex: 90,
   },
   fabMenu: {
     position: 'absolute',
-    right: 20,
+    right: 16,
     gap: 10,
     alignItems: 'flex-end',
     zIndex: 95,
@@ -287,28 +410,28 @@ const styles = StyleSheet.create({
   fabMenuItem: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    borderRadius: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
+  },
+  fabMenuLabel: {
+    fontFamily: mono.medium,
+    fontSize: 15,
   },
   fabWrap: {
     position: 'absolute',
     bottom: 0,
-    right: 20,
+    right: 16,
     zIndex: 100,
   },
   fab: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: CHROME_RADIUS,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 8,
   },

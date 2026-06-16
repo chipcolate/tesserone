@@ -8,7 +8,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Defs, Mask, Rect } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
-import { useTheme, typography, textOnColor } from '../../theme';
+import { useTheme, typography } from '../../theme';
+import { CHROME_RADIUS } from '../../theme/geometry';
+import { mono } from '../../theme/fonts';
+import { Button } from '../ui/Button';
 
 export type TargetRect = { x: number; y: number; width: number; height: number };
 
@@ -20,11 +23,14 @@ type Props = {
   cutoutPadding?: number;
   cutoutRadius?: number;
   arrow?: 'top' | 'bottom' | 'auto' | 'none';
+  stepIndex?: number;
+  stepTotal?: number;
   onDismiss: () => void;
+  onSkip?: () => void;
 };
 
 const FADE_MS = 220;
-const BACKDROP = 'rgba(0,0,0,0.72)';
+const BACKDROP = 'rgba(0,0,0,0.6)';
 
 type FrozenContent = {
   title?: string;
@@ -43,7 +49,10 @@ export function TutorialOverlay({
   cutoutPadding = 8,
   cutoutRadius = 16,
   arrow = 'auto',
+  stepIndex,
+  stepTotal,
   onDismiss,
+  onSkip,
 }: Props) {
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -147,29 +156,45 @@ export function TutorialOverlay({
       <View
         style={[
           styles.callout,
-          { backgroundColor: colors.surface },
+          { backgroundColor: colors.surface, borderColor: colors.border },
           calloutTop !== undefined && { top: calloutTop },
           calloutBottom !== undefined && { bottom: calloutBottom },
         ]}
       >
+        <View style={styles.calloutHeader}>
+          {stepIndex !== undefined && stepTotal !== undefined ? (
+            <Text style={[styles.stepIndicator, { color: colors.textSecondary }]}>
+              {t('tutorial.stepIndicator', {
+                current: stepIndex + 1,
+                total: stepTotal,
+                defaultValue: `STEP ${stepIndex + 1} / ${stepTotal}`,
+              })}
+            </Text>
+          ) : (
+            <View />
+          )}
+          {onSkip ? (
+            <Pressable onPress={onSkip} hitSlop={8} accessibilityRole="button">
+              <Text style={[styles.skip, { color: colors.textSecondary }]}>
+                {t('tutorial.skip', { defaultValue: 'SKIP' })}
+              </Text>
+            </Pressable>
+          ) : null}
+        </View>
         {content.title && (
           <Text style={[typography.body, styles.title, { color: colors.text }]}>
             {content.title}
           </Text>
         )}
-        <Text style={[typography.body, { color: colors.text, lineHeight: 22 }]}>
+        <Text style={[typography.body, { color: colors.text }]}>
           {content.message}
         </Text>
-        <Pressable
+        <Button
+          title={t('common.gotIt')}
+          variant="primary"
           onPress={onDismiss}
-          style={[styles.button, { backgroundColor: colors.accent }]}
-          accessibilityRole="button"
-          accessibilityLabel={t('tutorial.dismissAriaLabel')}
-        >
-          <Text style={[typography.body, styles.buttonText, { color: textOnColor(colors.accent) }]}>
-            {t('common.gotIt')}
-          </Text>
-        </Pressable>
+          style={styles.button}
+        />
       </View>
     </Animated.View>
   );
@@ -182,25 +207,32 @@ const styles = StyleSheet.create({
     left: 24,
     right: 24,
     padding: 18,
-    borderRadius: 14,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     gap: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 14,
-    elevation: 10,
+  },
+  calloutHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  stepIndicator: {
+    fontFamily: mono.bold,
+    fontSize: 12,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  skip: {
+    fontFamily: mono.bold,
+    fontSize: 12,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   title: {
-    fontWeight: '700',
+    fontFamily: mono.bold,
     marginBottom: 2,
   },
   button: {
     alignSelf: 'flex-end',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
-  },
-  buttonText: {
-    fontWeight: '700',
   },
 });

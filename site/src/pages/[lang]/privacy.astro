@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import ThemeToggle from "../../components/ThemeToggle.astro";
+import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { getStrings, localeUrl, type Locale } from "../../i18n";
 
@@ -33,7 +33,7 @@ const sectionOrder = [
 ---
 
 <Layout lang={lang} path="privacy" title={strings.meta.privacyTitle} description={strings.meta.privacyDescription}>
-  <ThemeToggle lang={lang} />
+  <Header lang={lang} />
   <main class="px-6 py-24 sm:py-32">
     <article class="mx-auto max-w-3xl">
       <a

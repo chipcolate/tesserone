@@ -3,7 +3,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import Barcode, { type Format } from '@kichiyaki/react-native-barcode-generator';
 import QRCode from 'react-native-qrcode-svg';
 import { FidelityCard, BarcodeFormat } from '../../types';
-import { typography } from '../../theme';
+import { typography, textOnColor } from '../../theme';
+import { resolveCardColor } from '../../services/logos';
+import { CARD_RADIUS, TILE_RADIUS } from '../../theme/geometry';
 
 interface CardBackProps {
   card: FidelityCard;
@@ -30,27 +32,30 @@ function barcodeLibFormat(format: BarcodeFormat): Format {
 }
 
 /**
- * Back face of a wallet card. Renders the barcode.
- * QR codes use react-native-qrcode-svg; everything else uses
- * @kichiyaki/react-native-barcode-generator.
+ * Back face of a wallet card. Theme-aware surface, but the barcode/QR always
+ * sits on a solid white tile so scanners keep reliable contrast regardless of
+ * light/dark mode.
  */
 export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
+  // The back keeps the same color as the front face.
+  const bg = resolveCardColor(card.color, card.logoSlug);
+  const fg = textOnColor(bg);
   const [error, setError] = useState(false);
   const isQR = QR_FORMATS.has(card.format);
 
   return (
-    <View style={styles.back}>
-      <View style={styles.barcodeWrap}>
+    <View style={[styles.back, { backgroundColor: bg }]}>
+      <View style={styles.tile}>
         {error ? (
           <Text style={styles.errorText}>Could not render barcode</Text>
         ) : isQR ? (
-          <QRCode value={card.code} size={240} backgroundColor="#FFFFFF" />
+          <QRCode value={card.code} size={220} backgroundColor="#FFFFFF" />
         ) : (
           <Barcode
             value={card.code}
             format={barcodeLibFormat(card.format)}
             width={2.4}
-            height={140}
+            height={130}
             background="#FFFFFF"
             lineColor="#000000"
             onError={() => setError(true)}
@@ -59,14 +64,17 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
       </View>
 
       <View style={styles.footer}>
-        <Text style={[typography.cardName, styles.name]} numberOfLines={1}>
+        <Text style={[typography.cardName, { color: fg }]} numberOfLines={1}>
           {card.name}
         </Text>
 
-        <Text style={[typography.barcode, styles.code]}>{card.code}</Text>
+        <Text style={[typography.barcode, { color: fg, opacity: 0.7 }]}>{card.code}</Text>
 
         {card.notes ? (
-          <Text style={[typography.caption, styles.notes]} numberOfLines={3}>
+          <Text
+            style={[typography.caption, styles.notes, { color: fg, opacity: 0.7 }]}
+            numberOfLines={3}
+          >
             {card.notes}
           </Text>
         ) : null}
@@ -78,14 +86,16 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
 const styles = StyleSheet.create({
   back: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
+    borderRadius: CARD_RADIUS,
     padding: 24,
-    paddingBottom: 40,
+    paddingBottom: 32,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  barcodeWrap: {
+  tile: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: TILE_RADIUS,
+    padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 140,
@@ -95,14 +105,7 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 10,
   },
-  name: {
-    color: '#1A1A1A',
-  },
-  code: {
-    color: '#333333',
-  },
   notes: {
-    color: '#555555',
     textAlign: 'center',
     maxWidth: '90%',
   },

@@ -4,6 +4,8 @@ import { Image } from 'expo-image';
 import { FidelityCard } from '../../types';
 import { getBrandLogo, resolveCardColor, customLogoSource } from '../../services/logos';
 import { textOnColor } from '../../theme';
+import { mono } from '../../theme/fonts';
+import { CARD_RADIUS } from '../../theme/geometry';
 
 interface CardFaceProps {
   card: FidelityCard;
@@ -42,7 +44,7 @@ export const CardFace = React.memo(function CardFace({ card }: CardFaceProps) {
 const styles = StyleSheet.create({
   face: {
     flex: 1,
-    borderRadius: 20,
+    borderRadius: CARD_RADIUS,
     padding: 20,
     overflow: 'hidden',
   },
@@ -56,9 +58,9 @@ const styles = StyleSheet.create({
     width: 160,
   },
   fallbackName: {
-    fontSize: 32,
-    fontWeight: '800',
-    lineHeight: 38,
-    letterSpacing: -0.5,
+    fontFamily: mono.extrabold,
+    fontSize: 30,
+    lineHeight: 36,
+    letterSpacing: -1,
   },
 });
