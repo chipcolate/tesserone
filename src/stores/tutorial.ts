@@ -26,7 +26,7 @@ export const useTutorialStore = create<TutorialState>()(
       seenSteps: {},
       markSeen: (id) =>
         set((s) => ({ seenSteps: { ...s.seenSteps, [id]: true } })),
-      resetAll: () => set({ seenSteps: {} }),
+      resetAll: () => set({ seenSteps: {}, enabled: true }),
       setEnabled: (enabled) => set({ enabled }),
     }),
     {

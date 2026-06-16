@@ -7,20 +7,25 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useAnimatedReaction,
-  withSpring,
+  withTiming,
   interpolate,
   runOnJS,
   Extrapolation,
+  Easing,
 } from 'react-native-reanimated';
 import { useCardsStore, getSortedCards } from '../src/stores/cards';
 import { useSettingsStore } from '../src/stores/settings';
-import { useTheme, typography, textOnColor } from '../src/theme';
+import { useTheme, textOnColor } from '../src/theme';
+import { CHROME_RADIUS } from '../src/theme/geometry';
+import { mono } from '../src/theme/fonts';
+import { Wordmark } from '../src/components/ui/Wordmark';
 import { CardStack, useCardStack } from '../src/components/wallet/CardStack';
 import { TutorialOverlay, type TargetRect } from '../src/components/tutorial/TutorialOverlay';
 import { useActiveTutorialStep } from '../src/components/tutorial/useActiveTutorialStep';
 import { useTutorialStore } from '../src/stores/tutorial';
 
-const SPRING = { damping: 18, stiffness: 260 } as const;
+// Crisp, mechanical open/close — no spring bounce.
+const FAB_TIMING = { duration: 200, easing: Easing.out(Easing.cubic) } as const;
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
@@ -52,12 +57,12 @@ export default function HomeScreen() {
 
   const toggle = useCallback(() => {
     const opening = fabProgress.value < 0.5;
-    fabProgress.value = withSpring(opening ? 1 : 0, SPRING);
+    fabProgress.value = withTiming(opening ? 1 : 0, FAB_TIMING);
     setFabOpen(opening);
   }, [fabProgress]);
 
   const close = useCallback(() => {
-    fabProgress.value = withSpring(0, SPRING);
+    fabProgress.value = withTiming(0, FAB_TIMING);
     setFabOpen(false);
   }, [fabProgress]);
 
@@ -126,6 +131,7 @@ export default function HomeScreen() {
   const [fabRect, setFabRect] = useState<TargetRect | null>(null);
   const [reorderItemRect, setReorderItemRect] = useState<TargetRect | null>(null);
   const markSeen = useTutorialStore((s) => s.markSeen);
+  const setTutorialEnabled = useTutorialStore((s) => s.setEnabled);
 
   const measureFab = useCallback(() => {
     fabRef.current?.measureInWindow((x, y, width, height) => {
@@ -163,18 +169,26 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <Text style={[typography.title, { color: colors.text }]}>Tesserone</Text>
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
+        <Wordmark />
+        <Text style={[styles.headerCount, { color: colors.textSecondary }]}>
+          {t('home.cardCount', { count: cardsList.length }).toUpperCase()}
+        </Text>
       </View>
 
       <View style={styles.stackWrap}>
         {cardsList.length === 0 ? (
-          <Pressable style={styles.empty} onPress={() => router.push('/add')}>
-            <Text style={[styles.emptyIcon, { color: colors.textSecondary }]}>+</Text>
-            <Text style={[typography.body, { color: colors.textSecondary, textAlign: 'center' }]}>
-              {t('home.emptyState')}
-            </Text>
-          </Pressable>
+          <View style={styles.empty}>
+            <Pressable
+              style={[styles.emptySlot, { borderColor: colors.border }]}
+              onPress={() => router.push('/add')}
+            >
+              <Text style={[styles.emptyIcon, { color: colors.textSecondary }]}>+</Text>
+              <Text style={[styles.emptySlotLabel, { color: colors.textSecondary }]}>
+                {t('home.emptyState')}
+              </Text>
+            </Pressable>
+          </View>
         ) : (
           <CardStack cards={cardsList} state={stackState} reorderMode={reorderMode} onReorder={handleReorder} />
         )}
@@ -187,10 +201,10 @@ export default function HomeScreen() {
       <View style={[styles.fabMenu, { bottom: insets.bottom + 80 }]} pointerEvents="box-none">
         <Animated.View style={menuItem3Style}>
           <Pressable
-            style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
             onPress={() => { close(); router.push('/settings'); }}
           >
-            <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
               {t('home.settings')}
             </Text>
           </Pressable>
@@ -198,20 +212,20 @@ export default function HomeScreen() {
         <Animated.View style={menuItem2Style}>
           <Pressable
             ref={reorderItemRef}
-            style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
             onPress={toggleReorder}
           >
-            <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
               {reorderMode ? t('home.reorderDone') : t('home.reorder')}
             </Text>
           </Pressable>
         </Animated.View>
         <Animated.View style={menuItem1Style}>
           <Pressable
-            style={[styles.fabMenuItem, { backgroundColor: colors.surface }]}
+            style={[styles.fabMenuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
             onPress={() => { close(); router.push('/add'); }}
           >
-            <Text style={[typography.body, { color: colors.text, fontWeight: '600' }]}>
+            <Text style={[styles.fabMenuLabel, { color: colors.text }]}>
               {t('home.addCard')}
             </Text>
           </Pressable>
@@ -241,9 +255,12 @@ export default function HomeScreen() {
         message={activeStep?.message ?? ''}
         targetRect={targetRect}
         cutoutRadius={cutoutRadius}
+        stepIndex={activeStep?.index}
+        stepTotal={activeStep?.total}
         onDismiss={() => {
           if (activeStep) markSeen(activeStep.id);
         }}
+        onSkip={() => setTutorialEnabled(false)}
       />
     </View>
   );
@@ -256,7 +273,14 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 24,
     paddingTop: 8,
-    paddingBottom: 16,
+    paddingBottom: 14,
+    borderBottomWidth: 1,
+  },
+  headerCount: {
+    fontFamily: mono.regular,
+    fontSize: 12,
+    letterSpacing: 1,
+    marginTop: 4,
   },
   stackWrap: {
     flex: 1,
@@ -266,15 +290,31 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 12,
+  },
+  emptySlot: {
+    width: '100%',
+    height: 200,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderRadius: CHROME_RADIUS,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
   },
   emptyIcon: {
-    fontSize: 64,
-    fontWeight: '200',
+    fontFamily: mono.regular,
+    fontSize: 48,
+  },
+  emptySlotLabel: {
+    fontFamily: mono.regular,
+    fontSize: 13,
+    letterSpacing: 0.5,
+    textAlign: 'center',
+    paddingHorizontal: 24,
   },
   scrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     zIndex: 90,
   },
   fabMenu: {
@@ -287,12 +327,12 @@ const styles = StyleSheet.create({
   fabMenuItem: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    borderRadius: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
+  },
+  fabMenuLabel: {
+    fontFamily: mono.medium,
+    fontSize: 15,
   },
   fabWrap: {
     position: 'absolute',
@@ -303,12 +343,12 @@ const styles = StyleSheet.create({
   fab: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: CHROME_RADIUS,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 8,
   },

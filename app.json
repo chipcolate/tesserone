@@ -28,7 +28,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#0A0A0A"
+        "backgroundColor": "#FAFAF8"
       },
       "package": "com.chipcolate.tesserone",
       "versionCode": 12,
@@ -77,10 +77,13 @@
           "iosActivationRules": {
             "NSExtensionActivationSupportsImageWithMaxCount": 1
           },
-          "androidIntentFilters": ["image/*"]
+          "androidIntentFilters": [
+            "image/*"
+          ]
         }
       ],
-      "@bacons/apple-targets"
+      "@bacons/apple-targets",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

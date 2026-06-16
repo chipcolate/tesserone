@@ -8,10 +8,12 @@ export const de: Translations = {
     done: 'Fertig',
     remove: 'Entfernen',
     gotIt: 'Verstanden',
+    undo: 'Rückgängig',
   },
   error: {
     title: 'Etwas ist schiefgelaufen',
     retry: 'Erneut versuchen',
+    goHome: 'Startseite',
   },
   home: {
     emptyState: 'Füge deine erste Karte hinzu',
@@ -20,6 +22,8 @@ export const de: Translations = {
     reorder: 'Neu anordnen',
     reorderDone: 'Fertig',
     addCard: 'Karte hinzufügen',
+    cardCount_one: '{{count}} Karte',
+    cardCount_other: '{{count}} Karten',
   },
   add: {
     title: 'Karte hinzufügen',
@@ -69,6 +73,7 @@ export const de: Translations = {
     timestamps: 'Erstellt am {{created}} · Aktualisiert am {{updated}}',
     deleteConfirmTitle: 'Karte löschen',
     deleteConfirmBody: '„{{name}}" aus deinem Geldbeutel entfernen?',
+    deletedToast: '{{name}} gelöscht',
     missingNameTitle: 'Name fehlt',
     missingNameBody: 'Der Kartenname ist erforderlich.',
   },
@@ -128,6 +133,8 @@ export const de: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Tipp schließen',
+    stepIndicator: 'Schritt {{current}} / {{total}}',
+    skip: 'Überspringen',
     homeAddFirstTitle: 'Füge deine erste Karte hinzu',
     homeAddFirstMessage:
       'Tippe auf den Menü-Button und wähle „Karte hinzufügen", um zu starten.',

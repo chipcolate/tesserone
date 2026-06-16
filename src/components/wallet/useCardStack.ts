@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { AppState, Platform } from 'react-native';
-import { useSharedValue, withDecay, withSpring, runOnJS, interpolate } from 'react-native-reanimated';
+import { useSharedValue, withDecay, withSpring, withTiming, runOnJS, interpolate, Easing } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import * as Brightness from 'expo-brightness';
+import { CARD_RADIUS } from '../../theme/geometry';
 
 function triggerHaptic() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -16,20 +17,26 @@ function triggerLightHaptic() {
 export const CARD_STACK = {
   STACK_SPACING: 170,
   CARD_HEIGHT: 280,
-  CARD_RADIUS: 16,
+  CARD_RADIUS,
   MINI_PEEK: 45,
   EXPANDED_TOP: 20,
 } as const;
 
-export const SPRING_SELECT = { damping: 25, stiffness: 180 } as const;
-const SPRING_DISMISS = { damping: 35, stiffness: 200 } as const;
-const SPRING_BOUNCE = { damping: 20, stiffness: 300 } as const;
-const SPRING_FLIP = { damping: 26, stiffness: 300 } as const;
-export const SPRING_REORDER = { damping: 20, stiffness: 250 } as const;
+// "Raw aesthetic" motion: critically/over-damped springs — they arrive fast and
+// stop dead, no overshoot or bounce. Reads engineered rather than springy.
+export const SPRING_SELECT = { damping: 33, stiffness: 260 } as const;
+const SPRING_DISMISS = { damping: 34, stiffness: 280 } as const;
+const SPRING_BOUNCE = { damping: 42, stiffness: 420 } as const;
+export const SPRING_REORDER = { damping: 40, stiffness: 340 } as const;
+
+// The flip is a discrete, mechanical hinge — a timing curve (decisive, no spring
+// settle) reads far less "jelly" than a spring. Snappy-in, hard decelerate.
+const FLIP_TIMING = { duration: 300, easing: Easing.out(Easing.cubic) } as const;
 
 const DISMISS_DISTANCE = 100;
 const DISMISS_VELOCITY = 500;
-const RUBBER_BAND_FACTOR = 0.35;
+// Tighter overscroll — less organic squish, more rigid resistance.
+const RUBBER_BAND_FACTOR = 0.18;
 
 function rubberBand(offset: number, limit: number, factor: number): number {
   'worklet';
@@ -174,7 +181,7 @@ export function useCardStack() {
         ) {
           selectedCardIndex.value = -1;
           dismissTranslateY.value = withSpring(0, SPRING_DISMISS);
-          flipProgress.value = withSpring(0, SPRING_FLIP);
+          flipProgress.value = withTiming(0, FLIP_TIMING);
           runOnJS(restoreBrightness)();
         } else {
           dismissTranslateY.value = withSpring(0, SPRING_SELECT);
@@ -187,12 +194,12 @@ export function useCardStack() {
       if (reorderMode.value === 1) return;
       if (selectedCardIndex.value === -1) {
         selectedCardIndex.value = index;
-        flipProgress.value = withSpring(Math.PI, SPRING_FLIP);
+        flipProgress.value = withTiming(Math.PI, FLIP_TIMING);
         runOnJS(triggerHaptic)();
         runOnJS(maxBrightness)();
       } else if (selectedCardIndex.value === index) {
         selectedCardIndex.value = -1;
-        flipProgress.value = withSpring(0, SPRING_FLIP);
+        flipProgress.value = withTiming(0, FLIP_TIMING);
         runOnJS(triggerHaptic)();
         runOnJS(restoreBrightness)();
       }
@@ -206,7 +213,7 @@ export function useCardStack() {
         if (selectedCardIndex.value === -1) return;
         runOnJS(triggerHaptic)();
         selectedCardIndex.value = -1;
-        flipProgress.value = withSpring(0, SPRING_FLIP);
+        flipProgress.value = withTiming(0, FLIP_TIMING);
         runOnJS(restoreBrightness)();
         runOnJS(onEdit)();
       });

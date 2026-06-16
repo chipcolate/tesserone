@@ -42,8 +42,10 @@ export const useCardsStore = create<CardsState>()(
 
       removeCard: (id) =>
         set((s) => {
-          const { [id]: removed, ...rest } = s.cards;
-          if (removed) deleteCustomLogo(removed.customLogoUri);
+          // Keep the custom-logo file on disk so an "undo" can fully restore the
+          // card (logo included). Orphaned files are reclaimed by
+          // sweepOrphanLogos() on next launch.
+          const { [id]: _removed, ...rest } = s.cards;
           return { cards: rest };
         }),
 

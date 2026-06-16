@@ -8,10 +8,12 @@ export const es: Translations = {
     done: 'Listo',
     remove: 'Quitar',
     gotIt: 'Entendido',
+    undo: 'Deshacer',
   },
   error: {
     title: 'Algo salió mal',
     retry: 'Reintentar',
+    goHome: 'Inicio',
   },
   home: {
     emptyState: 'Añade tu primera tarjeta',
@@ -20,6 +22,8 @@ export const es: Translations = {
     reorder: 'Reordenar',
     reorderDone: 'Listo',
     addCard: 'Añadir tarjeta',
+    cardCount_one: '{{count}} tarjeta',
+    cardCount_other: '{{count}} tarjetas',
   },
   add: {
     title: 'Añadir tarjeta',
@@ -69,6 +73,7 @@ export const es: Translations = {
     timestamps: 'Creada el {{created}} · Actualizada el {{updated}}',
     deleteConfirmTitle: 'Eliminar tarjeta',
     deleteConfirmBody: '¿Quitar «{{name}}» de tu cartera?',
+    deletedToast: '{{name}} eliminada',
     missingNameTitle: 'Falta el nombre',
     missingNameBody: 'El nombre de la tarjeta es obligatorio.',
   },
@@ -126,6 +131,8 @@ export const es: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Cerrar consejo',
+    stepIndicator: 'Paso {{current}} / {{total}}',
+    skip: 'Omitir',
     homeAddFirstTitle: 'Añade tu primera tarjeta',
     homeAddFirstMessage: 'Pulsa el botón de menú y elige Añadir tarjeta para empezar.',
     homeTapExpandTitle: 'Abre una tarjeta',

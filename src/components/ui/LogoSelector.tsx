@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { useTheme, typography, textOnColor } from '../../theme';
+import { CHROME_RADIUS } from '../../theme/geometry';
+import { mono } from '../../theme/fonts';
 import {
   getBrandLogo,
   getBrand,
@@ -71,7 +74,7 @@ export function LogoSelector({
   return (
     <View style={styles.container}>
       <View style={styles.previewRow}>
-        <View style={[styles.logoPreview, { backgroundColor: cardColor }]}>
+        <View style={[styles.logoPreview, { backgroundColor: cardColor, borderColor: colors.border }]}>
           {logoSource ? (
             <Image source={logoSource} style={styles.logoImage} contentFit="contain" transition={150} />
           ) : (
@@ -86,7 +89,7 @@ export function LogoSelector({
           </Text>
           {hasAnyLogo && (
             <Pressable onPress={onClear} hitSlop={8}>
-              <Text style={[typography.caption, { color: '#EF5350' }]}>{t('common.remove')}</Text>
+              <Text style={[typography.caption, { color: colors.danger }]}>{t('common.remove')}</Text>
             </Pressable>
           )}
         </View>
@@ -95,9 +98,12 @@ export function LogoSelector({
       <Pressable
         onPress={handleUpload}
         disabled={picking}
-        style={[styles.uploadButton, { backgroundColor: colors.surface, opacity: picking ? 0.6 : 1 }]}
+        style={[
+          styles.uploadButton,
+          { backgroundColor: colors.surface, borderColor: colors.border, opacity: picking ? 0.6 : 1 },
+        ]}
       >
-        <Text style={[typography.label, { color: colors.text, fontWeight: '600' }]}>
+        <Text style={[styles.uploadLabel, { color: colors.text }]}>
           {customLogoUri
             ? t('logoSelector.replacePhoto')
             : t('logoSelector.uploadPhoto')}
@@ -105,14 +111,31 @@ export function LogoSelector({
       </Pressable>
 
       {brandResults.length > 0 && (
-        <View style={[styles.resultsList, { backgroundColor: colors.surface }]}>
-          {brandResults.map((b) => (
-            <Pressable key={b.slug} style={styles.resultRow} onPress={() => onBrandSelect(b)}>
-              <View style={[styles.resultDot, { backgroundColor: b.primaryColor }]} />
-              <Text style={[typography.label, { color: colors.text }]}>{b.name}</Text>
-            </Pressable>
-          ))}
-        </View>
+        <Animated.View
+          entering={FadeIn.duration(150)}
+          style={[styles.resultsList, { backgroundColor: colors.surface, borderColor: colors.border }]}
+        >
+          {brandResults.map((b, idx) => {
+            const selected = b.slug === logoSlug;
+            return (
+              <Pressable
+                key={b.slug}
+                style={[
+                  styles.resultRow,
+                  idx > 0 && { borderTopWidth: 1, borderTopColor: colors.border },
+                  selected && { backgroundColor: colors.bg },
+                ]}
+                onPress={() => onBrandSelect(b)}
+              >
+                <View style={[styles.resultDot, { backgroundColor: b.primaryColor }]} />
+                <Text style={[typography.label, { color: colors.text, flex: 1 }]}>{b.name}</Text>
+                {selected ? (
+                  <Text style={[typography.label, { color: colors.accent }]}>✓</Text>
+                ) : null}
+              </Pressable>
+            );
+          })}
+        </Animated.View>
       )}
     </View>
   );
@@ -130,7 +153,8 @@ const styles = StyleSheet.create({
   logoPreview: {
     width: 48,
     height: 48,
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 4,
@@ -140,8 +164,8 @@ const styles = StyleSheet.create({
     height: 40,
   },
   initial: {
-    fontSize: 24,
-    fontWeight: '800',
+    fontFamily: mono.extrabold,
+    fontSize: 22,
   },
   previewInfo: {
     flex: 1,
@@ -151,10 +175,16 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 14,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
+  },
+  uploadLabel: {
+    fontFamily: mono.medium,
+    fontSize: 14,
   },
   resultsList: {
-    borderRadius: 10,
+    borderRadius: CHROME_RADIUS,
+    borderWidth: 1,
     overflow: 'hidden',
   },
   resultRow: {
@@ -167,6 +197,6 @@ const styles = StyleSheet.create({
   resultDot: {
     width: 24,
     height: 24,
-    borderRadius: 6,
+    borderRadius: CHROME_RADIUS,
   },
 });

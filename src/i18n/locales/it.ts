@@ -8,10 +8,12 @@ export const it: Translations = {
     done: 'Fatto',
     remove: 'Rimuovi',
     gotIt: 'Ho capito',
+    undo: 'Annulla',
   },
   error: {
     title: 'Qualcosa è andato storto',
     retry: 'Riprova',
+    goHome: 'Vai alla home',
   },
   home: {
     emptyState: 'Aggiungi la tua prima tessera',
@@ -20,6 +22,8 @@ export const it: Translations = {
     reorder: 'Riordina',
     reorderDone: 'Fatto',
     addCard: 'Aggiungi tessera',
+    cardCount_one: '{{count}} tessera',
+    cardCount_other: '{{count}} tessere',
   },
   add: {
     title: 'Aggiungi tessera',
@@ -69,6 +73,7 @@ export const it: Translations = {
     timestamps: 'Creata il {{created}} · Aggiornata il {{updated}}',
     deleteConfirmTitle: 'Elimina tessera',
     deleteConfirmBody: 'Rimuovere "{{name}}" dal tuo portafoglio?',
+    deletedToast: '{{name}} eliminata',
     missingNameTitle: 'Nome mancante',
     missingNameBody: 'Il nome della tessera è obbligatorio.',
   },
@@ -125,6 +130,8 @@ export const it: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Chiudi il suggerimento',
+    stepIndicator: 'Passo {{current}} / {{total}}',
+    skip: 'Salta',
     homeAddFirstTitle: 'Aggiungi la tua prima tessera',
     homeAddFirstMessage: 'Tocca il pulsante menu, poi scegli Aggiungi tessera per iniziare.',
     homeTapExpandTitle: 'Apri una tessera',

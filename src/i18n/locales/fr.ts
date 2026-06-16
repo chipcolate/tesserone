@@ -8,10 +8,12 @@ export const fr: Translations = {
     done: 'OK',
     remove: 'Retirer',
     gotIt: "C'est compris",
+    undo: 'Annuler',
   },
   error: {
     title: "Quelque chose s'est mal passé",
     retry: 'Réessayer',
+    goHome: 'Accueil',
   },
   home: {
     emptyState: 'Ajoute ta première carte',
@@ -20,6 +22,8 @@ export const fr: Translations = {
     reorder: 'Réorganiser',
     reorderDone: 'Terminé',
     addCard: 'Ajouter une carte',
+    cardCount_one: '{{count}} carte',
+    cardCount_other: '{{count}} cartes',
   },
   add: {
     title: 'Ajouter une carte',
@@ -69,6 +73,7 @@ export const fr: Translations = {
     timestamps: 'Créée le {{created}} · Mise à jour le {{updated}}',
     deleteConfirmTitle: 'Supprimer la carte',
     deleteConfirmBody: 'Retirer « {{name}} » de ton portefeuille ?',
+    deletedToast: '{{name}} supprimée',
     missingNameTitle: 'Nom manquant',
     missingNameBody: 'Le nom de la carte est obligatoire.',
   },
@@ -126,6 +131,8 @@ export const fr: Translations = {
   },
   tutorial: {
     dismissAriaLabel: 'Fermer le conseil',
+    stepIndicator: 'Étape {{current}} / {{total}}',
+    skip: 'Passer',
     homeAddFirstTitle: 'Ajoute ta première carte',
     homeAddFirstMessage: 'Touche le bouton menu, puis choisis Ajouter une carte pour commencer.',
     homeTapExpandTitle: 'Ouvre une carte',

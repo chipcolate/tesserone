@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@bacons/apple-targets": "^4.0.6",
+    "@expo-google-fonts/jetbrains-mono": "^0.4.1",
     "@kichiyaki/react-native-barcode-generator": "^0.6.7",
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~55.0.15",
@@ -22,6 +23,7 @@
     "expo-dev-client": "~55.0.27",
     "expo-document-picker": "~55.0.13",
     "expo-file-system": "~55.0.16",
+    "expo-font": "~55.0.8",
     "expo-haptics": "~55.0.14",
     "expo-image": "~55.0.8",
     "expo-image-picker": "~55.0.18",
@@ -51,6 +53,7 @@
   "devDependencies": {
     "@types/node": "^25.6.0",
     "@types/react": "~19.2.10",
+    "sharp": "^0.35.1",
     "tinify": "^1.8.2",
     "typescript": "~5.9.3"
   },

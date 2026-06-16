@@ -1,46 +1,50 @@
-import { Platform, TextStyle } from 'react-native';
+import { TextStyle } from 'react-native';
+import { mono } from './fonts';
 
-const mono: TextStyle['fontFamily'] = Platform.select({
-  ios: 'Menlo',
-  android: 'monospace',
-});
-
+/**
+ * All-in monospace type scale (JetBrains Mono). Weight is encoded by the family
+ * name, not `fontWeight`, so faces stay consistent across platforms. Mono runs
+ * wide, so larger scales get slight negative tracking to tighten them up.
+ */
 export const typography = {
   cardName: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: mono.medium,
+    letterSpacing: -0.2,
   },
 
   barcode: {
     fontSize: 16,
-    fontFamily: mono,
+    fontFamily: mono.regular,
     letterSpacing: 1.5,
   },
 
   label: {
     fontSize: 14,
-    fontWeight: '400',
+    fontFamily: mono.regular,
   },
 
   sectionHeader: {
     fontSize: 13,
-    fontWeight: '600',
+    fontFamily: mono.bold,
     textTransform: 'uppercase',
     letterSpacing: 0.8,
   },
 
   title: {
     fontSize: 28,
-    fontWeight: '700',
+    fontFamily: mono.bold,
+    letterSpacing: -0.8,
   },
 
   body: {
     fontSize: 16,
-    fontWeight: '400',
+    fontFamily: mono.regular,
+    lineHeight: 22,
   },
 
   caption: {
     fontSize: 12,
-    fontWeight: '400',
+    fontFamily: mono.regular,
   },
 } as const satisfies Record<string, TextStyle>;

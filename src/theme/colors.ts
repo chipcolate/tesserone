@@ -65,6 +65,14 @@ export interface ColorTokens {
   text: string;
   textSecondary: string;
   accent: string;
+  /** Hairline border / divider — the "Raw Aesthetics" elevation language. */
+  border: string;
+  /** Stronger border for focus / emphasis outlines. */
+  borderStrong: string;
+  /** Destructive action color. */
+  danger: string;
+  /** Text/icon color on top of `danger`. */
+  dangerText: string;
 }
 
 export const darkColors: Omit<ColorTokens, 'accent'> = {
@@ -72,6 +80,10 @@ export const darkColors: Omit<ColorTokens, 'accent'> = {
   surface: DARK_SURFACE,
   text: DARK_TEXT,
   textSecondary: DARK_TEXT_SECONDARY,
+  border: '#2A2A2A',
+  borderStrong: '#3D3D3D',
+  danger: '#FF6B6B',
+  dangerText: '#FFFFFF',
 };
 
 export const lightColors: Omit<ColorTokens, 'accent'> = {
@@ -79,4 +91,8 @@ export const lightColors: Omit<ColorTokens, 'accent'> = {
   surface: LIGHT_SURFACE,
   text: LIGHT_TEXT,
   textSecondary: LIGHT_TEXT_SECONDARY,
+  border: '#E2E2DD',
+  borderStrong: '#C8C8C0',
+  danger: '#D32F2F',
+  dangerText: '#FFFFFF',
 };

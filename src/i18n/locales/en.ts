@@ -6,10 +6,12 @@ export const en = {
     done: 'Done',
     remove: 'Remove',
     gotIt: 'Got it',
+    undo: 'Undo',
   },
   error: {
     title: 'Something went wrong',
     retry: 'Try again',
+    goHome: 'Go Home',
   },
   home: {
     emptyState: 'Add your first card',
@@ -18,6 +20,8 @@ export const en = {
     reorder: 'Reorder',
     reorderDone: 'Done',
     addCard: 'Add Card',
+    cardCount_one: '{{count}} card',
+    cardCount_other: '{{count}} cards',
   },
   add: {
     title: 'Add Card',
@@ -67,6 +71,7 @@ export const en = {
     timestamps: 'Created {{created}} · Updated {{updated}}',
     deleteConfirmTitle: 'Delete Card',
     deleteConfirmBody: 'Remove "{{name}}" from your wallet?',
+    deletedToast: 'Deleted {{name}}',
     missingNameTitle: 'Missing name',
     missingNameBody: 'Card name is required.',
   },
@@ -122,6 +127,8 @@ export const en = {
   },
   tutorial: {
     dismissAriaLabel: 'Dismiss tutorial tip',
+    stepIndicator: 'Step {{current}} / {{total}}',
+    skip: 'Skip',
     homeAddFirstTitle: 'Add your first card',
     homeAddFirstMessage: 'Tap the menu button, then choose Add Card to get started.',
     homeTapExpandTitle: 'Open a card',
