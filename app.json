@@ -22,7 +22,8 @@
         "dark": "./assets/icon-dark.png"
       },
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleLocalizations": ["en", "it", "fr", "es", "de"]
       }
     },
     "android": {
