@@ -22,7 +22,8 @@
 #   - Create screenshots/{size}-inch/{locale}/
 #   - Prompt you to navigate to each shot, then capture with Enter
 #
-# Output filenames follow the shot list in scripts/screenshots.md.
+# Output filenames follow the shot list in the `screenshots` skill
+# (.claude/skills/screenshots/SKILL.md).
 
 set -euo pipefail
 
@@ -75,7 +76,7 @@ fi
 OUT_DIR="screenshots/${SIZE_SLUG}/${LOCALE}"
 mkdir -p "$OUT_DIR"
 
-# Shot slug : human description (keep in sync with scripts/screenshots.md)
+# Shot slug : human description (keep in sync with the `screenshots` skill)
 SHOTS=(
   "01-stack:Home — card stack visible, 4–6 colorful cards"
   "02-expanded:Expanded card with barcode visible + mini-stack at bottom"

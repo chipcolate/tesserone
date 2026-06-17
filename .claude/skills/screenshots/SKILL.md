@@ -1,3 +1,8 @@
+---
+name: screenshots
+description: Capture App Store / Play Store screenshots for Tesserone across all supported locales (en/it/fr/es/de) using the automated capture scripts. Use when asked to capture, regenerate, or update the store/marketing screenshots, or to seed the demo wallet for shots.
+---
+
 # Screenshots Shot List
 
 The capture is fully automated (no manual navigation). Two scripts seed a

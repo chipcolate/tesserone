@@ -167,9 +167,8 @@ To add a brand: drop PNG in `assets/logos/`, add `require()` in the `BUNDLED_LOG
 
 ### Screenshot Tooling (`scripts/`)
 
-Store-listing **copy and assets are out of scope for this repo** — they live separately. What stays here is the automated screenshot pipeline:
+Store-listing **copy and assets are out of scope for this repo** — they live separately. What stays here is the automated screenshot pipeline. The shot list, target devices, and capture flow are documented in the **`screenshots` skill** (`.claude/skills/screenshots/SKILL.md`); the scripts are:
 
-- `screenshots.md` — shot list, target devices, and the capture flow
 - `capture-ios.sh` / `capture-android.sh` — per-locale automated capture (idb+simctl / adb)
 - `seed-demo-data.mjs`, `inject-screenshot-state.mjs`, `android-seed-sql.mjs` — seed a deterministic demo wallet into AsyncStorage before capture
 - `capture-screenshots.sh` — interactive manual fallback

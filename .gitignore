@@ -58,6 +58,9 @@ modules/*/android/build/
 store/*.png
 store/whats-new-*.md
 
-# local working state (Claude Code harness, internal planning)
-.claude/
+# Claude Code harness: ignore all local/personal state by default
+# (settings.local.json, worktrees, anything new), and explicitly allow
+# only shared project skills to be committed.
+.claude/*
+!.claude/skills/
 PLAN.md
