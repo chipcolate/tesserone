@@ -15,15 +15,18 @@ Local-first. Zero cloud. Zero bloat. Open source.
 ## Features
 
 - **Wallet-style card stack** — scroll, tap to bring a card forward with its barcode, tap again or swipe up to send it back
+- **Apple Watch companion** — your barcodes on your wrist, scannable at the till without pulling out your phone
 - **Brightness boost** — screen brightness maxes out when viewing a barcode, restores when you're done
-- **Barcode scanning** — scan loyalty cards with the camera, or enter details manually
+- **Barcode scanning** — scan loyalty cards with the camera, share in a screenshot, or enter details manually
+- **Share a card** — send a single card to a friend straight from the card screen
 - **Brand recognition** — type a store name and Tesserone matches it to a curated brand database with logos and colors
 - **Custom logos** — upload your own logo from the gallery or take a photo
 - **Drag to reorder** — wobble mode with long-press drag, like rearranging your home screen
 - **Import/Export** — back up your cards as JSON, import from a backup file with conflict resolution
-- **Dark/Light/System themes** — neutral chrome, the cards bring the color
+- **Monospace, squared-off design** — JetBrains Mono throughout, neutral chrome, the cards bring the color
+- **Dark/Light/System themes**
 - **Haptic feedback** — tactile responses on every interaction
-- **Fully offline** — all data stays on your device
+- **Fully offline** — all data stays on your device, including on-device barcode detection
 
 ## Supported Barcode Formats
 
@@ -34,12 +37,15 @@ EAN-13, EAN-8, Code 128, Code 39, QR, UPC-A, UPC-E, PDF417, Aztec, Data Matrix, 
 | Layer | Choice |
 |---|---|
 | Framework | Expo SDK 55, React Native 0.83 |
-| Animation | react-native-reanimated 4.x |
+| Animation | react-native-reanimated 4.x (+ react-native-worklets) |
 | Gestures | react-native-gesture-handler 2.x |
 | Navigation | expo-router (file-based) |
 | State | zustand + AsyncStorage |
-| Barcode scan | expo-camera |
+| Typeface | JetBrains Mono (@expo-google-fonts/jetbrains-mono) |
+| Barcode scan | expo-camera + a local `barcode-vision` native module (on-device image detection) |
 | Barcode render | @kichiyaki/react-native-barcode-generator, react-native-qrcode-svg |
+| Watch | react-native-watch-connectivity + @bacons/apple-targets (SwiftUI) |
+| Share-in | expo-share-intent (iOS share extension) |
 | Haptics | expo-haptics |
 | Brightness | expo-brightness |
 
