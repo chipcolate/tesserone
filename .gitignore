@@ -48,8 +48,15 @@ yarn-error.*
 *.apk
 *.aab
 
+# local expo module build output (Gradle)
+modules/*/android/build/
+
 # screenshot output (binary artifacts; don't commit)
 /screenshots/
+
+# store graphic binaries (don't commit) and per-release notes
+store/*.png
+store/whats-new-*.md
 
 # local working state (Claude Code harness, internal planning)
 .claude/
