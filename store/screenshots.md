@@ -1,32 +1,74 @@
 # Screenshots Shot List
 
-Companion to `scripts/capture-screenshots.sh`. Use this as the navigation checklist while running the script.
+The capture is fully automated (no manual navigation). Two scripts seed a
+deterministic demo wallet into AsyncStorage and drive the app per locale:
+
+- `scripts/capture-ios.sh` — iOS 6.9" via idb + simctl
+- `scripts/capture-android.sh` — Android phone via adb
+
+The interactive `scripts/capture-screenshots.sh` is kept as a manual fallback.
 
 ## Devices
 
-| Size | Apple device | Pixel dims |
-|---|---|---|
-| 6.9" (required) | iPhone 16 Pro Max | 1320 × 2868 |
-| 6.5" (optional, legacy) | iPhone 14 Plus | 1284 × 2778 |
+| Platform | Device | Pixel dims | Notes |
+|---|---|---|---|
+| iOS 6.9" (required) | iPhone 16 Pro Max sim | 1320 × 2868 | Apple's required size |
+| iOS 6.5" (optional) | iPhone 14 Plus sim | 1284 × 2778 | legacy, skippable |
+| Android phone | Medium_Phone AVD @ `wm size 1080x2160` | 1080 × 2160 | 2:1 — Play caps aspect at 2:1 |
 
-Apple only strictly requires 6.9" for new submissions. 6.5" is optional — skip if you're in a hurry.
+Theme: **light**. Locales: `en` · `it` · `fr` · `es` · `de`.
 
-## Locales
+## Demo data
 
-`en` · `it` · `fr` · `es` · `de`
+`scripts/seed-demo-data.mjs` builds a 6-card brand-colored wallet (Conad,
+Esselunga, IKEA, Decathlon, Media World, Mango) with valid barcodes, plus
+settings (theme/locale) and a disabled first-run tutorial. The values are the
+exact strings zustand's persist middleware writes to AsyncStorage.
+
+- iOS: `scripts/inject-screenshot-state.mjs` writes the RCTAsyncLocalStorage_V1
+  manifest (+ md5 side file for the large `cards` value) in the sim container.
+- Android: `scripts/android-seed-sql.mjs` emits SQL for the RKStorage SQLite DB
+  (`catalystLocalStorage` table), injected via `run-as` (needs a debuggable build).
 
 ## Running the capture flow
 
+### iOS
+
 ```bash
-# On the Mac, with the simulator booted and Tesserone installed:
-./scripts/capture-screenshots.sh 6.9 en
-# Follow prompts; navigate on the simulator to each shot, press Enter to capture.
-# Then change language (either in simulator Settings or inside the app) and run:
-./scripts/capture-screenshots.sh 6.9 it
-# …and so on.
+# Boot iPhone 16 Pro Max sim, install a Release build (clean, no Metro/dev UI):
+xcrun simctl boot "iPhone 16 Pro Max"; open -a Simulator
+npx expo run:ios --configuration Release
+# Needs idb: brew install facebook/fb/idb-companion && pip3 install fb-idb
+THEME=light ./scripts/capture-ios.sh        # -> screenshots/6.9-inch/<locale>/
 ```
 
-Output lands in `screenshots/6.9-inch/<locale>/01-stack.png` etc. The folder is gitignored by default (add to `.gitignore` if not already — they're binary artifacts, no reason to commit).
+### Android
+
+```bash
+# Boot the AVD, then install a *debuggable Release* build so run-as can seed
+# AsyncStorage AND there is no Metro dependency / dev-tools FAB. Temporarily add
+# `debuggable true` to the release buildType in android/app/build.gradle
+# (android/ is gitignored prebuild output), then:
+npx expo run:android --variant release
+# Launch once to create the DB, then pull the base:
+adb exec-out run-as com.chipcolate.tesserone cat databases/RKStorage > /tmp/tess-android/RKStorage.base.db
+THEME=light ./scripts/capture-android.sh    # -> screenshots/android-phone/<locale>/
+# Revert the debuggable change afterwards.
+```
+
+Output is gitignored (binary artifacts). Zips for upload: `screenshots/6.9-inch.zip`,
+`screenshots/android-phone.zip` (rebuild with `zip -rq`).
+
+### How the automation reaches each shot
+
+- **01 stack / 02 expanded** — launch; tap the 2nd card (Esselunga) to flip to
+  its barcode. The tap can race the stack entrance animation; the scripts verify
+  the expanded card (barcode code `ES4471…`) and retry.
+- **03 add / 04 detail / 05 settings** — deep links: `tesserone://add`,
+  `tesserone://card/demo-decathlon`, `tesserone://settings`. On iOS the
+  "Open in Tesserone?" system prompt is detected via idb and dismissed; Android
+  launches the scheme directly. For 03, the script types `Deca` into the name
+  field to surface the brand fuzzy-match, then hides the keyboard.
 
 ## Shots
 
@@ -85,25 +127,18 @@ Output lands in `screenshots/6.9-inch/<locale>/01-stack.png` etc. The folder is 
 - ES · `Cero nube. Exporta cuando quieras.`
 - DE · `Null Cloud. Jederzeit exportieren.`
 
-## Preparing the simulator per language
+## Per-language handling
 
-**Option A — change system language (affects all apps):**
-1. Simulator → Settings (the iOS Settings app inside the sim) → General → Language & Region
-2. Change iPhone Language → pick target
-3. Simulator restarts into that language (a few seconds)
-4. Re-launch Tesserone
-
-**Option B — change inside the app only (faster):**
-1. In Tesserone: Settings → Language → pick target
-2. App re-renders into the chosen language immediately
-
-Either works; B is faster to iterate.
+The capture scripts set the locale by seeding `settings.language` directly, so
+there is no need to change the simulator/emulator system language — the app
+boots into the seeded locale.
 
 ## Upload
 
-Once captured, you can:
-- Upload PNGs to App Store Connect manually (5 × 5 = 25 files for 6.9", add another 25 if doing 6.5")
-- Or use `fastlane deliver` from the same Mac — it takes the `screenshots/` folder and uploads everything for you in one command
+Once captured:
+- App Store Connect: upload `screenshots/6.9-inch/<locale>/*.png` (5 × 5 = 25 for 6.9")
+- Play Console: upload `screenshots/android-phone/<locale>/*.png` (5 × 5 = 25)
+- Or use `fastlane deliver` (iOS) / `fastlane supply` (Android) against the folders
 
 ## Quick decision: captions or bare?
 
