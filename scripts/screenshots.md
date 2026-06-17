@@ -95,7 +95,7 @@ Output is gitignored (binary artifacts). Zips for upload: `screenshots/6.9-inch.
 - DE · `Umdrehen für den Barcode. Helligkeit automatisch max.`
 
 ### 03 — add
-**Frame:** Add Card modal with the brand picker/LogoSelector visible. Type a partial brand name (e.g. `zara`, `bolla`, `ike`) so the fuzzy search shows a match with logo and color preview.
+**Frame:** Add Card modal with the brand picker/LogoSelector visible. Type a partial brand name (the automation types `Deca` for Decathlon) so the fuzzy search shows a match with logo and color preview.
 **Why:** acquisition — "easy to add, smart matching, no account."
 
 **Captions:**

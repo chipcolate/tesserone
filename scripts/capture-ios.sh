@@ -3,7 +3,7 @@
 # Automated App Store screenshot capture for iOS, driven by idb + simctl.
 #
 # Seeds a deterministic demo wallet (scripts/inject-screenshot-state.mjs), then
-# for each locale captures the 5-shot list from store/screenshots.md into
+# for each locale captures the 5-shot list from scripts/screenshots.md into
 # screenshots/<size>/<locale>/.
 #
 # Prereqs: booted iPhone 16 Pro Max sim with Tesserone (Release) installed,
