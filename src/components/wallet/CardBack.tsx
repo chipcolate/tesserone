@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import Barcode, { type Format } from '@kichiyaki/react-native-barcode-generator';
 import QRCode from 'react-native-qrcode-svg';
 import { FidelityCard, BarcodeFormat } from '../../types';
@@ -43,8 +43,19 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
   const [error, setError] = useState(false);
   const isQR = QR_FORMATS.has(card.format);
 
+  // Cap the barcode to the card's available inner width so long codes (e.g. a
+  // 16-char CODE128) scale down instead of overflowing the white tile past the
+  // card padding. Default to the screen width — the back only shows when the
+  // card is expanded (≈ full width) — then refine via onLayout.
+  const { width: screenW } = useWindowDimensions();
+  const [backW, setBackW] = useState(screenW);
+  const barcodeMaxWidth = Math.max(0, backW - BACK_PADDING * 2 - TILE_PADDING * 2);
+
   return (
-    <View style={[styles.back, { backgroundColor: bg }]}>
+    <View
+      style={[styles.back, { backgroundColor: bg }]}
+      onLayout={(e) => setBackW(e.nativeEvent.layout.width)}
+    >
       <View style={styles.tile}>
         {error ? (
           <Text style={styles.errorText}>Could not render barcode</Text>
@@ -55,6 +66,7 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
             value={card.code}
             format={barcodeLibFormat(card.format)}
             width={2.4}
+            maxWidth={barcodeMaxWidth}
             height={130}
             background="#FFFFFF"
             lineColor="#000000"
@@ -83,11 +95,14 @@ export const CardBack = React.memo(function CardBack({ card }: CardBackProps) {
   );
 });
 
+const BACK_PADDING = 24;
+const TILE_PADDING = 16;
+
 const styles = StyleSheet.create({
   back: {
     flex: 1,
     borderRadius: CARD_RADIUS,
-    padding: 24,
+    padding: BACK_PADDING,
     paddingBottom: 32,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -95,7 +110,8 @@ const styles = StyleSheet.create({
   tile: {
     backgroundColor: '#FFFFFF',
     borderRadius: TILE_RADIUS,
-    padding: 16,
+    padding: TILE_PADDING,
+    maxWidth: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 140,
