@@ -77,7 +77,7 @@
     "name": "Tesco",
     "aliases": ["tesco", "clubcard"],
     "alt": "Tesco supermarket logo",
-    "primaryColor": "#EE1C2E",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#005EB8",
     "logo": "tesco.png"
   },
@@ -86,7 +86,7 @@
     "name": "Sainsbury's",
     "aliases": ["sainsburys", "nectar"],
     "alt": "Sainsbury's supermarket logo",
-    "primaryColor": "#F06C00",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "sainsburys.png"
   },
@@ -95,7 +95,7 @@
     "name": "Asda",
     "aliases": ["asda"],
     "alt": "Asda supermarket logo",
-    "primaryColor": "#7BC144",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFC220",
     "logo": "asda.png"
   },
@@ -104,7 +104,7 @@
     "name": "Morrisons",
     "aliases": ["morrisons", "more card"],
     "alt": "Morrisons supermarket logo",
-    "primaryColor": "#007A33",
+    "primaryColor": "#000000",
     "secondaryColor": "#FFE600",
     "logo": "morrisons.png"
   },
@@ -113,7 +113,7 @@
     "name": "Marks & Spencer",
     "aliases": ["m&s", "marks and spencer", "sparks"],
     "alt": "Marks & Spencer department store logo",
-    "primaryColor": "#000000",
+    "primaryColor": "#00854A",
     "secondaryColor": "#00854A",
     "logo": "marks-and-spencer.png"
   },
@@ -122,7 +122,7 @@
     "name": "Waitrose",
     "aliases": ["waitrose", "mywaitrose"],
     "alt": "Waitrose supermarket logo",
-    "primaryColor": "#5A9A3B",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "waitrose.png"
   },
@@ -131,7 +131,7 @@
     "name": "Iceland",
     "aliases": ["iceland", "iceland foods"],
     "alt": "Iceland frozen food store logo",
-    "primaryColor": "#ED1C24",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "iceland-foods.png"
   },
@@ -140,7 +140,7 @@
     "name": "Superdrug",
     "aliases": ["superdrug"],
     "alt": "Superdrug health and beauty store logo",
-    "primaryColor": "#EA0E8D",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "superdrug.png"
   },
@@ -149,7 +149,7 @@
     "name": "Costa Coffee",
     "aliases": ["costa", "costa club"],
     "alt": "Costa Coffee logo",
-    "primaryColor": "#6D242C",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "costa-coffee.png"
   },
@@ -158,7 +158,7 @@
     "name": "Pret A Manger",
     "aliases": ["pret", "pret a manger"],
     "alt": "Pret A Manger logo",
-    "primaryColor": "#862633",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "pret-a-manger.png"
   },
@@ -167,7 +167,7 @@
     "name": "WHSmith",
     "aliases": ["whsmith", "wh smith"],
     "alt": "WHSmith stationery and book store logo",
-    "primaryColor": "#00447C",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "whsmith.png"
   },
@@ -176,7 +176,7 @@
     "name": "Argos",
     "aliases": ["argos"],
     "alt": "Argos catalogue retailer logo",
-    "primaryColor": "#D4001A",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "argos.png"
   },
@@ -213,7 +213,7 @@
     "name": "Pam",
     "aliases": ["pam panorama"],
     "alt": "Pam supermarket logo",
-    "primaryColor": "#E30613",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "pam.png"
   },
@@ -222,7 +222,7 @@
     "name": "Bennet",
     "aliases": ["bennet"],
     "alt": "Bennet hypermarket logo",
-    "primaryColor": "#008D4B",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "bennet.png"
   },
@@ -258,7 +258,7 @@
     "name": "La Feltrinelli",
     "aliases": ["feltrinelli", "la feltrinelli"],
     "alt": "La Feltrinelli bookstore logo",
-    "primaryColor": "#E20613",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "feltrinelli.png"
   },
@@ -286,7 +286,7 @@
     "name": "Auchan",
     "aliases": ["auchan"],
     "alt": "Auchan hypermarket logo",
-    "primaryColor": "#E4002B",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "auchan.png"
   },
@@ -295,7 +295,7 @@
     "name": "E.Leclerc",
     "aliases": ["leclerc", "e leclerc"],
     "alt": "E.Leclerc hypermarket logo",
-    "primaryColor": "#0F4C8C",
+    "primaryColor": "#FFD100",
     "secondaryColor": "#FFD100",
     "logo": "leclerc.png"
   },
@@ -304,7 +304,7 @@
     "name": "Intermarché",
     "aliases": ["intermarche", "intermarché"],
     "alt": "Intermarché supermarket logo",
-    "primaryColor": "#EA1D25",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#004E9F",
     "logo": "intermarche.png"
   },
@@ -313,7 +313,7 @@
     "name": "Géant Casino",
     "aliases": ["casino", "geant casino", "géant"],
     "alt": "Géant Casino hypermarket logo",
-    "primaryColor": "#E50012",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "geant-casino.png"
   },
@@ -322,7 +322,7 @@
     "name": "Monoprix",
     "aliases": ["monoprix"],
     "alt": "Monoprix supermarket logo",
-    "primaryColor": "#E6007E",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "monoprix.png"
   },
@@ -331,7 +331,7 @@
     "name": "Franprix",
     "aliases": ["franprix"],
     "alt": "Franprix supermarket logo",
-    "primaryColor": "#E50012",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "franprix.png"
   },
@@ -340,7 +340,7 @@
     "name": "Fnac",
     "aliases": ["fnac"],
     "alt": "Fnac media and electronics retailer logo",
-    "primaryColor": "#F1C40F",
+    "primaryColor": "#000000",
     "secondaryColor": "#000000",
     "logo": "fnac.png"
   },
@@ -358,7 +358,7 @@
     "name": "Boulanger",
     "aliases": ["boulanger"],
     "alt": "Boulanger electronics retailer logo",
-    "primaryColor": "#E2001A",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "boulanger.png"
   },
@@ -367,7 +367,7 @@
     "name": "Sephora",
     "aliases": ["sephora"],
     "alt": "Sephora beauty retailer logo",
-    "primaryColor": "#000000",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "sephora.png"
   },
@@ -376,7 +376,7 @@
     "name": "Yves Rocher",
     "aliases": ["yves rocher"],
     "alt": "Yves Rocher beauty retailer logo",
-    "primaryColor": "#007A3D",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "yves-rocher.png"
   },
@@ -385,7 +385,7 @@
     "name": "Leroy Merlin",
     "aliases": ["leroy merlin"],
     "alt": "Leroy Merlin home improvement store logo",
-    "primaryColor": "#8FC645",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "leroy-merlin.png"
   },
@@ -394,7 +394,7 @@
     "name": "Castorama",
     "aliases": ["castorama"],
     "alt": "Castorama home improvement store logo",
-    "primaryColor": "#0077C0",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "castorama.png"
   },
@@ -403,7 +403,7 @@
     "name": "Cultura",
     "aliases": ["cultura"],
     "alt": "Cultura media retailer logo",
-    "primaryColor": "#EF7D00",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "cultura.png"
   },
@@ -421,7 +421,7 @@
     "name": "Celio",
     "aliases": ["celio"],
     "alt": "Celio menswear store logo",
-    "primaryColor": "#000000",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "celio.png"
   },
@@ -430,7 +430,7 @@
     "name": "Grand Frais",
     "aliases": ["grand frais"],
     "alt": "Grand Frais grocery store logo",
-    "primaryColor": "#00A650",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "grand-frais.png"
   },
@@ -449,7 +449,7 @@
     "name": "Mercadona",
     "aliases": ["mercadona"],
     "alt": "Mercadona supermarket logo",
-    "primaryColor": "#008F3F",
+    "primaryColor": "#FFD60A",
     "secondaryColor": "#FFD60A",
     "logo": "mercadona.png"
   },
@@ -458,7 +458,7 @@
     "name": "Dia",
     "aliases": ["dia", "supermercados dia"],
     "alt": "Dia supermarket logo",
-    "primaryColor": "#E20613",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "dia.png"
   },
@@ -467,7 +467,7 @@
     "name": "Alcampo",
     "aliases": ["alcampo"],
     "alt": "Alcampo hypermarket logo",
-    "primaryColor": "#EE1B24",
+    "primaryColor": "#FFE400",
     "secondaryColor": "#FFE400",
     "logo": "alcampo.png"
   },
@@ -476,7 +476,7 @@
     "name": "Eroski",
     "aliases": ["eroski"],
     "alt": "Eroski supermarket logo",
-    "primaryColor": "#DD0A24",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "eroski.png"
   },
@@ -485,7 +485,7 @@
     "name": "Consum",
     "aliases": ["consum"],
     "alt": "Consum supermarket logo",
-    "primaryColor": "#009EE0",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "consum.png"
   },
@@ -494,7 +494,7 @@
     "name": "El Corte Inglés",
     "aliases": ["corte ingles", "el corte ingles", "el corte inglés"],
     "alt": "El Corte Inglés department store logo",
-    "primaryColor": "#008A44",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "el-corte-ingles.png"
   },
@@ -521,7 +521,7 @@
     "name": "Bon Preu",
     "aliases": ["bon preu", "bonpreu"],
     "alt": "Bon Preu supermarket logo",
-    "primaryColor": "#D70A16",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "bonpreu.png"
   },
@@ -530,7 +530,7 @@
     "name": "Zara",
     "aliases": ["zara"],
     "alt": "Zara clothing store logo",
-    "primaryColor": "#000000",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "zara.png"
   },
@@ -539,7 +539,7 @@
     "name": "Mango",
     "aliases": ["mango"],
     "alt": "Mango clothing store logo",
-    "primaryColor": "#000000",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "mango.png"
   },
@@ -548,7 +548,7 @@
     "name": "Cortefiel",
     "aliases": ["cortefiel"],
     "alt": "Cortefiel clothing store logo",
-    "primaryColor": "#000000",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "cortefiel.png"
   },
@@ -557,7 +557,7 @@
     "name": "MediaMarkt",
     "aliases": ["mediamarkt", "media markt"],
     "alt": "MediaMarkt electronics retailer logo",
-    "primaryColor": "#DF0000",
+    "primaryColor": "#000000",
     "secondaryColor": "#000000",
     "logo": "mediamarkt.png"
   },
@@ -566,7 +566,7 @@
     "name": "Bershka",
     "aliases": ["bershka"],
     "alt": "Bershka clothing store logo",
-    "primaryColor": "#000000",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "bershka.png"
   },
@@ -576,7 +576,7 @@
     "name": "Edeka",
     "aliases": ["edeka"],
     "alt": "Edeka supermarket logo",
-    "primaryColor": "#FFD800",
+    "primaryColor": "#000000",
     "secondaryColor": "#005BAB",
     "logo": "edeka.png"
   },
@@ -585,7 +585,7 @@
     "name": "Rewe",
     "aliases": ["rewe"],
     "alt": "Rewe supermarket logo",
-    "primaryColor": "#CC071E",
+    "primaryColor": "#000000",
     "secondaryColor": "#FFFFFF",
     "logo": "rewe.png"
   },
@@ -594,7 +594,7 @@
     "name": "Aldi",
     "aliases": ["aldi", "aldi sud", "aldi süd"],
     "alt": "Aldi discount supermarket logo",
-    "primaryColor": "#00447C",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#F29400",
     "logo": "aldi.png"
   },
@@ -612,7 +612,7 @@
     "name": "Penny",
     "aliases": ["penny", "penny market"],
     "alt": "Penny discount supermarket logo",
-    "primaryColor": "#E30613",
+    "primaryColor": "#FFED00",
     "secondaryColor": "#FFED00",
     "logo": "penny.png"
   },
@@ -621,7 +621,7 @@
     "name": "Netto Marken-Discount",
     "aliases": ["netto"],
     "alt": "Netto discount supermarket logo",
-    "primaryColor": "#FFD700",
+    "primaryColor": "#000000",
     "secondaryColor": "#E30613",
     "logo": "netto.png"
   },
@@ -630,7 +630,7 @@
     "name": "Globus",
     "aliases": ["globus"],
     "alt": "Globus hypermarket logo",
-    "primaryColor": "#E30613",
+    "primaryColor": "#000000",
     "secondaryColor": "#FFFFFF",
     "logo": "globus.png"
   },
@@ -639,7 +639,7 @@
     "name": "dm",
     "aliases": ["dm", "dm drogerie"],
     "alt": "dm drugstore logo",
-    "primaryColor": "#00578D",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "dm.png"
   },
@@ -648,7 +648,7 @@
     "name": "Rossmann",
     "aliases": ["rossmann"],
     "alt": "Rossmann drugstore logo",
-    "primaryColor": "#E2001A",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "rossmann.png"
   },
@@ -666,7 +666,7 @@
     "name": "OBI",
     "aliases": ["obi"],
     "alt": "OBI home improvement store logo",
-    "primaryColor": "#FF8200",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "obi.png"
   },
@@ -675,7 +675,7 @@
     "name": "Hornbach",
     "aliases": ["hornbach"],
     "alt": "Hornbach home improvement store logo",
-    "primaryColor": "#EA5B0C",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "hornbach.png"
   },
@@ -684,7 +684,7 @@
     "name": "Deichmann",
     "aliases": ["deichmann"],
     "alt": "Deichmann shoe store logo",
-    "primaryColor": "#F39200",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "deichmann.png"
   },
@@ -702,7 +702,7 @@
     "name": "Tchibo",
     "aliases": ["tchibo"],
     "alt": "Tchibo coffee and retail store logo",
-    "primaryColor": "#00558C",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "tchibo.png"
   },
@@ -711,7 +711,7 @@
     "name": "Budni",
     "aliases": ["budni", "budnikowsky"],
     "alt": "Budni drugstore logo",
-    "primaryColor": "#E2001A",
+    "primaryColor": "#FFFFFF",
     "secondaryColor": "#FFFFFF",
     "logo": "budni.png"
   },
@@ -720,7 +720,7 @@
     "name": "Lidl",
     "aliases": ["lidl", "lidl plus"],
     "alt": "Lidl discount supermarket logo",
-    "primaryColor": "#0050AA",
+    "primaryColor": "#000000",
     "secondaryColor": "#FFCC00",
     "logo": "lidl.png"
   }
