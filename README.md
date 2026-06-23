@@ -17,9 +17,10 @@ Local-first. Zero cloud. Zero bloat. Open source.
 - **Wallet-style card stack** — scroll, tap to bring a card forward with its barcode, tap again or swipe up to send it back
 - **Apple Watch companion** — your barcodes on your wrist, scannable at the till without pulling out your phone
 - **Brightness boost** — screen brightness maxes out when viewing a barcode, restores when you're done
+- **Guided add** — a quick 3-step flow (barcode → brand → review) to scan, snap, or type a card and preview it before saving
 - **Barcode scanning** — scan loyalty cards with the camera, share in a screenshot, or enter details manually
 - **Share a card** — send a single card to a friend straight from the card screen
-- **Brand recognition** — type a store name and Tesserone matches it to a curated brand database with logos and colors
+- **Brand recognition** — search a curated brand database and Tesserone fills in the logo and colors
 - **Custom logos** — upload your own logo from the gallery or take a photo
 - **Drag to reorder** — wobble mode with long-press drag, like rearranging your home screen
 - **Import/Export** — back up your cards as JSON, import from a backup file with conflict resolution
@@ -126,9 +127,10 @@ eas build --platform android --local --profile production
 
 Tesserone ships with a curated set of store logos. To add a new brand:
 
-1. Add a PNG logo to `assets/logos/` (white/light logo on transparent background works best)
+1. Add a PNG logo to `assets/logos/` (transparent background)
 2. Register the asset in `src/services/logos.ts` in the `BUNDLED_LOGOS` map
-3. Add the brand entry to `data/brand-index.json` with name, aliases, colors, and logo filename
+3. Add the brand entry to `data/brand-index.json` with name, aliases, colors, and logo filename — `primaryColor` is the card background, so it must contrast the logo (the logo renders directly on it, with no backing tile)
+4. Run `bun run check:logos` to verify the preset is legible — it fails on hard-to-read pairs like a black logo on a black background
 
 Users can also upload custom logos from their photo gallery when adding a card.
 
