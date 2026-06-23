@@ -74,7 +74,7 @@ bun run build   # static output to site/dist/
 File-based routing via expo-router:
 
 - `index.tsx` — home screen with card wallet stack and FAB menu
-- `add.tsx` — add card (scan + manual), modal presentation
+- `add.tsx` — add card: orchestrates a guided 3-step wizard (barcode → brand → review), modal presentation
 - `card/[id].tsx` — card detail/edit + single-card share-out (via `shareCard`), modal presentation
 - `settings.tsx` — theme, language, import/export, about
 - `_layout.tsx` — root Stack with ThemeProvider, ShareIntentProvider, GestureHandlerRootView, KeyboardProvider, SafeAreaProvider, ToastProvider, i18n bootstrap, JetBrains Mono font loading (`useFonts`), watch-sync startup (`startWatchSync`), and ErrorBoundary
@@ -102,6 +102,19 @@ Interactions: vertical scroll with rubber-band overscroll, tap to expand and aut
 - `ui/Wordmark.tsx` — the Tesserone mono wordmark
 - `tutorial/TutorialOverlay.tsx` — first-run overlay coaching the card-stack interactions
 - `tutorial/useActiveTutorialStep.ts` — drives which step is visible based on app state
+
+`ui/LogoSelector.tsx` and `ui/BrandResults.tsx` are used by the card edit screen (`card/[id].tsx`); the add flow uses the wizard's `StepBrand` (which reuses `LogoSelector` for its custom-logo fallback).
+
+### Add-Card Wizard (`src/components/add/`)
+
+`app/add.tsx` drives a guided 3-step wizard — a single modal with internal step state, a `WizardProgress` header, and a Back/Next/Save `ActionBar`. It replaced the old single-screen form to fix a discoverability problem where brand suggestions only appeared while typing in the name field. State (name/code/format/color/notes/logoSlug/customLogoUri) lives in `add.tsx`; the step components are presentational.
+
+- `WizardProgress.tsx` — segmented progress bar + "STEP n OF 3" title/subtitle header
+- `StepBarcode.tsx` — method chooser (scan / photo / type it), manual code + format entry, and the image-scan status banners; the live `CameraView` overlay is rendered by `add.tsx`
+- `StepBrand.tsx` — first-class brand search with always-visible logo results (`searchBrands` / `getBrandLogo`) plus an explicit "not listed? custom name + logo" fallback
+- `StepFinish.tsx` — live card preview (the real `CardFace` + `CardBack`), color grid, and notes before saving via `addCard`
+
+The share-an-image-in flow still routes into Step 1 with the detected barcode pre-filled (see `+native-intent.tsx` and `_layout.tsx`).
 
 ### State (`src/stores/`)
 
