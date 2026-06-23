@@ -723,5 +723,680 @@
     "primaryColor": "#000000",
     "secondaryColor": "#FFCC00",
     "logo": "lidl.png"
+  },
+  {
+    "slug": "burger-king",
+    "name": "Burger King",
+    "aliases": ["burger king"],
+    "alt": "Burger King logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#FF8631",
+    "logo": "burger-king.png"
+  },
+  {
+    "slug": "h-and-m",
+    "name": "H&M",
+    "aliases": ["h&m"],
+    "alt": "H&M logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#CE071E",
+    "logo": "h-and-m.png"
+  },
+  {
+    "slug": "kfc",
+    "name": "KFC",
+    "aliases": ["kfc"],
+    "alt": "KFC logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "kfc.png"
+  },
+  {
+    "slug": "mcdonalds",
+    "name": "McDonald's",
+    "aliases": ["mcdonald's"],
+    "alt": "McDonald's logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#DB0107",
+    "logo": "mcdonalds.png"
+  },
+  {
+    "slug": "adidas",
+    "name": "Adidas",
+    "aliases": ["adidas"],
+    "alt": "Adidas logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "adidas.png"
+  },
+  {
+    "slug": "foot-locker",
+    "name": "Foot Locker",
+    "aliases": ["foot locker"],
+    "alt": "Foot Locker logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#ED2A37",
+    "logo": "foot-locker.png"
+  },
+  {
+    "slug": "nike",
+    "name": "Nike",
+    "aliases": ["nike"],
+    "alt": "Nike logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "nike.png"
+  },
+  {
+    "slug": "starbucks",
+    "name": "Starbucks",
+    "aliases": ["starbucks"],
+    "alt": "Starbucks logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "starbucks.png"
+  },
+  {
+    "slug": "subway",
+    "name": "Subway",
+    "aliases": ["subway"],
+    "alt": "Subway logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#008D39",
+    "logo": "subway.png"
+  },
+  {
+    "slug": "dominos",
+    "name": "Domino's",
+    "aliases": ["domino's"],
+    "alt": "Domino's logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#E31636",
+    "logo": "dominos.png"
+  },
+  {
+    "slug": "intersport",
+    "name": "Intersport",
+    "aliases": ["intersport"],
+    "alt": "Intersport logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#114592",
+    "logo": "intersport.png"
+  },
+  {
+    "slug": "pizza-hut",
+    "name": "Pizza Hut",
+    "aliases": ["pizza hut"],
+    "alt": "Pizza Hut logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#CB0014",
+    "logo": "pizza-hut.png"
+  },
+  {
+    "slug": "zooplus",
+    "name": "Zooplus",
+    "aliases": ["zooplus"],
+    "alt": "Zooplus logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#247904",
+    "logo": "zooplus.png"
+  },
+  {
+    "slug": "conforama",
+    "name": "Conforama",
+    "aliases": ["conforama"],
+    "alt": "Conforama logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#EA0513",
+    "logo": "conforama.png"
+  },
+  {
+    "slug": "douglas",
+    "name": "Douglas",
+    "aliases": ["douglas"],
+    "alt": "Douglas logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "douglas.png"
+  },
+  {
+    "slug": "five-guys",
+    "name": "Five Guys",
+    "aliases": ["five guys"],
+    "alt": "Five Guys logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#CF2128",
+    "logo": "five-guys.png"
+  },
+  {
+    "slug": "jd-sports",
+    "name": "JD Sports",
+    "aliases": ["jd sports"],
+    "alt": "JD Sports logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#FAF255",
+    "logo": "jd-sports.png"
+  },
+  {
+    "slug": "marionnaud",
+    "name": "Marionnaud",
+    "aliases": ["marionnaud"],
+    "alt": "Marionnaud logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "marionnaud.png"
+  },
+  {
+    "slug": "rituals",
+    "name": "Rituals",
+    "aliases": ["rituals"],
+    "alt": "Rituals logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#7A7064",
+    "logo": "rituals.png"
+  },
+  {
+    "slug": "samsung",
+    "name": "Samsung",
+    "aliases": ["samsung"],
+    "alt": "Samsung logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#1831C1",
+    "logo": "samsung.png"
+  },
+  {
+    "slug": "spar",
+    "name": "Spar",
+    "aliases": ["spar"],
+    "alt": "Spar logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#EF1B24",
+    "logo": "spar.png"
+  },
+  {
+    "slug": "the-body-shop",
+    "name": "The Body Shop",
+    "aliases": ["the body shop"],
+    "alt": "The Body Shop logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "the-body-shop.png"
+  },
+  {
+    "slug": "tim-hortons",
+    "name": "Tim Hortons",
+    "aliases": ["tim hortons"],
+    "alt": "Tim Hortons logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#CD1030",
+    "logo": "tim-hortons.png"
+  },
+  {
+    "slug": "apple",
+    "name": "Apple",
+    "aliases": ["apple"],
+    "alt": "Apple logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "apple.png"
+  },
+  {
+    "slug": "bauhaus",
+    "name": "Bauhaus",
+    "aliases": ["bauhaus"],
+    "alt": "Bauhaus logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#EA082A",
+    "logo": "bauhaus.png"
+  },
+  {
+    "slug": "c-and-a",
+    "name": "C&A",
+    "aliases": ["c&a"],
+    "alt": "C&A logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "c-and-a.png"
+  },
+  {
+    "slug": "calzedonia",
+    "name": "Calzedonia",
+    "aliases": ["calzedonia"],
+    "alt": "Calzedonia logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "calzedonia.png"
+  },
+  {
+    "slug": "chicco",
+    "name": "Chicco",
+    "aliases": ["chicco"],
+    "alt": "Chicco logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#D3D8E3",
+    "logo": "chicco.png"
+  },
+  {
+    "slug": "co-op",
+    "name": "Co-op",
+    "aliases": ["co-op"],
+    "alt": "Co-op logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#01B1DD",
+    "logo": "co-op.png"
+  },
+  {
+    "slug": "dunkin",
+    "name": "Dunkin'",
+    "aliases": ["dunkin'"],
+    "alt": "Dunkin' logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#F46C00",
+    "logo": "dunkin.png"
+  },
+  {
+    "slug": "expert",
+    "name": "expert",
+    "aliases": ["expert"],
+    "alt": "expert logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#EA690D",
+    "logo": "expert.png"
+  },
+  {
+    "slug": "famila",
+    "name": "Famila",
+    "aliases": ["famila"],
+    "alt": "Famila logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#EC0004",
+    "logo": "famila.png"
+  },
+  {
+    "slug": "game",
+    "name": "GAME",
+    "aliases": ["game"],
+    "alt": "GAME logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#270CD0",
+    "logo": "game.png"
+  },
+  {
+    "slug": "gamestop",
+    "name": "GameStop",
+    "aliases": ["gamestop"],
+    "alt": "GameStop logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#FE0000",
+    "logo": "gamestop.png"
+  },
+  {
+    "slug": "gap",
+    "name": "Gap",
+    "aliases": ["gap"],
+    "alt": "Gap logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "gap.png"
+  },
+  {
+    "slug": "intimissimi",
+    "name": "Intimissimi",
+    "aliases": ["intimissimi"],
+    "alt": "Intimissimi logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "intimissimi.png"
+  },
+  {
+    "slug": "kiko-milano",
+    "name": "Kiko Milano",
+    "aliases": ["kiko milano"],
+    "alt": "Kiko Milano logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "kiko-milano.png"
+  },
+  {
+    "slug": "krispy-kreme",
+    "name": "Krispy Kreme",
+    "aliases": ["krispy kreme"],
+    "alt": "Krispy Kreme logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#D00F2A",
+    "logo": "krispy-kreme.png"
+  },
+  {
+    "slug": "loccitane",
+    "name": "L'Occitane",
+    "aliases": ["l'occitane"],
+    "alt": "L'Occitane logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "loccitane.png"
+  },
+  {
+    "slug": "lego-store",
+    "name": "LEGO Store",
+    "aliases": ["lego store"],
+    "alt": "LEGO Store logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#E3000B",
+    "logo": "lego-store.png"
+  },
+  {
+    "slug": "maisons-du-monde",
+    "name": "Maisons du Monde",
+    "aliases": ["maisons du monde"],
+    "alt": "Maisons du Monde logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#F7F6F7",
+    "logo": "maisons-du-monde.png"
+  },
+  {
+    "slug": "popeyes",
+    "name": "Popeyes",
+    "aliases": ["popeyes"],
+    "alt": "Popeyes logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "popeyes.png"
+  },
+  {
+    "slug": "prenatal",
+    "name": "Prénatal",
+    "aliases": ["prénatal"],
+    "alt": "Prénatal logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#E72B6F",
+    "logo": "prenatal.png"
+  },
+  {
+    "slug": "sport-2000",
+    "name": "Sport 2000",
+    "aliases": ["sport 2000"],
+    "alt": "Sport 2000 logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "sport-2000.png"
+  },
+  {
+    "slug": "taco-bell",
+    "name": "Taco Bell",
+    "aliases": ["taco bell"],
+    "alt": "Taco Bell logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#734F55",
+    "logo": "taco-bell.png"
+  },
+  {
+    "slug": "tezenis",
+    "name": "Tezenis",
+    "aliases": ["tezenis"],
+    "alt": "Tezenis logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "tezenis.png"
+  },
+  {
+    "slug": "tgi-fridays",
+    "name": "TGI Fridays",
+    "aliases": ["tgi fridays"],
+    "alt": "TGI Fridays logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#D9013B",
+    "logo": "tgi-fridays.png"
+  },
+  {
+    "slug": "the-north-face",
+    "name": "The North Face",
+    "aliases": ["the north face"],
+    "alt": "The North Face logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#DA2629",
+    "logo": "the-north-face.png"
+  },
+  {
+    "slug": "wagamama",
+    "name": "Wagamama",
+    "aliases": ["wagamama"],
+    "alt": "Wagamama logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#D40A0A",
+    "logo": "wagamama.png"
+  },
+  {
+    "slug": "smyths-toys",
+    "name": "Smyths Toys",
+    "aliases": ["smyths toys","smyths"],
+    "alt": "Smyths Toys logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#FCEF07",
+    "logo": "smyths-toys.png"
+  },
+  {
+    "slug": "alcott",
+    "name": "Alcott",
+    "aliases": ["alcott"],
+    "alt": "Alcott logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "alcott.png"
+  },
+  {
+    "slug": "bricocenter",
+    "name": "Bricocenter",
+    "aliases": ["bricocenter"],
+    "alt": "Bricocenter logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#EC222E",
+    "logo": "bricocenter.png"
+  },
+  {
+    "slug": "bricofer",
+    "name": "Bricofer",
+    "aliases": ["bricofer"],
+    "alt": "Bricofer logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#2D598A",
+    "logo": "bricofer.png"
+  },
+  {
+    "slug": "chef-express",
+    "name": "Chef Express",
+    "aliases": ["chef express"],
+    "alt": "Chef Express logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#455565",
+    "logo": "chef-express.png"
+  },
+  {
+    "slug": "despar",
+    "name": "Despar",
+    "aliases": ["despar"],
+    "alt": "Despar logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#EB5058",
+    "logo": "despar.png"
+  },
+  {
+    "slug": "dr-max",
+    "name": "Dr. Max",
+    "aliases": ["dr. max"],
+    "alt": "Dr. Max logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#B7B8BA",
+    "logo": "dr-max.png"
+  },
+  {
+    "slug": "eataly",
+    "name": "Eataly",
+    "aliases": ["eataly"],
+    "alt": "Eataly logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#E6CC95",
+    "logo": "eataly.png"
+  },
+  {
+    "slug": "eurobrico",
+    "name": "Eurobrico",
+    "aliases": ["eurobrico"],
+    "alt": "Eurobrico logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#CB0E21",
+    "logo": "eurobrico.png"
+  },
+  {
+    "slug": "fao-schwarz",
+    "name": "FAO Schwarz",
+    "aliases": ["fao schwarz"],
+    "alt": "FAO Schwarz logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#D6C7B2",
+    "logo": "fao-schwarz.png"
+  },
+  {
+    "slug": "flying-tiger-copenhagen",
+    "name": "Flying Tiger Copenhagen",
+    "aliases": ["flying tiger copenhagen"],
+    "alt": "Flying Tiger Copenhagen logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "flying-tiger-copenhagen.png"
+  },
+  {
+    "slug": "geox",
+    "name": "Geox",
+    "aliases": ["geox"],
+    "alt": "Geox logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "geox.png"
+  },
+  {
+    "slug": "guess",
+    "name": "Guess",
+    "aliases": ["guess"],
+    "alt": "Guess logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "guess.png"
+  },
+  {
+    "slug": "libraccio",
+    "name": "Libraccio",
+    "aliases": ["libraccio"],
+    "alt": "Libraccio logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#02B055",
+    "logo": "libraccio.png"
+  },
+  {
+    "slug": "libreriecoop",
+    "name": "Librerie.coop",
+    "aliases": ["librerie.coop"],
+    "alt": "Librerie.coop logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#E30611",
+    "logo": "libreriecoop.png"
+  },
+  {
+    "slug": "liu-jo",
+    "name": "Liu Jo",
+    "aliases": ["liu jo"],
+    "alt": "Liu Jo logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "liu-jo.png"
+  },
+  {
+    "slug": "piazza-italia",
+    "name": "Piazza Italia",
+    "aliases": ["piazza italia"],
+    "alt": "Piazza Italia logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "piazza-italia.png"
+  },
+  {
+    "slug": "pittarello",
+    "name": "Pittarello",
+    "aliases": ["pittarello"],
+    "alt": "Pittarello logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#D70711",
+    "logo": "pittarello.png"
+  },
+  {
+    "slug": "rossopomodoro",
+    "name": "Rossopomodoro",
+    "aliases": ["rossopomodoro"],
+    "alt": "Rossopomodoro logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#EA2D2B",
+    "logo": "rossopomodoro.png"
+  },
+  {
+    "slug": "sportler",
+    "name": "Sportler",
+    "aliases": ["sportler"],
+    "alt": "Sportler logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#024C9A",
+    "logo": "sportler.png"
+  },
+  {
+    "slug": "todis",
+    "name": "Todis",
+    "aliases": ["todis"],
+    "alt": "Todis logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#FCF401",
+    "logo": "todis.png"
+  },
+  {
+    "slug": "tommy-hilfiger",
+    "name": "Tommy Hilfiger",
+    "aliases": ["tommy hilfiger"],
+    "alt": "Tommy Hilfiger logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#BA0E33",
+    "logo": "tommy-hilfiger.png"
+  },
+  {
+    "slug": "united-colors-of-benetton",
+    "name": "United Colors of Benetton",
+    "aliases": ["united colors of benetton"],
+    "alt": "United Colors of Benetton logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#028961",
+    "logo": "united-colors-of-benetton.png"
+  },
+  {
+    "slug": "venchi",
+    "name": "Venchi",
+    "aliases": ["venchi"],
+    "alt": "Venchi logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "venchi.png"
+  },
+  {
+    "slug": "xiaomi",
+    "name": "Xiaomi",
+    "aliases": ["xiaomi"],
+    "alt": "Xiaomi logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#FF6900",
+    "logo": "xiaomi.png"
+  },
+  {
+    "slug": "yamamay",
+    "name": "Yamamay",
+    "aliases": ["yamamay"],
+    "alt": "Yamamay logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#B61032",
+    "logo": "yamamay.png"
   }
 ]
