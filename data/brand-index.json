@@ -1164,5 +1164,14 @@
     "primaryColor": "#FFFFFF",
     "secondaryColor": "#D40A0A",
     "logo": "wagamama.png"
+  },
+  {
+    "slug": "smyths-toys",
+    "name": "Smyths Toys",
+    "aliases": ["smyths toys","smyths"],
+    "alt": "Smyths Toys logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#FCEF07",
+    "logo": "smyths-toys.png"
   }
 ]

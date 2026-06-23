@@ -143,6 +143,7 @@ const BUNDLED_LOGOS: Record<string, ImageSourcePropType> = {
   'tgi-fridays.png': require('../../assets/logos/tgi-fridays.png'),
   'the-north-face.png': require('../../assets/logos/the-north-face.png'),
   'wagamama.png': require('../../assets/logos/wagamama.png'),
+  'smyths-toys.png': require('../../assets/logos/smyths-toys.png'),
 };
 
 const fuse = new Fuse<BrandEntry>(brandIndex, {
