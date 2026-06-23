@@ -1173,5 +1173,230 @@
     "primaryColor": "#000000",
     "secondaryColor": "#FCEF07",
     "logo": "smyths-toys.png"
+  },
+  {
+    "slug": "alcott",
+    "name": "Alcott",
+    "aliases": ["alcott"],
+    "alt": "Alcott logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "alcott.png"
+  },
+  {
+    "slug": "bricocenter",
+    "name": "Bricocenter",
+    "aliases": ["bricocenter"],
+    "alt": "Bricocenter logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#EC222E",
+    "logo": "bricocenter.png"
+  },
+  {
+    "slug": "bricofer",
+    "name": "Bricofer",
+    "aliases": ["bricofer"],
+    "alt": "Bricofer logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#2D598A",
+    "logo": "bricofer.png"
+  },
+  {
+    "slug": "chef-express",
+    "name": "Chef Express",
+    "aliases": ["chef express"],
+    "alt": "Chef Express logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#455565",
+    "logo": "chef-express.png"
+  },
+  {
+    "slug": "despar",
+    "name": "Despar",
+    "aliases": ["despar"],
+    "alt": "Despar logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#EB5058",
+    "logo": "despar.png"
+  },
+  {
+    "slug": "dr-max",
+    "name": "Dr. Max",
+    "aliases": ["dr. max"],
+    "alt": "Dr. Max logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#B7B8BA",
+    "logo": "dr-max.png"
+  },
+  {
+    "slug": "eataly",
+    "name": "Eataly",
+    "aliases": ["eataly"],
+    "alt": "Eataly logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#E6CC95",
+    "logo": "eataly.png"
+  },
+  {
+    "slug": "eurobrico",
+    "name": "Eurobrico",
+    "aliases": ["eurobrico"],
+    "alt": "Eurobrico logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#CB0E21",
+    "logo": "eurobrico.png"
+  },
+  {
+    "slug": "fao-schwarz",
+    "name": "FAO Schwarz",
+    "aliases": ["fao schwarz"],
+    "alt": "FAO Schwarz logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#D6C7B2",
+    "logo": "fao-schwarz.png"
+  },
+  {
+    "slug": "flying-tiger-copenhagen",
+    "name": "Flying Tiger Copenhagen",
+    "aliases": ["flying tiger copenhagen"],
+    "alt": "Flying Tiger Copenhagen logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "flying-tiger-copenhagen.png"
+  },
+  {
+    "slug": "geox",
+    "name": "Geox",
+    "aliases": ["geox"],
+    "alt": "Geox logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "geox.png"
+  },
+  {
+    "slug": "guess",
+    "name": "Guess",
+    "aliases": ["guess"],
+    "alt": "Guess logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "guess.png"
+  },
+  {
+    "slug": "libraccio",
+    "name": "Libraccio",
+    "aliases": ["libraccio"],
+    "alt": "Libraccio logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#02B055",
+    "logo": "libraccio.png"
+  },
+  {
+    "slug": "libreriecoop",
+    "name": "Librerie.coop",
+    "aliases": ["librerie.coop"],
+    "alt": "Librerie.coop logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#E30611",
+    "logo": "libreriecoop.png"
+  },
+  {
+    "slug": "liu-jo",
+    "name": "Liu Jo",
+    "aliases": ["liu jo"],
+    "alt": "Liu Jo logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "liu-jo.png"
+  },
+  {
+    "slug": "piazza-italia",
+    "name": "Piazza Italia",
+    "aliases": ["piazza italia"],
+    "alt": "Piazza Italia logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "piazza-italia.png"
+  },
+  {
+    "slug": "pittarello",
+    "name": "Pittarello",
+    "aliases": ["pittarello"],
+    "alt": "Pittarello logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#D70711",
+    "logo": "pittarello.png"
+  },
+  {
+    "slug": "rossopomodoro",
+    "name": "Rossopomodoro",
+    "aliases": ["rossopomodoro"],
+    "alt": "Rossopomodoro logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#EA2D2B",
+    "logo": "rossopomodoro.png"
+  },
+  {
+    "slug": "sportler",
+    "name": "Sportler",
+    "aliases": ["sportler"],
+    "alt": "Sportler logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#024C9A",
+    "logo": "sportler.png"
+  },
+  {
+    "slug": "todis",
+    "name": "Todis",
+    "aliases": ["todis"],
+    "alt": "Todis logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#FCF401",
+    "logo": "todis.png"
+  },
+  {
+    "slug": "tommy-hilfiger",
+    "name": "Tommy Hilfiger",
+    "aliases": ["tommy hilfiger"],
+    "alt": "Tommy Hilfiger logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#BA0E33",
+    "logo": "tommy-hilfiger.png"
+  },
+  {
+    "slug": "united-colors-of-benetton",
+    "name": "United Colors of Benetton",
+    "aliases": ["united colors of benetton"],
+    "alt": "United Colors of Benetton logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#028961",
+    "logo": "united-colors-of-benetton.png"
+  },
+  {
+    "slug": "venchi",
+    "name": "Venchi",
+    "aliases": ["venchi"],
+    "alt": "Venchi logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#000000",
+    "logo": "venchi.png"
+  },
+  {
+    "slug": "xiaomi",
+    "name": "Xiaomi",
+    "aliases": ["xiaomi"],
+    "alt": "Xiaomi logo",
+    "primaryColor": "#000000",
+    "secondaryColor": "#FF6900",
+    "logo": "xiaomi.png"
+  },
+  {
+    "slug": "yamamay",
+    "name": "Yamamay",
+    "aliases": ["yamamay"],
+    "alt": "Yamamay logo",
+    "primaryColor": "#FFFFFF",
+    "secondaryColor": "#B61032",
+    "logo": "yamamay.png"
   }
 ]
