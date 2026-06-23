@@ -8,7 +8,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "tinify-logos": "bun run scripts/tinify-logos.ts"
+    "tinify-logos": "bun run scripts/tinify-logos.ts",
+    "check:logos": "node scripts/check-brand-contrast.mjs"
   },
   "dependencies": {
     "@bacons/apple-targets": "^4.0.6",

@@ -155,7 +155,7 @@ Share an image into Tesserone (or pick one from the gallery) and the barcode is 
 
 Curated database of store logos (PNG). Each entry has: slug, name, aliases, alt text, primaryColor, secondaryColor, logo filename. Fuse.js fuzzy search for brand matching when adding cards.
 
-To add a brand: drop PNG in `assets/logos/`, add `require()` in the `BUNDLED_LOGOS` map in `logos.ts`, add the entry to `brand-index.json`.
+To add a brand: drop PNG in `assets/logos/`, add `require()` in the `BUNDLED_LOGOS` map in `logos.ts`, add the entry to `brand-index.json`. The card renders the logo directly on `primaryColor` (no backing tile), so `primaryColor` must contrast the logo — run `bun run check:logos` to verify the preset is legible (it fails on hard-to-read pairs like a black logo on a black background).
 
 ### Landing Site (`site/`)
 
