@@ -69,11 +69,16 @@ Output is gitignored (binary artifacts). Zips for upload: `screenshots/6.9-inch.
 - **01 stack / 02 expanded** — launch; tap the 2nd card (Esselunga) to flip to
   its barcode. The tap can race the stack entrance animation; the scripts verify
   the expanded card (barcode code `ES4471…`) and retry.
-- **03 add / 04 detail / 05 settings** — deep links: `tesserone://add`,
-  `tesserone://card/demo-decathlon`, `tesserone://settings`. On iOS the
-  "Open in Tesserone?" system prompt is detected via idb and dismissed; Android
-  launches the scheme directly. For 03, the script types `Deca` into the name
-  field to surface the brand fuzzy-match, then hides the keyboard.
+- **03a method / 03b brand** — deep link `tesserone://add` lands on the add-card
+  wizard's Step 1 (the scan / photo / type-it method chooser) → that's **03a**.
+  For **03b**, the script drives one step forward: it opens "type it in", types a
+  valid barcode (`8004620150741`), advances to Step 2, then types `Deca` to
+  surface the brand fuzzy-match with logos. The wizard's button labels are
+  localized, so those in-app taps are located by position in the view tree — idb
+  `describe-all` on iOS, `uiautomator dump` on Android — not by label.
+- **04 detail / 05 settings** — deep links `tesserone://card/demo-decathlon`,
+  `tesserone://settings`. On iOS the "Open in Tesserone?" system prompt is
+  detected via idb and dismissed; Android launches the scheme directly.
 
 ## Shots
 
@@ -99,16 +104,27 @@ Output is gitignored (binary artifacts). Zips for upload: `screenshots/6.9-inch.
 - ES · `Gira al código. Brillo al máximo, solo.`
 - DE · `Umdrehen für den Barcode. Helligkeit automatisch max.`
 
-### 03 — add
-**Frame:** Add Card modal with the brand picker/LogoSelector visible. Type a partial brand name (the automation types `Deca` for Decathlon) so the fuzzy search shows a match with logo and color preview.
-**Why:** acquisition — "easy to add, smart matching, no account."
+### 03a — add (method chooser)
+**Frame:** Step 1 of the add-card wizard — the `STEP 1 OF 3` header over the scan / photo / type-it method tiles. No keyboard.
+**Why:** acquisition — "adding a card is a quick, guided flow."
 
 **Captions:**
-- EN · `Scan or type. We'll find the brand.`
-- IT · `Scansiona o scrivi. Troviamo la tessera.`
-- FR · `Scanne ou tape. On trouve la marque.`
-- ES · `Escanea o escribe. Encontramos la marca.`
-- DE · `Scannen oder tippen. Wir finden die Marke.`
+- EN · `Scan, snap, or type. Three ways in.`
+- IT · `Scansiona, fotografa o scrivi.`
+- FR · `Scanne, photographie ou tape.`
+- ES · `Escanea, fotografía o escribe.`
+- DE · `Scannen, fotografieren oder tippen.`
+
+### 03b — add (brand search)
+**Frame:** Step 2 of the wizard — the always-visible brand search with `Deca` typed, showing the Decathlon fuzzy-match result with its logo and color. Keyboard up (live search).
+**Why:** acquisition — "smart matching, no account."
+
+**Captions:**
+- EN · `Type a name. We'll find the brand.`
+- IT · `Scrivi un nome. Troviamo la tessera.`
+- FR · `Tape un nom. On trouve la marque.`
+- ES · `Escribe un nombre. Encontramos la marca.`
+- DE · `Tippe einen Namen. Wir finden die Marke.`
 
 ### 04 — detail
 **Frame:** Card detail/edit screen with a populated card — name, barcode, notes, color swatch. Pick a distinctive color to make it visually pop.
@@ -141,8 +157,8 @@ boots into the seeded locale.
 ## Upload
 
 Once captured:
-- App Store Connect: upload `screenshots/6.9-inch/<locale>/*.png` (5 × 5 = 25 for 6.9")
-- Play Console: upload `screenshots/android-phone/<locale>/*.png` (5 × 5 = 25)
+- App Store Connect: upload `screenshots/6.9-inch/<locale>/*.png` (6 × 5 = 30 for 6.9")
+- Play Console: upload `screenshots/android-phone/<locale>/*.png` (6 × 5 = 30)
 - Or use `fastlane deliver` (iOS) / `fastlane supply` (Android) against the folders
 
 ## Quick decision: captions or bare?
