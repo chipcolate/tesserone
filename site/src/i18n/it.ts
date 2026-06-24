@@ -63,6 +63,36 @@ export const it: Strings = {
       },
     },
   },
+  showcase: {
+    eyebrow: 'Uno sguardo dentro',
+    heading: "Guardala all'opera.",
+    subheading:
+      'Una pila di carte familiare, pronta alla cassa, con tutto salvato sul tuo dispositivo.',
+    prevAria: 'Screenshot precedente',
+    nextAria: 'Screenshot successivo',
+    shots: {
+      stack: {
+        title: 'Tutto il portafoglio, una pila',
+        body: 'Ogni carta fedeltà in un’unica pila scorrevole. Scorri per sfogliare, tocca per aprire.',
+      },
+      checkout: {
+        title: 'Pronta alla cassa',
+        body: 'Tocca una carta per girarla sul codice a barre. Lo schermo si illumina da solo, così lo scanner legge al primo colpo.',
+      },
+      add: {
+        title: 'Aggiungi una carta in pochi secondi',
+        body: 'Scansiona, scatta una foto o digita il codice. Scegli il negozio dall’elenco dei marchi — o imposta nome e logo tuoi.',
+      },
+      customize: {
+        title: 'Rendi tua ogni carta',
+        body: 'Scegli il formato del codice, cambia colore alla carta, aggiungi note. Modifica tutto, quando vuoi.',
+      },
+      settings: {
+        title: 'I tuoi dati restano dove sono',
+        body: 'Cambia tema o lingua, esporta tutta la collezione in JSON e importala ovunque. Nessun account richiesto.',
+      },
+    },
+  },
   backstory: {
     eyebrow: "Perché l'abbiamo fatta",
     headingLine1: 'Avevamo app semplici.',

@@ -63,6 +63,36 @@ export const en: Strings = {
       },
     },
   },
+  showcase: {
+    eyebrow: 'A look inside',
+    heading: 'See it in action.',
+    subheading:
+      'A familiar card stack, ready at the till, with everything stored on your device.',
+    prevAria: 'Previous screenshot',
+    nextAria: 'Next screenshot',
+    shots: {
+      stack: {
+        title: 'Your whole wallet, one stack',
+        body: 'Every loyalty card in a single scrollable stack. Scroll to browse, tap to open.',
+      },
+      checkout: {
+        title: 'Ready at the till',
+        body: 'Tap a card to flip to its barcode. The screen brightens automatically so the scanner reads it first time.',
+      },
+      add: {
+        title: 'Add a card in seconds',
+        body: 'Scan, snap a photo, or type the code. Pick your store from the brand list — or set your own name and logo.',
+      },
+      customize: {
+        title: 'Make every card yours',
+        body: 'Choose the barcode format, recolour the card, add notes. Edit anything, anytime.',
+      },
+      settings: {
+        title: 'Your data stays put',
+        body: 'Switch theme or language, export your whole collection to JSON, and import it anywhere. No account required.',
+      },
+    },
+  },
   backstory: {
     eyebrow: 'Why we built this',
     headingLine1: 'We had simple apps.',

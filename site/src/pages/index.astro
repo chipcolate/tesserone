@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import FeatureList from "../components/FeatureList.astro";
+import Showcase from "../components/Showcase.astro";
 import Backstory from "../components/Backstory.astro";
 import OSSection from "../components/OSSection.astro";
 import Footer from "../components/Footer.astro";
@@ -15,6 +16,7 @@ const lang = "en" as const;
   <main>
     <Hero lang={lang} />
     <FeatureList lang={lang} />
+    <Showcase lang={lang} />
     <Backstory lang={lang} />
     <OSSection lang={lang} />
   </main>
