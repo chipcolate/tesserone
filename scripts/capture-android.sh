@@ -3,7 +3,7 @@
 # Automated Play Store screenshot capture for Android, driven by adb.
 #
 # Seeds a deterministic demo wallet into the AsyncStorage SQLite DB (RKStorage)
-# via run-as (requires a debuggable build), then captures the 5-shot list per
+# via run-as (requires a debuggable build), then captures the 6-shot list per
 # locale into screenshots/<size>/<locale>/ at 1080x2160 (2:1, Play-compliant).
 #
 # Cold-starts each screen and polls until our app is foregrounded AND the JS has
@@ -30,7 +30,6 @@ LOCALES=(${LOCALES:-en it fr es de})
 
 # Tap targets at 1080x2160 (calibrated by probing).
 CARD_TAP_X=540;  CARD_TAP_Y=760      # exposed strip of the 2nd card (Esselunga)
-NAME_TAP_X=540;  NAME_TAP_Y=580      # add-screen card-name field
 
 VAR_PY='from PIL import Image,ImageStat;import sys;im=Image.open(sys.argv[1]).convert("L").crop((0,140,1080,2060));print(round(ImageStat.Stat(im).stddev[0],1))'
 
@@ -38,6 +37,47 @@ screencap() { adb exec-out screencap -p > "$1"; echo "    -> $(basename "$(dirna
 force_stop() { adb shell am force-stop "$PKG" >/dev/null 2>&1; }
 deeplink()  { adb shell am start -a android.intent.action.VIEW -d "$1" "$PKG" >/dev/null 2>&1; }
 home_launch(){ adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1; }
+
+# Tap an in-app element located by a python selector over the uiautomator view
+# hierarchy. The selector reads the dump XML on stdin and prints "<x> <y>" for
+# the element to tap. Frame-based so it survives the wizard's localized labels.
+ax_tap() {
+  adb shell uiautomator dump /sdcard/_ui.xml >/dev/null 2>&1
+  local c
+  c=$(adb exec-out cat /sdcard/_ui.xml 2>/dev/null | python3 -c "$1" 2>/dev/null)
+  [ -n "$c" ] && adb shell input tap $c >/dev/null 2>&1
+}
+
+# Step 1 method tiles are the clickable, content-described nodes in the upper
+# region; the 3rd from the top is "type it in" (reveals + focuses manual entry).
+SEL_TYPEIT='
+import sys, re, xml.etree.ElementTree as ET
+root = ET.fromstring(sys.stdin.read())
+tiles = []
+for n in root.iter("node"):
+    if n.get("clickable") == "true" and n.get("content-desc"):
+        x1, y1, x2, y2 = map(int, re.findall(r"\d+", n.get("bounds"))[:4])
+        cy = (y1 + y2) // 2
+        if cy < 1400:
+            tiles.append((cy, (x1 + x2) // 2))
+tiles.sort()
+if len(tiles) >= 3:
+    print(tiles[2][1], tiles[2][0])'
+
+# The wizard ActionBar Back/Next sit in the bottom region; right-most is Next.
+SEL_NEXT='
+import sys, re, xml.etree.ElementTree as ET
+root = ET.fromstring(sys.stdin.read())
+btns = []
+for n in root.iter("node"):
+    if n.get("clickable") == "true" and n.get("content-desc"):
+        x1, y1, x2, y2 = map(int, re.findall(r"\d+", n.get("bounds"))[:4])
+        cy = (y1 + y2) // 2
+        if cy > 1400:
+            btns.append((cy, (x1 + x2) // 2))
+if btns:
+    b = max(btns, key=lambda e: e[1])
+    print(b[1], b[0])'
 
 # True when our app's main activity is the resumed (topmost) activity.
 app_foreground() {
@@ -107,14 +147,21 @@ for L in "${LOCALES[@]}"; do
     FAILED+=("$L/01-stack" "$L/02-expanded")
   fi
 
-  # 03 — add (brand fuzzy-match result, keyboard hidden)
-  if launch "$L/03-add" deeplink "tesserone://add"; then
-    adb shell input tap "$NAME_TAP_X" "$NAME_TAP_Y"; sleep 1
+  # 03a — add: Step 1 method chooser. 03b drives the same instance to Step 2.
+  if launch "$L/03a-add-method" deeplink "tesserone://add"; then
+    screencap "$OUT/03a-add-method.png"
+
+    # 03b — Step 2 brand search: open "type it in", enter a valid barcode,
+    # advance to Brand, type a partial name to surface logo results.
+    ax_tap "$SEL_TYPEIT"; sleep 1
+    adb shell input text "8004620150741"; sleep 1
+    adb shell input keyevent 4; sleep 0.8   # hide keyboard so it doesn't cover Next
+    ax_tap "$SEL_NEXT"; sleep 1.5
     adb shell input text "Deca"; sleep 1.5
     adb shell input keyevent 4; sleep 1   # BACK: hide soft keyboard (stays on screen)
-    screencap "$OUT/03-add.png"
+    screencap "$OUT/03b-add-brand.png"
   else
-    FAILED+=("$L/03-add")
+    FAILED+=("$L/03a-add-method" "$L/03b-add-brand")
   fi
 
   # 04 — detail/edit
