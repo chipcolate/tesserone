@@ -51,6 +51,20 @@ export type Strings = {
       openSource: Feature;
     };
   };
+  showcase: {
+    eyebrow: string;
+    heading: string;
+    subheading: string;
+    prevAria: string;
+    nextAria: string;
+    shots: {
+      stack: Feature;
+      checkout: Feature;
+      add: Feature;
+      customize: Feature;
+      settings: Feature;
+    };
+  };
   backstory: {
     eyebrow: string;
     headingLine1: string;

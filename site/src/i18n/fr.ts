@@ -63,6 +63,36 @@ export const fr: Strings = {
       },
     },
   },
+  showcase: {
+    eyebrow: 'Un aperçu',
+    heading: "Voyez-la à l'œuvre.",
+    subheading:
+      'Une pile de cartes familière, prête en caisse, avec tout stocké sur votre appareil.',
+    prevAria: 'Capture précédente',
+    nextAria: 'Capture suivante',
+    shots: {
+      stack: {
+        title: 'Tout votre portefeuille, une pile',
+        body: 'Chaque carte de fidélité dans une seule pile défilante. Faites défiler pour parcourir, touchez pour ouvrir.',
+      },
+      checkout: {
+        title: 'Prête en caisse',
+        body: 'Touchez une carte pour la retourner sur son code-barres. L’écran s’éclaire automatiquement pour une lecture du premier coup.',
+      },
+      add: {
+        title: 'Ajoutez une carte en quelques secondes',
+        body: 'Scannez, prenez une photo ou tapez le code. Choisissez votre enseigne dans la liste des marques — ou définissez vos propres nom et logo.',
+      },
+      customize: {
+        title: 'Faites de chaque carte la vôtre',
+        body: 'Choisissez le format du code, changez la couleur de la carte, ajoutez des notes. Modifiez tout, à tout moment.',
+      },
+      settings: {
+        title: 'Vos données restent chez vous',
+        body: 'Changez de thème ou de langue, exportez toute votre collection en JSON et importez-la n’importe où. Aucun compte requis.',
+      },
+    },
+  },
   backstory: {
     eyebrow: "Pourquoi on l'a faite",
     headingLine1: 'On avait des apps simples.',

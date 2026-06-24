@@ -63,6 +63,36 @@ export const es: Strings = {
       },
     },
   },
+  showcase: {
+    eyebrow: 'Un vistazo por dentro',
+    heading: 'Mírala en acción.',
+    subheading:
+      'Una pila de tarjetas familiar, lista en la caja, con todo guardado en tu dispositivo.',
+    prevAria: 'Captura anterior',
+    nextAria: 'Captura siguiente',
+    shots: {
+      stack: {
+        title: 'Toda tu cartera, una pila',
+        body: 'Cada tarjeta de fidelidad en una única pila desplazable. Desliza para ojear, toca para abrir.',
+      },
+      checkout: {
+        title: 'Lista en la caja',
+        body: 'Toca una tarjeta para girarla a su código de barras. La pantalla se ilumina sola para que el escáner lo lea a la primera.',
+      },
+      add: {
+        title: 'Añade una tarjeta en segundos',
+        body: 'Escanea, haz una foto o escribe el código. Elige tu tienda de la lista de marcas — o pon tu propio nombre y logo.',
+      },
+      customize: {
+        title: 'Haz tuya cada tarjeta',
+        body: 'Elige el formato del código, cambia el color de la tarjeta, añade notas. Edita lo que quieras, cuando quieras.',
+      },
+      settings: {
+        title: 'Tus datos se quedan donde están',
+        body: 'Cambia de tema o idioma, exporta toda tu colección a JSON e impórtala donde sea. Sin cuenta.',
+      },
+    },
+  },
   backstory: {
     eyebrow: 'Por qué la hicimos',
     headingLine1: 'Teníamos apps sencillas.',

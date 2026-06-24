@@ -63,6 +63,36 @@ export const de: Strings = {
       },
     },
   },
+  showcase: {
+    eyebrow: 'Ein Blick hinein',
+    heading: 'Sieh sie in Aktion.',
+    subheading:
+      'Ein vertrauter Kartenstapel, bereit an der Kasse, mit allem auf deinem Gerät gespeichert.',
+    prevAria: 'Vorheriger Screenshot',
+    nextAria: 'Nächster Screenshot',
+    shots: {
+      stack: {
+        title: 'Dein ganzes Portemonnaie, ein Stapel',
+        body: 'Jede Kundenkarte in einem einzigen scrollbaren Stapel. Scrollen zum Stöbern, tippen zum Öffnen.',
+      },
+      checkout: {
+        title: 'Bereit an der Kasse',
+        body: 'Tippe eine Karte an, um sie zum Barcode zu drehen. Der Bildschirm wird automatisch hell, damit der Scanner ihn sofort liest.',
+      },
+      add: {
+        title: 'Eine Karte in Sekunden hinzufügen',
+        body: 'Scannen, ein Foto machen oder den Code eintippen. Wähle deinen Laden aus der Markenliste — oder lege Name und Logo selbst fest.',
+      },
+      customize: {
+        title: 'Mach jede Karte zu deiner',
+        body: 'Wähle das Barcode-Format, färbe die Karte um, füge Notizen hinzu. Ändere alles, jederzeit.',
+      },
+      settings: {
+        title: 'Deine Daten bleiben, wo sie sind',
+        body: 'Wechsle Thema oder Sprache, exportiere deine ganze Sammlung als JSON und importiere sie überall. Kein Konto nötig.',
+      },
+    },
+  },
   backstory: {
     eyebrow: 'Warum wir sie gebaut haben',
     headingLine1: 'Wir hatten einfache Apps.',

@@ -1,0 +1,256 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { getStrings, type Locale } from "../i18n";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const s = getStrings(lang).showcase;
+
+// Eagerly import every locale's screenshots so Astro can optimise them at
+// build time (resized + WebP). Keyed by path relative to this file.
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/screenshots/**/*.png",
+  { eager: true },
+);
+
+function pick(locale: Locale, file: string): ImageMetadata | undefined {
+  return images[`../assets/screenshots/${locale}/${file}.png`]?.default;
+}
+
+const shots = [
+  { key: "stack", file: "01-stack" },
+  { key: "checkout", file: "02-expanded" },
+  { key: "add", file: "03b-add-brand" },
+  { key: "customize", file: "04-detail" },
+  { key: "settings", file: "05-settings" },
+] as const;
+
+const slides = shots
+  .map((shot) => ({
+    ...shot,
+    img: pick(lang, shot.file),
+    title: s.shots[shot.key].title,
+    body: s.shots[shot.key].body,
+  }))
+  .filter((slide): slide is typeof slide & { img: ImageMetadata } =>
+    Boolean(slide.img),
+  );
+---
+
+<section id="screens" class="px-6 py-16 sm:py-24" data-showcase>
+  <div class="mx-auto max-w-6xl">
+    <div class="mb-10 flex items-end justify-between gap-6 sm:mb-12">
+      <div class="max-w-2xl">
+        <p
+          class="mb-4 text-sm font-medium tracking-widest text-[var(--color-accent)] uppercase"
+        >
+          {s.eyebrow}
+        </p>
+        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+          {s.heading}
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-[var(--color-fg-muted)]">
+          {s.subheading}
+        </p>
+      </div>
+
+      <div data-nav class="hidden shrink-0 gap-3 sm:flex">
+        <button
+          type="button"
+          data-prev
+          aria-label={s.prevAria}
+          class="flex h-11 w-11 items-center justify-center rounded-[4px] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] text-[var(--color-fg)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
+        >
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15 18l-6-6 6-6"></path>
+          </svg>
+        </button>
+        <button
+          type="button"
+          data-next
+          aria-label={s.nextAria}
+          class="flex h-11 w-11 items-center justify-center rounded-[4px] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] text-[var(--color-fg)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
+        >
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 18l6-6-6-6"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <ul
+      data-track
+      class="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-6 overflow-x-auto scroll-smooth px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {
+        slides.map((slide, i) => (
+          <li
+            data-slide
+            class="w-[72vw] max-w-[260px] shrink-0 snap-start sm:w-[240px]"
+          >
+            <figure>
+              <div class="overflow-hidden rounded-[4px] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-2">
+                <Image
+                  src={slide.img}
+                  alt={slide.title}
+                  widths={[260, 520]}
+                  sizes="(max-width: 640px) 72vw, 240px"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  class="w-full rounded-[2px]"
+                />
+              </div>
+              <figcaption class="mt-4">
+                <h3 class="text-base font-semibold">{slide.title}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+                  {slide.body}
+                </p>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div data-dots class="mt-8 flex justify-center gap-2">
+      {
+        slides.map((_, i) => (
+          <button
+            type="button"
+            data-dot={i}
+            aria-label={`${i + 1}`}
+            class="h-2 w-2 rounded-full bg-[var(--color-border)] transition aria-[current=true]:w-6 aria-[current=true]:bg-[var(--color-accent)]"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function initShowcase(root: HTMLElement) {
+    const track = root.querySelector<HTMLElement>("[data-track]");
+    if (!track) return;
+    const slides = Array.from(
+      track.querySelectorAll<HTMLElement>("[data-slide]"),
+    );
+    if (slides.length === 0) return;
+
+    const prev = root.querySelector<HTMLButtonElement>("[data-prev]");
+    const next = root.querySelector<HTMLButtonElement>("[data-next]");
+    const dots = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-dot]"),
+    );
+
+    // Several slides can be visible at once, so the number of *reachable*
+    // scroll positions is smaller than the slide count (the last slides can't
+    // scroll past the right edge). Measure the real stops and drive arrows +
+    // dots off those, hiding any dots that don't map to a reachable position.
+    let stops: number[] = [];
+    let active = 0;
+
+    function measure() {
+      const padLeft = parseFloat(getComputedStyle(track!).paddingLeft) || 0;
+      const maxScroll = Math.max(0, track!.scrollWidth - track!.clientWidth);
+      const tLeft = track!.getBoundingClientRect().left;
+      const clamped = slides.map((slide) => {
+        const delta = slide.getBoundingClientRect().left - (tLeft + padLeft);
+        const left = track!.scrollLeft + delta;
+        return Math.min(Math.max(0, Math.round(left)), maxScroll);
+      });
+      // Collapse stops that resolve to the same (clamped) position.
+      stops = clamped.filter((x, i) => i === 0 || x - clamped[i - 1] > 1);
+      dots.forEach((dot, i) => {
+        dot.style.display = i < stops.length ? "" : "none";
+      });
+      // Nothing to scroll (everything fits) → hide the controls entirely.
+      const scrollable = stops.length > 1;
+      const dotsBox = root.querySelector<HTMLElement>("[data-dots]");
+      const nav = root.querySelector<HTMLElement>("[data-nav]");
+      if (dotsBox) dotsBox.style.display = scrollable ? "" : "none";
+      if (nav) nav.style.visibility = scrollable ? "" : "hidden";
+      update();
+    }
+
+    function nearestStop(): number {
+      let best = 0;
+      let bestDist = Infinity;
+      stops.forEach((x, i) => {
+        const dist = Math.abs(track!.scrollLeft - x);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      return best;
+    }
+
+    function paint() {
+      dots.forEach((dot, i) =>
+        dot.setAttribute("aria-current", i === active ? "true" : "false"),
+      );
+      if (prev) prev.disabled = active === 0;
+      if (next) next.disabled = active >= stops.length - 1;
+    }
+
+    function update() {
+      active = nearestStop();
+      paint();
+    }
+
+    function go(i: number) {
+      active = Math.max(0, Math.min(stops.length - 1, i));
+      track!.scrollTo({ left: stops[active], behavior: "smooth" });
+      paint();
+    }
+
+    prev?.addEventListener("click", () => go(active - 1));
+    next?.addEventListener("click", () => go(active + 1));
+    dots.forEach((dot, i) => dot.addEventListener("click", () => go(i)));
+
+    // Keep the active dot in sync when the user scrolls/swipes directly.
+    let raf = 0;
+    track.addEventListener("scroll", () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        update();
+      });
+    });
+
+    let resizeRaf = 0;
+    window.addEventListener("resize", () => {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(measure);
+    });
+    // Remeasure once images have settled and shifted layout.
+    window.addEventListener("load", measure);
+
+    measure();
+  }
+
+  document
+    .querySelectorAll<HTMLElement>("[data-showcase]")
+    .forEach(initShowcase);
+</script>
