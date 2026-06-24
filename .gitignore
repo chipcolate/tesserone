@@ -56,7 +56,7 @@ modules/*/android/build/
 
 # store graphic binaries (don't commit) and per-release notes
 store/*.png
-store/whats-new-*.md
+store/whats-new-*
 
 # Claude Code harness: ignore all local/personal state by default
 # (settings.local.json, worktrees, anything new), and explicitly allow
