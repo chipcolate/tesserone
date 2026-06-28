@@ -14,6 +14,7 @@ import { BarcodeFormat, FidelityCard, BrandEntry } from '../src/types';
 import { mapBarcodeType, validateBarcode, fixScannedCode } from '../src/services/scanner';
 import { scanBarcodeFromImage } from '../src/services/imageScan';
 import { getBrandColors, deleteCustomLogo } from '../src/services/logos';
+import { alertPermissionBlocked } from '../src/services/permissions';
 import { Button } from '../src/components/ui/Button';
 import { ActionBar } from '../src/components/ui/ActionBar';
 import { WizardProgress } from '../src/components/add/WizardProgress';
@@ -129,17 +130,32 @@ export default function AddCardScreen() {
   const handleScan = useCallback(async () => {
     if (!permission?.granted) {
       const result = await requestPermission();
-      if (!result.granted) return;
+      if (!result.granted) {
+        if (!result.canAskAgain) {
+          alertPermissionBlocked(
+            t,
+            t('add.cameraPermissionBlockedTitle'),
+            t('add.cameraPermissionBlockedBody')
+          );
+        }
+        return;
+      }
     }
     processingRef.current = false;
     setScanned(false);
     setCameraOpen(true);
-  }, [permission, requestPermission]);
+  }, [permission, requestPermission, t]);
 
   const handlePick = useCallback(async () => {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) {
-      Alert.alert(t('add.photoPermissionDeniedTitle'), t('add.photoPermissionDeniedBody'));
+      if (!perm.canAskAgain) {
+        alertPermissionBlocked(
+          t,
+          t('add.photoPermissionDeniedTitle'),
+          t('add.photoPermissionDeniedBody')
+        );
+      }
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({

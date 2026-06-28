@@ -299,7 +299,7 @@ export function isCustomLogoRef(stored: string | undefined): boolean {
 export type PickCustomLogoResult =
   | { kind: 'picked'; ref: string }
   | { kind: 'canceled' }
-  | { kind: 'permissionDenied' }
+  | { kind: 'permissionDenied'; canAskAgain: boolean }
   | { kind: 'error'; message: string };
 
 /**
@@ -310,7 +310,7 @@ export type PickCustomLogoResult =
 export async function pickCustomLogoFromLibrary(): Promise<PickCustomLogoResult> {
   try {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!perm.granted) return { kind: 'permissionDenied' };
+    if (!perm.granted) return { kind: 'permissionDenied', canAskAgain: perm.canAskAgain };
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsEditing: true,
