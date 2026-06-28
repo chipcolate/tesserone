@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import Animated, {
   useSharedValue,
@@ -45,6 +45,10 @@ export default function HomeScreen() {
   const sortMode = useSettingsStore((s) => s.sortMode);
   const setSortMode = useSettingsStore((s) => s.setSortMode);
   const stackState = useCardStack();
+  const stackRef = useRef(stackState);
+  stackRef.current = stackState;
+  const openParams = useLocalSearchParams<{ open?: string; n?: string }>();
+  const handledOpenRef = useRef<string | null>(null);
   const [reorderMode, setReorderMode] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
   const [sortSheetOpen, setSortSheetOpen] = useState(false);
@@ -78,6 +82,47 @@ export default function HomeScreen() {
   }, [fabProgress]);
 
   const cardsList = getSortedCards(cards, sortMode);
+
+  // Expand a card to its barcode, deduped by `key`. Re-applies a few times
+  // because on a cold/resumed launch the first apply can land before the card
+  // stack is laid out (reading back as collapsed); the retries make it reliable.
+  const openTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const applyOpenCard = useCallback((openId: string | undefined, key: string): boolean => {
+    if (!openId || handledOpenRef.current === key) return false;
+    const resolveIdx = () =>
+      getSortedCards(
+        useCardsStore.getState().cards,
+        useSettingsStore.getState().sortMode
+      ).findIndex((c) => c.id === openId);
+    if (resolveIdx() === -1) return false; // not hydrated yet, or card was deleted
+    handledOpenRef.current = key;
+    clearTimeout(openTimerRef.current);
+    let tries = 0;
+    const apply = () => {
+      // Re-resolve the index every tick: the wallet can re-sort during the retry
+      // window, and we must expand the card the user tapped — not a stale slot.
+      const idx = resolveIdx();
+      if (idx === -1) return; // card vanished mid-retry; give up
+      // Stop as soon as the selection takes. This both ends the loop early and
+      // ensures a dismiss right after expand isn't clobbered by a late retry.
+      if (stackRef.current.selectCardByIndex(idx)) return;
+      if (++tries < 8) openTimerRef.current = setTimeout(apply, 100);
+    };
+    apply();
+    return true;
+  }, []);
+
+  // Primary path: expo-router delivers the widget deep link as `?open=<id>&n=<n>`.
+  // The nonce makes every tap unique so re-tapping the same card re-expands it.
+  // `cards` is a stable store ref (changes only on hydration/edits) so a cold
+  // launch re-runs this once cards arrive.
+  useEffect(() => {
+    if (!openParams.open) {
+      handledOpenRef.current = null;
+      return;
+    }
+    applyOpenCard(openParams.open, `${openParams.open}:${openParams.n ?? ''}`);
+  }, [openParams.open, openParams.n, cards, applyOpenCard]);
 
   const openSort = useCallback(() => {
     close();

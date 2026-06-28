@@ -205,6 +205,37 @@ export function useCardStack() {
       }
     });
 
+  // Imperatively expand + flip a card to its barcode, mirroring the tap gesture.
+  // Used by the home screen to honor the `tesserone://open/<id>` widget deep link.
+  // Returns whether the selection has "taken": the caller retries on a cold/
+  // resumed launch until the stack is laid out, and stops once it has — so a
+  // user dismiss after that window is never overridden by a stray retry.
+  const selectCardByIndex = useCallback(
+    (index: number): boolean => {
+      if (index < 0) return true; // nothing to expand; stop retrying
+      // Mirror the tap gesture: ignore expand requests while reordering, and
+      // tell the caller to stop (don't force a card open over the wobble UI).
+      if (reorderMode.value === 1) return true;
+      // Idempotent: re-asserting the same selection only refreshes the flip +
+      // brightness (no extra haptic), so callers can safely call this again to
+      // defeat a first-launch/resume layout race without a double buzz.
+      const already = selectedCardIndex.value === index;
+      selectedCardIndex.value = index;
+      flipProgress.value = withTiming(Math.PI, FLIP_TIMING);
+      // Only buzz + boost brightness on the actual transition; re-asserts (used
+      // to defeat resume/layout races) just refresh the shared values.
+      if (!already) {
+        triggerHaptic();
+        maxBrightness();
+      }
+      // The expand only sticks once the stack has measured its viewport; before
+      // that the positions read back collapsed, so report not-yet-ready and let
+      // the caller retry.
+      return viewportHeight.value > 0;
+    },
+    [selectedCardIndex, flipProgress, maxBrightness, reorderMode, viewportHeight]
+  );
+
   const makeLongPressGesture = (onEdit: () => void) =>
     Gesture.LongPress()
       .minDuration(400)
@@ -261,6 +292,7 @@ export function useCardStack() {
     makeTapGesture,
     makeLongPressGesture,
     makeReorderGesture,
+    selectCardByIndex,
   };
 }
 

@@ -20,6 +20,7 @@ import { useSettingsStore } from '../src/stores/settings';
 import { useCardsStore } from '../src/stores/cards';
 import { sweepOrphanLogos } from '../src/services/logos';
 import { startWatchSync } from '../src/services/watch';
+import { startWidgetSync } from '../src/services/widgets';
 
 function Inner({ cardsReady }: { cardsReady: boolean }) {
   const { dark, colors } = useTheme();
@@ -110,6 +111,15 @@ export default function RootLayout() {
     if (!cardsReady) return;
     let cleanup: (() => void) | undefined;
     startWatchSync().then((c) => {
+      cleanup = c;
+    });
+    return () => cleanup?.();
+  }, [cardsReady]);
+
+  useEffect(() => {
+    if (!cardsReady) return;
+    let cleanup: (() => void) | undefined;
+    startWidgetSync().then((c) => {
       cleanup = c;
     });
     return () => cleanup?.();

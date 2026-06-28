@@ -1,0 +1,8 @@
+{
+  "name": "widget-bridge",
+  "version": "1.0.0",
+  "description": "Writes the home-screen widget snapshot into the iOS App Group container and reloads widget timelines",
+  "main": "index.ts",
+  "license": "Apache-2.0",
+  "private": true
+}
