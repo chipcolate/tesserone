@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tesserone",
     "slug": "tesserone",
-    "version": "1.3.2",
+    "version": "1.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "tesserone",
@@ -16,7 +16,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.chipcolate.tesserone",
       "appleTeamId": "HNF5BY9XXV",
-      "buildNumber": "15",
+      "buildNumber": "16",
       "icon": {
         "light": "./assets/icon.png",
         "dark": "./assets/icon-dark.png"
@@ -32,7 +32,7 @@
         "backgroundColor": "#FAFAF8"
       },
       "package": "com.chipcolate.tesserone",
-      "versionCode": 15,
+      "versionCode": 16,
       "softwareKeyboardLayoutMode": "resize",
       "permissions": [
         "android.permission.CAMERA"
@@ -84,7 +84,42 @@
         }
       ],
       "@bacons/apple-targets",
-      "expo-font"
+      "expo-font",
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "SingleCard",
+              "label": "@string/widget_singlecard_label",
+              "description": "Open a loyalty card straight from your home screen.",
+              "minWidth": "40dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 1,
+              "targetCellHeight": 1,
+              "resizeMode": "none",
+              "previewImage": "./assets/widget-single-preview.png",
+              "widgetFeatures": "reconfigurable"
+            },
+            {
+              "name": "CardList",
+              "label": "@string/widget_cardlist_label",
+              "description": "Show a set of loyalty cards; tap one to open it.",
+              "minWidth": "250dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "320dp",
+              "maxResizeHeight": "320dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widget-list-preview.png",
+              "widgetFeatures": "reconfigurable"
+            }
+          ]
+        }
+      ],
+      "./plugins/withWidgetStrings",
+      "./plugins/withWidgetDeepLinkIntent"
     ],
     "experiments": {
       "typedRoutes": true

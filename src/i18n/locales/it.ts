@@ -181,4 +181,10 @@ export const it: Translations = {
     reorderDragMessage:
       'Usa i pulsanti ▲ e ▼ (o trascina) per spostare una tessera. Tocca Fatto quando hai finito.',
   },
+  widget: {
+    empty: 'Aggiungi una tessera in Tesserone',
+    pickOne: 'Scegli una tessera',
+    pickMany: 'Scegli le tessere',
+    configEmpty: 'Ancora nessuna tessera. Aggiungine una in Tesserone.',
+  },
 };

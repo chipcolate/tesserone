@@ -8,17 +8,8 @@ import {
 } from 'react-native-watch-connectivity';
 import { useCardsStore } from '../stores/cards';
 import { useSettingsStore } from '../stores/settings';
-import {
-  customLogoFilename,
-  resolveBundledLogoUri,
-  resolveCustomLogoUri,
-} from './logos';
-import {
-  WATCH_SCHEMA_VERSION,
-  type FidelityCard,
-  type WatchSnapshot,
-  type WatchSnapshotCard,
-} from '../types';
+import { buildSnapshotCards, logoTargetFor, resolveLogoUri } from './cardSnapshot';
+import { WATCH_SCHEMA_VERSION, type WatchSnapshot } from '../types';
 
 const KNOWN_LOGOS_KEY = 'watch-known-logos';
 const SNAPSHOT_DEBOUNCE_MS = 500;
@@ -29,38 +20,12 @@ let knownLogos: KnownLogos = {};
 let lastSnapshotJson: string | null = null;
 let pushTimer: ReturnType<typeof setTimeout> | null = null;
 
-type LogoTarget = { key: string; isCustom: boolean };
-
-function logoTargetFor(card: FidelityCard): LogoTarget | null {
-  if (customLogoFilename(card.customLogoUri)) {
-    return { key: `custom:${card.id}`, isCustom: true };
-  }
-  if (card.logoSlug) {
-    return { key: `bundled:${card.logoSlug}`, isCustom: false };
-  }
-  return null;
-}
-
 function buildSnapshot(): WatchSnapshot {
   const { cards } = useCardsStore.getState();
   const { sortMode, themeMode } = useSettingsStore.getState();
-  const list = Object.values(cards).sort((a, b) => a.id.localeCompare(b.id));
   return {
     schemaVersion: WATCH_SCHEMA_VERSION,
-    cards: list.map(
-      (c): WatchSnapshotCard => ({
-        id: c.id,
-        name: c.name,
-        code: c.code,
-        format: c.format,
-        color: c.color,
-        logoSlug: c.logoSlug,
-        hasCustomLogo: !!customLogoFilename(c.customLogoUri),
-        sortIndex: c.sortIndex,
-        createdAt: c.createdAt,
-        updatedAt: c.updatedAt,
-      })
-    ),
+    cards: buildSnapshotCards(cards),
     sortMode,
     themeMode,
   };
@@ -92,12 +57,7 @@ async function syncLogos(snap: WatchSnapshot): Promise<void> {
     if (!full) continue;
     const target = logoTargetFor(full);
     if (!target) continue;
-    let uri: string | undefined;
-    if (target.isCustom) {
-      uri = resolveCustomLogoUri(full.customLogoUri);
-    } else if (full.logoSlug) {
-      uri = await resolveBundledLogoUri(full.logoSlug);
-    }
+    const uri = await resolveLogoUri(full);
     if (uri) desired.set(target.key, { uri, updatedAt: c.updatedAt });
   }
 
@@ -160,11 +120,7 @@ async function handleLogoRequest(
     reply?.({ ok: false, reason: 'noLogo' });
     return;
   }
-  const uri = target.isCustom
-    ? resolveCustomLogoUri(card.customLogoUri)
-    : card.logoSlug
-      ? await resolveBundledLogoUri(card.logoSlug)
-      : undefined;
+  const uri = await resolveLogoUri(card);
   if (!uri) {
     reply?.({ ok: false, reason: 'unresolved' });
     return;

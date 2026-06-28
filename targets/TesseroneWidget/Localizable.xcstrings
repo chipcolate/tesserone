@@ -1,0 +1,78 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add a card in Tesserone" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Füge in Tesserone eine Karte hinzu" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añade una tarjeta en Tesserone" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajoute une carte dans Tesserone" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Aggiungi una tessera in Tesserone" } }
+      }
+    },
+    "Card" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Karte" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tarjeta" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Carte" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Tessera" } }
+      }
+    },
+    "Cards" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Karten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tarjetas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cartes" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Tessere" } }
+      }
+    },
+    "Choose which card this widget opens." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wähle, welche Karte dieses Widget öffnet." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Elige qué tarjeta abre este widget." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisis la carte que ce widget ouvre." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Scegli quale tessera apre questo widget." } }
+      }
+    },
+    "Choose which cards this widget shows." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wähle, welche Karten dieses Widget anzeigt." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Elige qué tarjetas muestra este widget." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisis les cartes que ce widget affiche." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Scegli quali tessere mostra questo widget." } }
+      }
+    },
+    "Open a loyalty card straight from your home screen." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Öffne eine Kundenkarte direkt vom Homescreen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abre una tarjeta de fidelidad directamente desde la pantalla de inicio." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ouvre une carte de fidélité directement depuis l’écran d’accueil." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Apri una tessera fedeltà direttamente dalla schermata Home." } }
+      }
+    },
+    "Select Card" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Karte auswählen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Elegir tarjeta" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisir la carte" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Scegli la tessera" } }
+      }
+    },
+    "Select Cards" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Karten auswählen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Elegir tarjetas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisir les cartes" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Scegli le tessere" } }
+      }
+    },
+    "Show a set of loyalty cards; tap one to open it." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zeigt mehrere Karten; tippe eine an, um sie zu öffnen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Muestra un conjunto de tarjetas; toca una para abrirla." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Affiche un ensemble de cartes ; touche-en une pour l’ouvrir." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Mostra un gruppo di tessere; toccane una per aprirla." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -186,4 +186,10 @@ export const de: Translations = {
     reorderDragMessage:
       'Nutze die Tasten ▲ und ▼ (oder ziehen), um eine Karte zu verschieben. Tippe auf „Fertig", wenn du fertig bist.',
   },
+  widget: {
+    empty: 'Füge in Tesserone eine Karte hinzu',
+    pickOne: 'Karte auswählen',
+    pickMany: 'Karten auswählen',
+    configEmpty: 'Noch keine Karten. Füge in Tesserone eine hinzu.',
+  },
 };

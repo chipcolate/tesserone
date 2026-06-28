@@ -178,6 +178,12 @@ export const en = {
     reorderDragMessage:
       'Use the ▲ and ▼ buttons (or drag) to move a card. Tap Done when finished.',
   },
+  widget: {
+    empty: 'Add a card in Tesserone',
+    pickOne: 'Pick a card',
+    pickMany: 'Pick cards',
+    configEmpty: 'No cards yet. Add one in Tesserone.',
+  },
 };
 
 export type Translations = {

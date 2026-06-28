@@ -183,4 +183,10 @@ export const fr: Translations = {
     reorderDragMessage:
       'Utilise les boutons ▲ et ▼ (ou fais glisser) pour déplacer une carte. Touche Terminé quand tu as fini.',
   },
+  widget: {
+    empty: 'Ajoute une carte dans Tesserone',
+    pickOne: 'Choisis une carte',
+    pickMany: 'Choisis des cartes',
+    configEmpty: 'Aucune carte pour l’instant. Ajoutes-en une dans Tesserone.',
+  },
 };

@@ -182,4 +182,10 @@ export const es: Translations = {
     reorderDragMessage:
       'Usa los botones ▲ y ▼ (o arrastra) para mover una tarjeta. Pulsa Listo cuando termines.',
   },
+  widget: {
+    empty: 'Añade una tarjeta en Tesserone',
+    pickOne: 'Elige una tarjeta',
+    pickMany: 'Elige tarjetas',
+    configEmpty: 'Aún no hay tarjetas. Añade una en Tesserone.',
+  },
 };

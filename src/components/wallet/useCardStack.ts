@@ -205,6 +205,27 @@ export function useCardStack() {
       }
     });
 
+  // Imperatively expand + flip a card to its barcode, mirroring the tap gesture.
+  // Used by the home screen to honor the `tesserone://open/<id>` widget deep link.
+  const selectCardByIndex = useCallback(
+    (index: number) => {
+      if (index < 0) return;
+      // Idempotent: re-asserting the same selection only refreshes the flip +
+      // brightness (no extra haptic), so callers can safely call this again to
+      // defeat a first-launch/resume layout race without a double buzz.
+      const already = selectedCardIndex.value === index;
+      selectedCardIndex.value = index;
+      flipProgress.value = withTiming(Math.PI, FLIP_TIMING);
+      // Only buzz + boost brightness on the actual transition; re-asserts (used
+      // to defeat resume/layout races) just refresh the shared values.
+      if (!already) {
+        triggerHaptic();
+        maxBrightness();
+      }
+    },
+    [selectedCardIndex, flipProgress, maxBrightness]
+  );
+
   const makeLongPressGesture = (onEdit: () => void) =>
     Gesture.LongPress()
       .minDuration(400)
@@ -261,6 +282,7 @@ export function useCardStack() {
     makeTapGesture,
     makeLongPressGesture,
     makeReorderGesture,
+    selectCardByIndex,
   };
 }
 
