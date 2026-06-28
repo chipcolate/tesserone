@@ -55,12 +55,21 @@ enum SharedStore {
         cards().first { $0.id == id }
     }
 
+    private static let imageCache = NSCache<NSString, UIImage>()
+
     static func logoImage(for card: WidgetCard) -> UIImage? {
         guard let key = card.logoKey,
               let dir = widgetsDir?.appendingPathComponent("logos", isDirectory: true)
         else { return nil }
+        // SwiftUI re-evaluates the card views' `body` frequently; decode each
+        // logo once and cache it (keyed by identity + updatedAt so a logo change
+        // busts the entry) instead of re-reading the PNG from disk every time.
+        let cacheKey = "\(key)#\(card.updatedAt)" as NSString
+        if let cached = imageCache.object(forKey: cacheKey) { return cached }
         let file = dir.appendingPathComponent(sanitize(key) + ".png")
-        return UIImage(contentsOfFile: file.path)
+        guard let image = UIImage(contentsOfFile: file.path) else { return nil }
+        imageCache.setObject(image, forKey: cacheKey)
+        return image
     }
 
     /// Deep link that opens the app and expands this card to its barcode.

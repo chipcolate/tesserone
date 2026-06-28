@@ -1,8 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   customLogoFilename,
   resolveBundledLogoUri,
   resolveCustomLogoUri,
 } from './logos';
+import { useCardsStore } from '../stores/cards';
 import type { FidelityCard, WatchSnapshotCard } from '../types';
 
 /**
@@ -69,4 +71,98 @@ export function buildSnapshotCards(
   return Object.values(cards)
     .sort((a, b) => a.id.localeCompare(b.id))
     .map(toSnapshotCard);
+}
+
+// ---------------------------------------------------------------------------
+// Shared logo-sync orchestration
+//
+// The watch sync (`watch.ts`) and the home-screen widget sync (`widgets.ts`)
+// both push a snapshot off-device and then incrementally deliver each card's
+// logo, skipping logos already delivered (tracked by `updatedAt`) and pruning
+// stale ones. The transport differs (WatchConnectivity file transfer vs. an
+// App Group file copy) but the bookkeeping is identical — it lives here so the
+// two surfaces can never drift on which logo a card needs or when to re-send it.
+// ---------------------------------------------------------------------------
+
+export type KnownLogos = Record<string, string>;
+
+/** Per-surface, persisted cache of which logo (by `updatedAt`) was delivered. */
+export function createLogoCache(storageKey: string) {
+  let known: KnownLogos = {};
+  return {
+    /** Load the persisted cache; call once at sync startup. */
+    async load(): Promise<void> {
+      try {
+        const raw = await AsyncStorage.getItem(storageKey);
+        known = raw ? JSON.parse(raw) : {};
+      } catch {
+        known = {};
+      }
+    },
+    /** Forget everything (e.g. a freshly installed watch needs all logos again). */
+    reset(): void {
+      known = {};
+    },
+    get(key: string): string | undefined {
+      return known[key];
+    },
+    set(key: string, updatedAt: string): void {
+      known[key] = updatedAt;
+    },
+    /** Drop entries whose key isn't in `keep` (deleted cards / changed slugs). */
+    retain(keep: Set<string>): void {
+      for (const k of Object.keys(known)) {
+        if (!keep.has(k)) delete known[k];
+      }
+    },
+    async persist(): Promise<void> {
+      try {
+        await AsyncStorage.setItem(storageKey, JSON.stringify(known));
+      } catch {
+        // best-effort
+      }
+    },
+  };
+}
+
+/**
+ * Resolve the logos a snapshot needs, keyed by stable logo identity →
+ * `{ on-disk uri, card updatedAt }`. Cards without a resolvable logo are
+ * skipped. Shared by both syncs so the "which logo for this card" decision
+ * lives in exactly one place.
+ */
+export async function buildDesiredLogos(
+  snapCards: { id: string; updatedAt: string }[]
+): Promise<Map<string, { uri: string; updatedAt: string }>> {
+  const { cards: stateCards } = useCardsStore.getState();
+  const desired = new Map<string, { uri: string; updatedAt: string }>();
+  for (const c of snapCards) {
+    const full = stateCards[c.id];
+    if (!full) continue;
+    const target = logoTargetFor(full);
+    if (!target) continue;
+    const uri = await resolveLogoUri(full);
+    if (uri) desired.set(target.key, { uri, updatedAt: c.updatedAt });
+  }
+  return desired;
+}
+
+/** Trailing-edge debouncer with a cancel for cleanup. */
+export function createDebouncer(ms: number) {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  return {
+    schedule(fn: () => void): void {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = null;
+        fn();
+      }, ms);
+    },
+    cancel(): void {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    },
+  };
 }

@@ -1,11 +1,10 @@
 import React from 'react';
 import { FlexWidget, ImageWidget, TextWidget } from 'react-native-android-widget';
 import { i18n } from '../i18n';
+import { TILE_RADIUS } from '../theme/geometry';
 import type { WidgetCardData } from './data';
 
 const openUri = (id: string) => ({ uri: `tesserone://open/${id}` });
-
-const TILE_RADIUS = 16; // rounded to harmonize with the rounded widget container
 
 /** Widget chrome colors, light/dark — matches the app's Raw-Aesthetic theme. */
 export type WidgetTheme = 'light' | 'dark';
@@ -32,6 +31,10 @@ function LogoOrInitial({ card, size }: { card: WidgetCardData; size: number }) {
       />
     );
   }
+  // System 'monospace' (not the app's JetBrains Mono) is deliberate: this runs in
+  // the Android widget's own RemoteViews process where the JS-registered UI font
+  // isn't available. Matches the Apple Watch companion, which likewise renders in
+  // the system monospaced face. See also CardViews.swift (iOS widget).
   return (
     <TextWidget
       text={card.initial}

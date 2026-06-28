@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   startFileTransfer,
   updateApplicationContext,
@@ -8,17 +7,21 @@ import {
 } from 'react-native-watch-connectivity';
 import { useCardsStore } from '../stores/cards';
 import { useSettingsStore } from '../stores/settings';
-import { buildSnapshotCards, logoTargetFor, resolveLogoUri } from './cardSnapshot';
+import {
+  buildSnapshotCards,
+  buildDesiredLogos,
+  createDebouncer,
+  createLogoCache,
+  logoTargetFor,
+  resolveLogoUri,
+} from './cardSnapshot';
 import { WATCH_SCHEMA_VERSION, type WatchSnapshot } from '../types';
 
-const KNOWN_LOGOS_KEY = 'watch-known-logos';
 const SNAPSHOT_DEBOUNCE_MS = 500;
 
-type KnownLogos = Record<string, string>;
-
-let knownLogos: KnownLogos = {};
+const logoCache = createLogoCache('watch-known-logos');
+const pushDebouncer = createDebouncer(SNAPSHOT_DEBOUNCE_MS);
 let lastSnapshotJson: string | null = null;
-let pushTimer: ReturnType<typeof setTimeout> | null = null;
 
 function buildSnapshot(): WatchSnapshot {
   const { cards } = useCardsStore.getState();
@@ -31,56 +34,26 @@ function buildSnapshot(): WatchSnapshot {
   };
 }
 
-async function loadKnownLogos(): Promise<KnownLogos> {
-  try {
-    const raw = await AsyncStorage.getItem(KNOWN_LOGOS_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-}
-
-async function persistKnownLogos(): Promise<void> {
-  try {
-    await AsyncStorage.setItem(KNOWN_LOGOS_KEY, JSON.stringify(knownLogos));
-  } catch {
-    // best-effort
-  }
-}
-
 async function syncLogos(snap: WatchSnapshot): Promise<void> {
-  const { cards: stateCards } = useCardsStore.getState();
-  const desired = new Map<string, { uri: string; updatedAt: string }>();
-
-  for (const c of snap.cards) {
-    const full = stateCards[c.id];
-    if (!full) continue;
-    const target = logoTargetFor(full);
-    if (!target) continue;
-    const uri = await resolveLogoUri(full);
-    if (uri) desired.set(target.key, { uri, updatedAt: c.updatedAt });
-  }
+  const desired = await buildDesiredLogos(snap.cards);
 
   for (const [key, { uri, updatedAt }] of desired) {
-    if (knownLogos[key] === updatedAt) continue;
+    if (logoCache.get(key) === updatedAt) continue;
     try {
       await startFileTransfer(uri, {
         kind: 'logo',
         logoKey: key,
         updatedAt,
       });
-      knownLogos[key] = updatedAt;
+      logoCache.set(key, updatedAt);
     } catch (e) {
       console.warn('[watch] transferFile failed for', key, e);
     }
   }
 
   // Prune stale entries (deleted cards / changed logo slugs).
-  const keep = new Set(desired.keys());
-  for (const k of Object.keys(knownLogos)) {
-    if (!keep.has(k)) delete knownLogos[k];
-  }
-  await persistKnownLogos();
+  logoCache.retain(new Set(desired.keys()));
+  await logoCache.persist();
 }
 
 async function pushSnapshotIfChanged(): Promise<void> {
@@ -99,11 +72,9 @@ async function pushSnapshotIfChanged(): Promise<void> {
 }
 
 function schedulePush(): void {
-  if (pushTimer) clearTimeout(pushTimer);
-  pushTimer = setTimeout(() => {
-    pushTimer = null;
+  pushDebouncer.schedule(() => {
     void pushSnapshotIfChanged();
-  }, SNAPSHOT_DEBOUNCE_MS);
+  });
 }
 
 async function handleLogoRequest(
@@ -131,8 +102,8 @@ async function handleLogoRequest(
       logoKey: target.key,
       updatedAt: card.updatedAt,
     });
-    knownLogos[target.key] = card.updatedAt;
-    await persistKnownLogos();
+    logoCache.set(target.key, card.updatedAt);
+    await logoCache.persist();
     reply?.({ ok: true, logoKey: target.key });
   } catch {
     reply?.({ ok: false, reason: 'transferFailed' });
@@ -146,9 +117,9 @@ async function handleWatchMessage(
   const kind = (payload as { kind?: unknown }).kind;
   switch (kind) {
     case 'requestInitialSync': {
-      knownLogos = {};
+      logoCache.reset();
       lastSnapshotJson = null;
-      await persistKnownLogos();
+      await logoCache.persist();
       await pushSnapshotIfChanged();
       reply?.({ ok: true });
       return;
@@ -171,8 +142,8 @@ function forceFreshPush(reason: 'reachable' | 'installed'): void {
   lastSnapshotJson = null;
   if (reason === 'installed') {
     // Newly installed watch has no logos; force re-transfer.
-    knownLogos = {};
-    void persistKnownLogos();
+    logoCache.reset();
+    void logoCache.persist();
   }
   schedulePush();
 }
@@ -185,7 +156,7 @@ function forceFreshPush(reason: 'reachable' | 'installed'): void {
 export async function startWatchSync(): Promise<() => void> {
   if (Platform.OS !== 'ios') return () => {};
 
-  knownLogos = await loadKnownLogos();
+  await logoCache.load();
 
   const unsubCards = useCardsStore.subscribe(schedulePush);
   const unsubSettings = useSettingsStore.subscribe(schedulePush);
@@ -202,10 +173,7 @@ export async function startWatchSync(): Promise<() => void> {
   schedulePush();
 
   return () => {
-    if (pushTimer) {
-      clearTimeout(pushTimer);
-      pushTimer = null;
-    }
+    pushDebouncer.cancel();
     unsubCards();
     unsubSettings();
     unsubMessages();

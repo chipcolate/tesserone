@@ -89,16 +89,23 @@ export default function HomeScreen() {
   const openTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const applyOpenCard = useCallback((openId: string | undefined, key: string): boolean => {
     if (!openId || handledOpenRef.current === key) return false;
-    const idx = getSortedCards(
-      useCardsStore.getState().cards,
-      useSettingsStore.getState().sortMode
-    ).findIndex((c) => c.id === openId);
-    if (idx === -1) return false; // not hydrated yet, or card was deleted
+    const resolveIdx = () =>
+      getSortedCards(
+        useCardsStore.getState().cards,
+        useSettingsStore.getState().sortMode
+      ).findIndex((c) => c.id === openId);
+    if (resolveIdx() === -1) return false; // not hydrated yet, or card was deleted
     handledOpenRef.current = key;
     clearTimeout(openTimerRef.current);
     let tries = 0;
     const apply = () => {
-      stackRef.current.selectCardByIndex(idx);
+      // Re-resolve the index every tick: the wallet can re-sort during the retry
+      // window, and we must expand the card the user tapped — not a stale slot.
+      const idx = resolveIdx();
+      if (idx === -1) return; // card vanished mid-retry; give up
+      // Stop as soon as the selection takes. This both ends the loop early and
+      // ensures a dismiss right after expand isn't clobbered by a late retry.
+      if (stackRef.current.selectCardByIndex(idx)) return;
       if (++tries < 8) openTimerRef.current = setTimeout(apply, 100);
     };
     apply();

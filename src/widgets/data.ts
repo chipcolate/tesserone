@@ -1,6 +1,6 @@
 import { Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getSortedCards } from '../stores/cards';
+import { getSortedCards, useCardsStore } from '../stores/cards';
+import { useSettingsStore } from '../stores/settings';
 import {
   customLogoToDataUri,
   getBrandLogo,
@@ -27,12 +27,14 @@ export interface WidgetCardData {
   imageAspect: number;
 }
 
+// Read through the persisted stores (rehydrating from AsyncStorage) rather than
+// hand-parsing the `{ state, version }` blob: this keeps the widget on the same
+// persist keys + version migrations the stores own, so a future store change
+// can't silently leave the headless task reading an empty wallet.
 async function loadCards(): Promise<Record<string, FidelityCard>> {
   try {
-    const raw = await AsyncStorage.getItem('cards');
-    if (!raw) return {};
-    // zustand persist wraps state as { state, version }.
-    return JSON.parse(raw)?.state?.cards ?? {};
+    await useCardsStore.persist.rehydrate();
+    return useCardsStore.getState().cards;
   } catch {
     return {};
   }
@@ -40,12 +42,24 @@ async function loadCards(): Promise<Record<string, FidelityCard>> {
 
 async function loadSortMode(): Promise<SortMode> {
   try {
-    const raw = await AsyncStorage.getItem('settings');
-    if (!raw) return 'manual';
-    return JSON.parse(raw)?.state?.sortMode ?? 'manual';
+    await useSettingsStore.persist.rehydrate();
+    return useSettingsStore.getState().sortMode;
   } catch {
     return 'manual';
   }
+}
+
+// Cache the base64 data URI for a custom logo by card id + updatedAt, so repeated
+// widget renders don't re-read and re-encode the same unchanged file from disk.
+const customLogoCache = new Map<string, { updatedAt: string; uri: string | null }>();
+
+async function customLogoDataUri(card: FidelityCard): Promise<string | null> {
+  if (!card.customLogoUri) return null;
+  const hit = customLogoCache.get(card.id);
+  if (hit && hit.updatedAt === card.updatedAt) return hit.uri;
+  const uri = await customLogoToDataUri(card.customLogoUri);
+  customLogoCache.set(card.id, { updatedAt: card.updatedAt, uri });
+  return uri;
 }
 
 async function toWidgetCard(card: FidelityCard): Promise<WidgetCardData> {
@@ -54,7 +68,7 @@ async function toWidgetCard(card: FidelityCard): Promise<WidgetCardData> {
   // Custom logos are square-cropped on capture, so aspect 1 is correct for them.
   let imageAspect = 1;
   if (card.customLogoUri) {
-    image = await customLogoToDataUri(card.customLogoUri);
+    image = await customLogoDataUri(card);
   } else if (card.logoSlug) {
     const src = getBrandLogo(card.logoSlug);
     if (typeof src === 'number') {
@@ -76,8 +90,8 @@ async function toWidgetCard(card: FidelityCard): Promise<WidgetCardData> {
 
 /** All cards in the user's wallet order. */
 export async function getOrderedCards(): Promise<WidgetCardData[]> {
-  const cards = await loadCards();
-  const ordered = getSortedCards(cards, await loadSortMode());
+  const [cards, sortMode] = await Promise.all([loadCards(), loadSortMode()]);
+  const ordered = getSortedCards(cards, sortMode);
   return Promise.all(ordered.map(toWidgetCard));
 }
 

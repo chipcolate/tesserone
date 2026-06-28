@@ -3,6 +3,11 @@ import WidgetKit
 
 /// The logo image (or a monospace initial fallback) for a card, drawn on top of
 /// a known background color. No background of its own.
+///
+/// The fallback uses the system monospaced face rather than the app's bundled
+/// JetBrains Mono on purpose: this runs in the widget extension process, where
+/// the app's JS-registered UI font isn't available, and matches the Apple Watch
+/// companion (also system monospaced). See CardWidgets.tsx for the Android side.
 struct CardLogoContent: View {
     let card: WidgetCard
     let bg: Color
@@ -28,10 +33,11 @@ struct CardTile: View {
 
     var body: some View {
         let bg = Color(hex: card.color) ?? .gray
-        // Rounded to harmonize with the (iOS-forced) rounded widget container.
+        // Squared to match the app's Raw Aesthetic (theme/geometry.ts TILE_RADIUS = 2),
+        // even though iOS forces a rounded outer widget container.
         Link(destination: SharedStore.openURL(for: card) ?? fallbackURL) {
             ZStack {
-                RoundedRectangle(cornerRadius: 16, style: .continuous).fill(bg)
+                RoundedRectangle(cornerRadius: 2, style: .continuous).fill(bg)
                 CardLogoContent(card: card, bg: bg, initialSize: 20)
                     .padding(9)
             }

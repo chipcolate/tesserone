@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   copyWidgetLogo,
   pruneWidgetLogos,
@@ -9,14 +8,18 @@ import {
 import { getSortedCards, useCardsStore } from '../stores/cards';
 import { useSettingsStore } from '../stores/settings';
 import { resolveCardColor } from './logos';
-import { logoTargetFor, resolveLogoUri, toSnapshotCard } from './cardSnapshot';
+import {
+  buildDesiredLogos,
+  createDebouncer,
+  createLogoCache,
+  toSnapshotCard,
+} from './cardSnapshot';
 import type { WatchSnapshotCard } from '../types';
 
 /** App Group shared with the iOS widget extension (and the Share Extension). */
 export const WIDGET_APP_GROUP = 'group.com.chipcolate.tesserone';
 export const WIDGET_SCHEMA_VERSION = 1;
 
-const KNOWN_LOGOS_KEY = 'widget-known-logos';
 const SNAPSHOT_DEBOUNCE_MS = 500;
 
 interface WidgetSnapshot {
@@ -25,11 +28,9 @@ interface WidgetSnapshot {
   cards: WatchSnapshotCard[];
 }
 
-type KnownLogos = Record<string, string>;
-
-let knownLogos: KnownLogos = {};
+const logoCache = createLogoCache('widget-known-logos');
+const pushDebouncer = createDebouncer(SNAPSHOT_DEBOUNCE_MS);
 let lastSnapshotJson: string | null = null;
-let pushTimer: ReturnType<typeof setTimeout> | null = null;
 
 function buildSnapshot(): WidgetSnapshot {
   const { cards } = useCardsStore.getState();
@@ -47,73 +48,48 @@ function buildSnapshot(): WidgetSnapshot {
   };
 }
 
-async function loadKnownLogos(): Promise<KnownLogos> {
-  try {
-    const raw = await AsyncStorage.getItem(KNOWN_LOGOS_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-}
-
-async function persistKnownLogos(): Promise<void> {
-  try {
-    await AsyncStorage.setItem(KNOWN_LOGOS_KEY, JSON.stringify(knownLogos));
-  } catch {
-    // best-effort
-  }
-}
-
 /** Copy each card's logo into the App Group, incrementally (by updatedAt). */
 async function syncLogos(snap: WidgetSnapshot): Promise<void> {
-  const { cards: stateCards } = useCardsStore.getState();
-  const desired = new Map<string, { uri: string; updatedAt: string }>();
-
-  for (const c of snap.cards) {
-    const full = stateCards[c.id];
-    if (!full) continue;
-    const target = logoTargetFor(full);
-    if (!target) continue;
-    const uri = await resolveLogoUri(full);
-    if (uri) desired.set(target.key, { uri, updatedAt: c.updatedAt });
-  }
+  const desired = await buildDesiredLogos(snap.cards);
 
   for (const [key, { uri, updatedAt }] of desired) {
-    if (knownLogos[key] === updatedAt) continue;
+    if (logoCache.get(key) === updatedAt) continue;
     const ok = await copyWidgetLogo(WIDGET_APP_GROUP, key, uri);
-    if (ok) knownLogos[key] = updatedAt;
+    if (ok) logoCache.set(key, updatedAt);
   }
 
   // Prune stale entries (deleted cards / changed logo slugs) on disk and locally.
   const keep = new Set(desired.keys());
   await pruneWidgetLogos(WIDGET_APP_GROUP, [...keep]);
-  for (const k of Object.keys(knownLogos)) {
-    if (!keep.has(k)) delete knownLogos[k];
-  }
-  await persistKnownLogos();
+  logoCache.retain(keep);
+  await logoCache.persist();
 }
 
 async function pushSnapshotIfChanged(): Promise<void> {
   const snap = buildSnapshot();
   const json = JSON.stringify(snap);
   if (json === lastSnapshotJson) return;
-  lastSnapshotJson = json;
 
   const wrote = await writeWidgetSnapshot(WIDGET_APP_GROUP, json);
-  if (!wrote) {
-    lastSnapshotJson = null;
+  if (!wrote) return;
+
+  // Only mark this snapshot clean once its logos have synced — otherwise a failed
+  // syncLogos would leave the cache equal to `json`, short-circuiting every later
+  // push and stranding the widget on a snapshot whose logos never arrived.
+  try {
+    await syncLogos(snap);
+  } catch (e) {
+    console.warn('[widget] syncLogos failed; will retry on next change', e);
     return;
   }
-  await syncLogos(snap);
+  lastSnapshotJson = json;
   reloadWidgets();
 }
 
 function schedulePush(): void {
-  if (pushTimer) clearTimeout(pushTimer);
-  pushTimer = setTimeout(() => {
-    pushTimer = null;
+  pushDebouncer.schedule(() => {
     void pushSnapshotIfChanged();
-  }, SNAPSHOT_DEBOUNCE_MS);
+  });
 }
 
 /**
@@ -126,7 +102,7 @@ export async function startWidgetSync(): Promise<() => void> {
   if (Platform.OS === 'android') return startAndroidWidgetSync();
   if (Platform.OS !== 'ios') return () => {};
 
-  knownLogos = await loadKnownLogos();
+  await logoCache.load();
 
   const unsubCards = useCardsStore.subscribe(schedulePush);
   const unsubSettings = useSettingsStore.subscribe(schedulePush);
@@ -134,10 +110,7 @@ export async function startWidgetSync(): Promise<() => void> {
   schedulePush();
 
   return () => {
-    if (pushTimer) {
-      clearTimeout(pushTimer);
-      pushTimer = null;
-    }
+    pushDebouncer.cancel();
     unsubCards();
     unsubSettings();
   };
