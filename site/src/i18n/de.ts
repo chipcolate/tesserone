@@ -91,6 +91,10 @@ export const de: Strings = {
         title: 'Deine Daten bleiben, wo sie sind',
         body: 'Wechsle Thema oder Sprache, exportiere deine ganze Sammlung als JSON und importiere sie überall. Kein Konto nötig.',
       },
+      widget: {
+        title: 'Direkt auf dem Homescreen',
+        body: 'Füge das Widget hinzu und deine Karten sind nur einen Blick entfernt — tippe auf eine, um direkt zum Barcode zu springen.',
+      },
     },
   },
   backstory: {

@@ -91,6 +91,10 @@ export const it: Strings = {
         title: 'I tuoi dati restano dove sono',
         body: 'Cambia tema o lingua, esporta tutta la collezione in JSON e importala ovunque. Nessun account richiesto.',
       },
+      widget: {
+        title: 'Direttamente sulla home',
+        body: 'Aggiungi il widget e le tue carte sono a portata di sguardo: toccane una per aprire subito il suo codice a barre.',
+      },
     },
   },
   backstory: {

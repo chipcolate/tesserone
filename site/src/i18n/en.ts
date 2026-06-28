@@ -91,6 +91,10 @@ export const en: Strings = {
         title: 'Your data stays put',
         body: 'Switch theme or language, export your whole collection to JSON, and import it anywhere. No account required.',
       },
+      widget: {
+        title: 'Right on your home screen',
+        body: 'Add the widget and your cards are a glance away — tap one to jump straight to its barcode.',
+      },
     },
   },
   backstory: {

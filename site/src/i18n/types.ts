@@ -63,6 +63,7 @@ export type Strings = {
       add: Feature;
       customize: Feature;
       settings: Feature;
+      widget: Feature;
     };
   };
   backstory: {

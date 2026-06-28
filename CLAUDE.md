@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Tesserone is a loyalty card manager app with an Apple Wallet-style card stack interaction. Local-first, zero cloud, open source (Apache 2.0). Bundle ID: `com.chipcolate.tesserone`.
 
-It ships with an **Apple Watch companion** (wrist-launchable barcodes), a **share extension** (share an image into the app to auto-detect its barcode), and the **"Raw Aesthetic"** design language (all-monospace type, squared corners). The UI font is JetBrains Mono throughout.
+It ships with an **Apple Watch companion** (wrist-launchable barcodes), **home-screen widgets** (iOS + Android — tap a card to open straight to its barcode), a **share extension** (share an image into the app to auto-detect its barcode), and the **"Raw Aesthetic"** design language (all-monospace type, squared corners). The UI font is JetBrains Mono throughout.
 
 The repo also contains a static landing/privacy site under `site/`, built with Astro and deployed to GitHub Pages.
 
@@ -23,6 +23,7 @@ The repo also contains a static landing/privacy site under `site/`, built with A
 - **fuse.js** — fuzzy search over curated brand name index
 - **JetBrains Mono** (`@expo-google-fonts/jetbrains-mono`) — the whole UI renders in this monospace family (Raw Aesthetic)
 - **react-native-watch-connectivity** (patched) + **@bacons/apple-targets** — Apple Watch companion and its phone-side sync
+- **react-native-android-widget** (Android widgets, JS-rendered) + a WidgetKit extension via **@bacons/apple-targets** (iOS) and the local **`modules/widget-bridge`** native module — home-screen widgets and their phone-side sync
 - **expo-share-intent** + the local **`modules/barcode-vision`** native module — share-an-image-in flow with on-device barcode detection
 
 Custom UI components throughout (no react-native-paper or third-party UI kits).
@@ -164,6 +165,15 @@ Share an image into Tesserone (or pick one from the gallery) and the barcode is 
 - `expo-share-intent` provides `ShareIntentProvider`/`useShareIntentContext` (wired in `_layout.tsx`); `app/+native-intent.tsx` redirects the share deep-link scheme
 - `modules/barcode-vision/` — a local Expo native module (iOS + Android) exposing `detectBarcodesInImage`; consumed via `src/services/imageScan.ts`
 
+### Home-Screen Widgets (`src/widgets/`, `modules/widget-bridge/`, `targets/TesseroneWidget/`)
+
+Two widgets on each platform: **SingleCard** (one card, ~1×1) and **CardList** (a grid of cards, resizable). Both deep-link `tesserone://open/<id>` so a tap opens the app on that card. Each platform renders them differently:
+
+- **iOS** — a native **WidgetKit** extension in `targets/TesseroneWidget/` (`SingleCardWidget.swift`, `CardListWidget.swift`, `TesseroneWidgetBundle.swift`), scaffolded via `@bacons/apple-targets`. It reads a snapshot the app writes into the **App Group `group.com.chipcolate.tesserone`**: `src/services/widgets.ts` `startWidgetSync` calls the local **`modules/widget-bridge`** native module (`WidgetBridgeModule.swift`) to write `widgets/snapshot.json` + logo PNGs, then `reloadWidgets()`. The widget renders empty unless the build has the App Group **entitlement** (so a `CODE_SIGNING_ALLOWED=NO` sim build won't work — see the `screenshots` skill).
+- **Android** — **react-native-android-widget**, rendered from **JS in a headless task** (`src/widgets/widgetTaskHandler.tsx` → `render.tsx` → `CardWidgets.tsx`), not a native extension. `startWidgetSync` calls `requestWidgetUpdate`. Widget names/sizes are declared in `app.json`'s `react-native-android-widget` plugin block and must match the `SINGLE_CARD_WIDGET`/`CARD_LIST_WIDGET` constants in `src/widgets/config.ts`. Per-instance card selection lives in AsyncStorage under `widget:cfg:<widgetId>`, edited in `WidgetConfigurationScreen.tsx`.
+
+Shared JS: `src/widgets/data.ts` (builds card data from the zustand store) and `src/widgets/i18n.ts` (`ensureWidgetI18n` — the headless task / config activity never mounts the app root, so it re-inits i18next from the persisted language). `startWidgetSync` runs from `app/_layout.tsx` once cards are loaded.
+
 ### Brand Logos (`data/brand-index.json` + `assets/logos/`)
 
 Curated database of store logos (PNG). Each entry has: slug, name, aliases, alt text, primaryColor, secondaryColor, logo filename. Fuse.js fuzzy search for brand matching when adding cards.
@@ -183,6 +193,7 @@ To add a brand: drop PNG in `assets/logos/`, add `require()` in the `BUNDLED_LOG
 Store-listing **copy and assets are out of scope for this repo** — they live separately. What stays here is the automated screenshot pipeline. The shot list, target devices, and capture flow are documented in the **`screenshots` skill** (`.claude/skills/screenshots/SKILL.md`); the scripts are:
 
 - `capture-ios.sh` / `capture-android.sh` — per-locale automated capture (idb+simctl / adb)
+- `capture-ios-widget.sh` / `capture-android-widget.sh` — the home-screen widget shot (`06-widget`, EN-only); placement is a one-time manual GUI step, then these re-seed + capture (see the `screenshots` skill's "Widget shot")
 - `seed-demo-data.mjs`, `inject-screenshot-state.mjs`, `android-seed-sql.mjs` — seed a deterministic demo wallet into AsyncStorage before capture
 - `capture-screenshots.sh` — interactive manual fallback
 - `render-icons.ts`, `tinify-logos.ts` — icon rendering and bundled-logo compression
@@ -195,6 +206,7 @@ Store-listing **copy and assets are out of scope for this repo** — they live s
 - **Brightness boost on expand** — saves/restores device brightness automatically when the barcode appears
 - **Reorder mode** — FAB menu toggle, iOS home screen wobble, long-press + drag
 - **Wrist-first** — Apple Watch companion shows barcodes at the till without pulling out the phone; sync is one-way (phone → watch) via WatchConnectivity
+- **Glanceable widgets** — home-screen widgets surface cards without opening the app; native WidgetKit on iOS (fed an App Group snapshot via `modules/widget-bridge`), JS-rendered via react-native-android-widget on Android
 - **On-device barcode detection** — share/gallery image scans run through the local `barcode-vision` native module; no image leaves the device
 - **Curated logos, not API** — bundled PNGs for offline-first, user upload for anything not in the set
 - **Offline by default** — the app makes no network requests in normal use; nothing is sent off-device

@@ -91,6 +91,10 @@ export const es: Strings = {
         title: 'Tus datos se quedan donde están',
         body: 'Cambia de tema o idioma, exporta toda tu colección a JSON e impórtala donde sea. Sin cuenta.',
       },
+      widget: {
+        title: 'En tu pantalla de inicio',
+        body: 'Añade el widget y tus tarjetas están a un vistazo: toca una para ir directo a su código de barras.',
+      },
     },
   },
   backstory: {
