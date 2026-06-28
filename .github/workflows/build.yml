@@ -20,7 +20,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, macOS, burago-node-1]
+    runs-on: [self-hosted, burago-node-1]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
