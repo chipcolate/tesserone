@@ -16,6 +16,7 @@ Local-first. Zero cloud. Zero bloat. Open source.
 
 - **Wallet-style card stack** — scroll, tap to bring a card forward with its barcode, tap again or swipe up to send it back
 - **Apple Watch companion** — your barcodes on your wrist, scannable at the till without pulling out your phone
+- **Home-screen widgets** — pin a single card or a grid of cards to your iOS or Android home screen; tap one to open straight to its barcode
 - **Brightness boost** — screen brightness maxes out when viewing a barcode, restores when you're done
 - **Guided add** — a quick 3-step flow (barcode → brand → review) to scan, snap, or type a card and preview it before saving
 - **Barcode scanning** — scan loyalty cards with the camera, share in a screenshot, or enter details manually
@@ -46,6 +47,7 @@ EAN-13, EAN-8, Code 128, Code 39, QR, UPC-A, UPC-E, PDF417, Aztec, Data Matrix, 
 | Barcode scan | expo-camera + a local `barcode-vision` native module (on-device image detection) |
 | Barcode render | @kichiyaki/react-native-barcode-generator, react-native-qrcode-svg |
 | Watch | react-native-watch-connectivity + @bacons/apple-targets (SwiftUI) |
+| Widgets | react-native-android-widget (Android) + a WidgetKit extension via @bacons/apple-targets (iOS) |
 | Share-in | expo-share-intent (iOS share extension) |
 | Haptics | expo-haptics |
 | Brightness | expo-brightness |
