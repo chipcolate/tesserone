@@ -1,0 +1,64 @@
+# Build tesserone on the self-hosted burago-node-1 runner.
+# NOTE: runs-on MUST be plain [self-hosted] — the v2 dispatcher fails to assign
+# jobs when runs-on includes a custom runner-name label (community discussion #120813).
+name: build
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "android | astro | ios"
+        required: true
+        default: android
+        type: choice
+        options: [android, astro, ios]
+      profile:
+        description: "eas profile (mobile only)"
+        required: false
+        default: preview
+        type: choice
+        options: [development, preview, production]
+
+jobs:
+  build:
+    runs-on: [self-hosted]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      # ---------- Android: debug APK (prebuild + gradlew, no EAS credentials) ----------
+      - name: Install deps
+        if: ${{ inputs.platform == 'android' }}
+        run: bun install
+      - name: Prebuild android
+        if: ${{ inputs.platform == 'android' }}
+        run: npx expo prebuild --platform android --no-install
+      - name: Gradle assembleDebug
+        if: ${{ inputs.platform == 'android' }}
+        run: cd android && ./gradlew assembleDebug --no-daemon
+      - name: Upload APK
+        if: ${{ inputs.platform == 'android' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesserone-android-debug
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      # ---------- Astro site ----------
+      - name: Build Astro site
+        if: ${{ inputs.platform == 'astro' }}
+        run: cd site && bun install && bun run build
+      - name: Upload site dist
+        if: ${{ inputs.platform == 'astro' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesserone-site-dist
+          path: site/dist
+          if-no-files-found: error
+
+      # ---------- iOS (pending Xcode / Apple ID) ----------
+      - name: iOS build
+        if: ${{ inputs.platform == 'ios' }}
+        run: |
+          echo "iOS build wired once Xcode is installed (Apple ID step)."
+          exit 1
