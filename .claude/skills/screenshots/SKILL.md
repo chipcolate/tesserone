@@ -5,11 +5,18 @@ description: Capture App Store / Play Store screenshots for Tesserone across all
 
 # Screenshots Shot List
 
-The capture is fully automated (no manual navigation). Two scripts seed a
+The in-app capture is fully automated (no manual navigation). Two scripts seed a
 deterministic demo wallet into AsyncStorage and drive the app per locale:
 
 - `scripts/capture-ios.sh` — iOS 6.9" via idb + simctl
 - `scripts/capture-android.sh` — Android phone via adb
+
+The **home-screen widget shot (06)** is the exception: a widget can't be placed on
+the launcher/SpringBoard headlessly, so it's captured separately, English-only, with
+a one-time manual placement (see "Widget shot" below):
+
+- `scripts/capture-ios-widget.sh` — re-seed + refresh + capture the iOS home screen
+- `scripts/capture-android-widget.sh` — same for the Android home screen
 
 The interactive `scripts/capture-screenshots.sh` is kept as a manual fallback.
 
@@ -148,17 +155,91 @@ Output is gitignored (binary artifacts). Zips for upload: `screenshots/6.9-inch.
 - ES · `Cero nube. Exporta cuando quieras.`
 - DE · `Null Cloud. Jederzeit exportieren.`
 
+### 06 — widget
+**Frame:** The OS home screen (iOS SpringBoard / Android Pixel launcher) with a
+configured Tesserone **CardList** widget showing the demo wallet's brand cards. iOS
+uses the medium (4×2) variant placed at the top of the page; Android uses the 4×2
+CardList. **English only** — the widget renders brand logos/colours with no
+translated chrome, so one shot per platform covers the listing.
+**Why:** reach — "your cards are one glance away, without even opening the app."
+
+**Captions:**
+- EN · `Your cards, on your home screen.`
+
 ## Per-language handling
 
 The capture scripts set the locale by seeding `settings.language` directly, so
 there is no need to change the simulator/emulator system language — the app
 boots into the seeded locale.
 
+## Widget shot (06) — one-time placement, then scripted capture
+
+The home-screen widget shot is captured English-only and in two phases. **Phase 1
+(placement)** is a manual, one-time GUI flow per device; it persists in the
+sim/emulator state. **Phase 2 (capture)** is the re-runnable script. Re-running
+Phase 2 alone regenerates the shot; only redo Phase 1 if the app is reinstalled
+(iOS drops placed widgets on reinstall) or the emulator AVD/launcher is wiped.
+
+**Build requirements (stricter than the in-app shots):**
+- **iOS** must be a **signed** simulator build (ad-hoc `CODE_SIGN_IDENTITY=-` is
+  enough — no team needed). The widget reads the App Group
+  `group.com.chipcolate.tesserone`, which only exists when entitlements are applied;
+  a `CODE_SIGNING_ALLOWED=NO` build has no App Group and the widget renders empty.
+  The build must also link the local **`modules/widget-bridge`** Expo module (it
+  writes the snapshot) — verify with `ls ios/Pods | grep -i WidgetBridge` after
+  prebuild + `pod install`.
+- **Android** is the same debuggable-release build as the other shots; the widget
+  receivers come from the `react-native-android-widget` config plugin (no extra
+  native module). Verify with `aapt2 dump xmltree <apk> --file AndroidManifest.xml |
+  grep appwidget`.
+
+**Phase 1 — place the widget (once):**
+
+iOS (driven by `idb ui tap/swipe`, coordinates in **points** = pixels ÷ device
+scale; iPhone 16 Plus is ÷3):
+1. Seed + launch + terminate once so the App Group snapshot exists, then go Home.
+2. Long-press an empty area (`idb ui tap --duration 1.6`) → tap **Edit** (top-left)
+   → **Add Widget**.
+3. Tap the search field, `idb ui text "Tesserone"`, tap the Tesserone result.
+4. Swipe the size carousel left to the **medium "Cards"** variant (4×2), tap
+   **Add Widget**. Tap empty space / Done to leave jiggle mode.
+
+   Place it on the **first** home-screen page. Phase 2 returns SpringBoard to page 1
+   (via an idb HOME press) before the screenshot, so a widget parked on a later page
+   won't be captured.
+
+Android (driven by `adb`):
+1. Seed + launch once so the wallet is populated, then `input keyevent HOME`.
+2. Long-press empty home area (`input swipe x y x y 800`) → tap **Widgets** → tap the
+   **Search** field → `input text Tesserone` → tap the row to expand.
+3. Pick up the **"Tesserone Cards"** preview with a real long-press-then-drag — a
+   plain `input swipe` won't grab it; use `input motionevent DOWN … / (sleep) /
+   MOVE … / UP …` to hold before moving.
+4. The dropped widget shows "Tap to finish setup" → tap it → in **PICK CARDS** tap
+   each card to select all six → **SAVE**.
+
+**Phase 2 — capture (re-runnable):**
+```bash
+THEME=light ./scripts/capture-ios-widget.sh       # -> screenshots/6.9-inch/en/06-widget.png
+THEME=light ./scripts/capture-android-widget.sh   # -> screenshots/android-phone/en/06-widget.png
+```
+The Android capture seeds **non-destructively** (it strips the `DELETE FROM` so the
+placed widget's `widget:cfg:<id>` selection — which references the stable `demo-*`
+card ids — survives the re-seed). It also **does not force-stop** the app before the
+screencap: `react-native-android-widget` renders from a headless JS task owned by the
+app process, so a force-stop kills it mid-render and the widget repaints as its empty
+placeholder (just the Tesserone glyph). The iOS capture needs idb only for that HOME
+press (same dependency as `capture-ios.sh`).
+
+These run on a macOS host like the rest of the capture (simulators/emulators are
+macOS-only). idb must run on Python ≤3.11 — plain `idb` traceback-fails on 3.14, so
+the iOS script defaults to a `python@3.11` idb entrypoint (override with `$IDB`).
+
 ## Upload
 
-Once captured:
-- App Store Connect: upload `screenshots/6.9-inch/<locale>/*.png` (6 × 5 = 30 for 6.9")
-- Play Console: upload `screenshots/android-phone/<locale>/*.png` (6 × 5 = 30)
+Once captured (6 in-app shots × 5 locales, plus the en-only 06-widget shot = 31/platform):
+- App Store Connect: upload `screenshots/6.9-inch/<locale>/*.png` (30 localized + 1 widget)
+- Play Console: upload `screenshots/android-phone/<locale>/*.png` (30 localized + 1 widget)
 - Or use `fastlane deliver` (iOS) / `fastlane supply` (Android) against the folders
 
 ## Quick decision: captions or bare?
