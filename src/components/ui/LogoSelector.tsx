@@ -11,6 +11,7 @@ import {
   pickCustomLogoFromLibrary,
   customLogoSource,
 } from '../../services/logos';
+import { alertPermissionBlocked } from '../../services/permissions';
 
 interface LogoSelectorProps {
   logoSlug?: string;
@@ -49,10 +50,13 @@ export function LogoSelector({
           onCustomLogoPick(result.ref);
           break;
         case 'permissionDenied':
-          Alert.alert(
-            t('logoSelector.photoPermissionDeniedTitle'),
-            t('logoSelector.photoPermissionDeniedBody')
-          );
+          if (!result.canAskAgain) {
+            alertPermissionBlocked(
+              t,
+              t('logoSelector.photoPermissionDeniedTitle'),
+              t('logoSelector.photoPermissionDeniedBody')
+            );
+          }
           break;
         case 'error':
           Alert.alert(t('logoSelector.photoPickErrorTitle'), result.message);
