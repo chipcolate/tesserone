@@ -214,13 +214,42 @@ to the matching iOS block.
 
 ```bash
 V=1.4.0
-git check-ignore -v "store/whats-new-$V.md"       # must print the .gitignore rule
-grep -c '^<..-..>' "store/whats-new-$V.md"        # must be 5
+git check-ignore -v "store/whats-new-$V.md"   # must print the .gitignore rule
 ```
 
-Then eyeball: five iOS blocks, one Android block with five tag pairs all closed, every
-block ending in the right localized label + `releases/tag/v<version>`, and each Play
-language under 500 chars.
+Then run the checker. **Count characters, not bytes** — `•`, `é`, `ü`, `¿` are all
+multibyte, so `wc -c` and `awk length()` overstate by ~13 on a typical block. That's
+harmless at 350 but will lie to you at 495, which is exactly when you need the truth:
 
-Report the per-language character counts in the handoff — it's the one number the user
+```bash
+python3 - <<'PY'
+import re, pathlib, sys
+V = "1.4.0"
+t = pathlib.Path(f"store/whats-new-{V}.md").read_text(encoding="utf-8")
+ios_sec, _, play_sec = t.partition("## Android — Google Play")
+ios = re.findall(r'^### .*?\((\w{2})\)\n```\n(.*?)\n```', ios_sec, re.S | re.M)
+play = dict(re.findall(r'^<([a-z]{2}-[A-Z]{2})>\n(.*?)\n^</\1>$', play_sec, re.S | re.M))
+M = {"en": "en-US", "it": "it-IT", "fr": "fr-FR", "es": "es-ES", "de": "de-DE"}
+ok = True
+for loc, body in play.items():
+    n = len(body)                                   # chars, not bytes
+    ok &= n <= 500 and f"releases/tag/v{V}" in body.splitlines()[-1]
+    print(f"{loc}  {n:4} chars  {'OK' if n <= 500 else 'OVER CAP'}")
+for lang, body in ios:
+    ok &= body.strip() == play.get(M[lang], "").strip()
+ok &= len(ios) == 5 and len(play) == 5
+print("5 iOS + 5 Play blocks, closed, copy identical, URL present:", "yes" if ok else "NO")
+sys.exit(0 if ok else 1)
+PY
+```
+
+It asserts the four things that actually break a submission: every Play block ≤ 500
+chars, all five locales present and closed, iOS copy byte-identical to its Play twin,
+and the release-tag URL on the last line of each.
+
+Report the per-language character counts in the handoff. It's the one number the user
 can't check at a glance, and it's the one that gets a Play submission rejected.
+
+What the checker **can't** tell you: whether the translations read natively. Say plainly
+that the copy is a draft and the non-English blocks want a native read before
+submission — don't let five green OKs imply the prose was reviewed.
