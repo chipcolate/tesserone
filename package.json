@@ -62,6 +62,7 @@
   },
   "private": true,
   "patchedDependencies": {
-    "react-native-watch-connectivity@2.0.0": "patches/react-native-watch-connectivity@2.0.0.patch"
+    "react-native-watch-connectivity@2.0.0": "patches/react-native-watch-connectivity@2.0.0.patch",
+    "react-native-android-widget@0.20.3": "patches/react-native-android-widget@0.20.3.patch"
   }
 }

@@ -1,0 +1,40 @@
+diff --git a/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java b/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java
+index 2d88172e426ccd70288005d4b7c15d7b534d20d9..505f7cb554132fadeb7f36f6cd5882f0e8aceeb5 100644
+--- a/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java
++++ b/android/src/main/java/com/reactnativeandroidwidget/RNWidget.java
+@@ -11,6 +11,7 @@ import android.net.Uri;
+ import android.os.Build;
+ import android.os.Bundle;
+ import android.util.Base64;
++import android.util.TypedValue;
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.RemoteViews;
+@@ -169,11 +170,26 @@ public class RNWidget {
+         rootWidget.offsetDescendantRectToMyCoords(clickableWidget, offsetViewBounds);
+         RemoteViews clickableRemoteView = new RemoteViews(appContext.getPackageName(), R.layout.rn_widget_clickable);
+ 
++        // The tap target's width is derived below as (container - left) - (renderWidth - right),
++        // which only equals the tile's width when the container the overlay is stretched into
++        // is exactly as wide as the bitmap the tile was drawn in. `rn_widget_clickable_container`
++        // is match_parent, so its width is whatever the launcher lays the widget out at, while
++        // the bitmap is drawn 1:1 (scaleType="matrix") at getWidgetWidth() px. When those
++        // disagree every overlay is mis-sized -- one tile's area stretches across the whole
++        // widget and swallows every tap while the rest collapse to nothing. Pin the positioner
++        // to the bitmap's own width so the padding math below is measured in the same
++        // coordinate space the tiles were drawn in.
++        int renderWidth = rootWidget.getMeasuredWidth();
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
++            clickableRemoteView.setViewLayoutWidth(
++                R.id.rn_widget_clickable_positioner, renderWidth, TypedValue.COMPLEX_UNIT_PX);
++        }
++
+         clickableRemoteView.setViewPadding(
+             R.id.rn_widget_clickable_positioner,
+             offsetViewBounds.left,
+             offsetViewBounds.top,
+-            RNWidgetUtil.dpToPx(appContext, RNWidgetUtil.getWidgetWidth(appContext, widgetId)) - offsetViewBounds.right,
++            renderWidth - offsetViewBounds.right,
+             0
+         );
+ 
