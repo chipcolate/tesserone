@@ -115,6 +115,29 @@ export const de: Strings = {
     badgeServers: 'Keine Server',
     cta: 'Auf GitHub ansehen',
   },
+  more: {
+    eyebrow: 'Auch von Chipcolate',
+    heading: 'Gefällt dir, was du siehst?',
+    lede: 'Schau dir unsere anderen Projekte und Produkte an — gleiches Studio, andere Oberflächen. Dieselbe Vorliebe für Ownership, Klarheit und Tools, die nicht im Weg stehen.',
+    projects: {
+      yamete: {
+        title: 'Desktop',
+        body: 'Schlag-Erkennung für Apple-Silicon-MacBooks. Schlag auf den Laptop, er macht Geräusch — Open-Source-Menüleisten-App, die sich raushält.',
+      },
+      makolate: {
+        title: 'Objekte',
+        body: 'Dein Touch, auf Dingen die halten. Logo, Name oder QR auf echten Objekten auf Bestellung — ab einem Stück, ohne Mindestmenge.',
+      },
+      eightySix: {
+        title: 'Restaurants',
+        body: 'Deine Marke zuerst. Provisionsfreie Restaurant-Reservierungen, White-Label-Gästeseiten und Gästedaten, die dir gehören — 86 die Zwischenhändler.',
+      },
+      chipcolate: {
+        title: 'Studio',
+        body: 'Wer wir sind. Hardcore-Engineering und First-Principles-Denken — Hardware, Software und Infrastruktur, ohne Politik.',
+      },
+    },
+  },
   stores: {
     appleSup: 'Laden im',
     appleMain: 'App Store',

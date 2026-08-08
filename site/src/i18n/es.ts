@@ -115,6 +115,29 @@ export const es: Strings = {
     badgeServers: 'Sin servidores',
     cta: 'Ver en GitHub',
   },
+  more: {
+    eyebrow: 'También de Chipcolate',
+    heading: '¿Te gusta lo que ves?',
+    lede: 'Mira nuestros otros proyectos y productos — mismo estudio, superficies distintas. Misma preferencia por ownership, claridad y herramientas que no se interponen.',
+    projects: {
+      yamete: {
+        title: 'Desktop',
+        body: 'Detección de manotazos para MacBook Apple Silicon. Pega al portátil y hace ruido — app open source en la barra de menús, sin molestar.',
+      },
+      makolate: {
+        title: 'Objetos',
+        body: 'Tu toque, en objetos que duran. Logo, nombre o QR en cosas reales bajo pedido — desde una sola pieza, sin mínimos.',
+      },
+      eightySix: {
+        title: 'Restaurantes',
+        body: 'Tu marca primero. Reservas sin comisión, páginas de invitado white-label y datos de clientes que son tuyos — 86 a los intermediarios.',
+      },
+      chipcolate: {
+        title: 'Estudio',
+        body: 'Quiénes somos. Ingeniería hardcore y first principles — hardware, software e infraestructura, sin la política.',
+      },
+    },
+  },
   stores: {
     appleSup: 'Descargar en la',
     appleMain: 'App Store',

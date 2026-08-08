@@ -115,6 +115,29 @@ export const fr: Strings = {
     badgeServers: 'Aucun serveur',
     cta: 'Voir sur GitHub',
   },
+  more: {
+    eyebrow: 'Aussi de Chipcolate',
+    heading: 'Ça vous plaît ?',
+    lede: 'Découvrez nos autres projets et produits — même studio, surfaces différentes. Même goût pour l’ownership, la clarté, et les outils qui ne se mettent pas en travers.',
+    projects: {
+      yamete: {
+        title: 'Desktop',
+        body: 'Détection de claques pour MacBook Apple Silicon. Tapez le laptop, il fait du bruit — app open source dans la barre de menus, discrète.',
+      },
+      makolate: {
+        title: 'Objets',
+        body: 'Votre touche, sur des objets qui durent. Logo, nom ou QR sur de vraies choses sur commande — dès une pièce, sans minimum.',
+      },
+      eightySix: {
+        title: 'Restaurants',
+        body: 'Votre marque d’abord. Réservations sans commission, pages invité en marque blanche, et données clients qui restent les vôtres — 86 les intermédiaires.',
+      },
+      chipcolate: {
+        title: 'Studio',
+        body: 'Qui nous sommes. Ingénierie hardcore et first principles — hardware, software et infrastructure, sans la politique.',
+      },
+    },
+  },
   stores: {
     appleSup: 'Télécharger dans l\'',
     appleMain: 'App Store',
