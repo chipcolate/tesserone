@@ -1,0 +1,128 @@
+---
+/**
+ * Chipcolate family of projects — exit ramp near the bottom of the landing page.
+ * Same idea as yamete.app's More section; blurbs paraphrased from each product site.
+ */
+import { getStrings, type Locale } from "../i18n";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const s = getStrings(lang).more;
+
+const projects = [
+  {
+    key: "yamete" as const,
+    name: "Yamete",
+    href: "https://yamete.app",
+    logo: "/more/yamete.png",
+    logoClass: "logo--square",
+  },
+  {
+    key: "makolate" as const,
+    name: "Makolate",
+    href: "https://makolate.store",
+    logo: "/more/makolate.svg",
+    logoClass: "logo--square",
+  },
+  {
+    key: "eightySix" as const,
+    name: "Eighty-Six",
+    href: "https://eighty-six.tech/en/",
+    logo: "/more/eighty-six-favicon.svg",
+    logoClass: "logo--square",
+  },
+  {
+    key: "chipcolate" as const,
+    name: "Chipcolate",
+    href: "https://chipcolate.com",
+    logo: "/more/chipcolate.png",
+    logoClass: "logo--wide",
+  },
+] as const;
+---
+
+<section
+  id="more"
+  class="border-t border-[var(--color-border)] px-6 py-16 sm:py-24"
+  aria-labelledby="more-heading"
+>
+  <div class="mx-auto max-w-6xl">
+    <p
+      class="mb-4 text-sm font-medium tracking-widest text-[var(--color-accent)] uppercase"
+    >
+      {s.eyebrow}
+    </p>
+    <h2
+      id="more-heading"
+      class="mb-4 text-3xl font-bold tracking-tight sm:text-4xl"
+    >
+      {s.heading}
+    </h2>
+    <p
+      class="mb-10 max-w-2xl text-lg leading-relaxed text-[var(--color-fg-muted)]"
+    >
+      {s.lede}
+    </p>
+
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        projects.map((p) => {
+          const copy = s.projects[p.key];
+          const host = p.href
+            .replace(/^https:\/\//, "")
+            .replace(/\/$/, "");
+          return (
+            <li>
+              <a
+                href={p.href}
+                rel="noopener noreferrer"
+                class="group flex h-full flex-col rounded-[4px] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:shadow-[6px_6px_0_color-mix(in_srgb,var(--color-fg)_12%,transparent)] active:translate-x-px active:translate-y-px active:shadow-[2px_2px_0_color-mix(in_srgb,var(--color-fg)_10%,transparent)]"
+              >
+                <div class="mb-5 flex min-h-12 items-center justify-between gap-4">
+                  <span
+                    class:list={[
+                      "grid shrink-0 place-items-center",
+                      p.logoClass === "logo--square" && "size-12",
+                      p.logoClass === "logo--wide" && "h-8 max-w-[11rem]",
+                    ]}
+                  >
+                    <img
+                      src={p.logo}
+                      alt=""
+                      width={p.logoClass === "logo--wide" ? 176 : 48}
+                      height={p.logoClass === "logo--wide" ? 32 : 48}
+                      loading="lazy"
+                      decoding="async"
+                      class:list={[
+                        "object-contain",
+                        p.logoClass === "logo--square" && "size-12",
+                        p.logoClass === "logo--wide" &&
+                          "h-8 w-auto max-w-[min(100%,11rem)]",
+                      ]}
+                    />
+                  </span>
+                  <span class="text-[0.65rem] font-semibold tracking-[0.12em] text-[var(--color-fg-muted)] uppercase">
+                    {copy.title}
+                  </span>
+                </div>
+                <h3 class="mb-2 text-xl font-semibold">{p.name}</h3>
+                <p class="mb-0 flex-1 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+                  {copy.body}
+                </p>
+                <span class="mt-5 inline-flex items-center text-[0.7rem] font-semibold tracking-[0.08em] text-[var(--color-fg)] uppercase">
+                  {host}
+                  <span aria-hidden="true" class="ml-1 transition group-hover:translate-x-0.5">
+                    →
+                  </span>
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>

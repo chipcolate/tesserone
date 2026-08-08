@@ -115,6 +115,29 @@ export const it: Strings = {
     badgeServers: 'Nessun server',
     cta: 'Vedi su GitHub',
   },
+  more: {
+    eyebrow: 'Sempre da Chipcolate',
+    heading: 'Ti piace quello che vedi?',
+    lede: 'Dai un’occhiata agli altri progetti e prodotti — stesso studio, superfici diverse. Stessa preferenza per ownership, chiarezza e strumenti che non si mettono in mezzo.',
+    projects: {
+      yamete: {
+        title: 'Desktop',
+        body: 'Rilevamento degli schiaffi per MacBook Apple Silicon. Dai uno schiaffo al laptop e fa rumore — app open source nella barra dei menu, discreta.',
+      },
+      makolate: {
+        title: 'Oggetti',
+        body: 'Il tuo tocco, su oggetti che durano. Logo, nome o QR su cose reali fatte su ordinazione — anche da un pezzo solo, senza minimi.',
+      },
+      eightySix: {
+        title: 'Ristoranti',
+        body: 'Il brand viene prima. Prenotazioni senza commissioni, pagine ospite white-label e dati degli ospiti che restano tuoi — 86 gli intermediari.',
+      },
+      chipcolate: {
+        title: 'Studio',
+        body: 'Chi siamo. Ingegneria hardcore e pensiero first-principles — hardware, software e infrastruttura, senza politica.',
+      },
+    },
+  },
   stores: {
     appleSup: 'Scarica su',
     appleMain: 'App Store',

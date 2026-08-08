@@ -84,6 +84,17 @@ export type Strings = {
     badgeServers: string;
     cta: string;
   };
+  more: {
+    eyebrow: string;
+    heading: string;
+    lede: string;
+    projects: {
+      yamete: Feature;
+      makolate: Feature;
+      eightySix: Feature;
+      chipcolate: Feature;
+    };
+  };
   stores: {
     appleSup: string;
     appleMain: string;

@@ -115,6 +115,29 @@ export const en: Strings = {
     badgeServers: 'No servers',
     cta: 'View on GitHub',
   },
+  more: {
+    eyebrow: 'Also from Chipcolate',
+    heading: 'Like what you see here?',
+    lede: 'Check out our other projects and products — same studio, different surfaces. Built with the same preference for ownership, clarity, and tools that stay out of the way.',
+    projects: {
+      yamete: {
+        title: 'Desktop',
+        body: 'Slap detection for Apple Silicon MacBooks. Hit the laptop, it makes a noise — open source menu-bar app that stays out of the way.',
+      },
+      makolate: {
+        title: 'Objects',
+        body: 'Your touch, on objects that last. Logo, name or QR on real things made to order — from a single piece, no minimums.',
+      },
+      eightySix: {
+        title: 'Restaurants',
+        body: 'Your brand comes first. Commission-free restaurant bookings, white-label guest pages, and guest data that stays yours — 86 the middlemen.',
+      },
+      chipcolate: {
+        title: 'Studio',
+        body: 'Who we are. Hardcore engineering and first-principles thinking — hardware, software and infrastructure, without the politics.',
+      },
+    },
+  },
   stores: {
     appleSup: 'Download on the',
     appleMain: 'App Store',
