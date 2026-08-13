@@ -15,9 +15,9 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 ---
 
 <section class="px-6 pt-12 pb-12 sm:pt-16 sm:pb-16 lg:pt-24">
-  <div class="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:items-center">
-    <div>
-      <div class="flex items-center gap-5 lg:block">
+  <div class="mx-auto grid min-w-0 max-w-6xl gap-16 lg:grid-cols-2 lg:items-center">
+    <div class="min-w-0">
+      <div class="flex items-center gap-3 sm:gap-5 lg:block">
         <div class="min-w-0 flex-1 lg:flex-none">
           <p
             class="mb-4 text-sm font-medium tracking-widest text-[var(--color-accent)] uppercase"
@@ -25,7 +25,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
             {s.eyebrow}
           </p>
           <h1
-            class="text-5xl font-extrabold tracking-tight text-balance sm:text-6xl lg:text-7xl"
+            class="text-4xl font-extrabold tracking-tight break-words text-balance sm:text-6xl lg:text-7xl"
           >
             {s.headlineLine1}<br />
             <span class="text-[var(--color-fg-muted)]">{s.headlineLine2}</span>
@@ -33,7 +33,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
           </h1>
         </div>
 
-        <div class="w-28 shrink-0 sm:w-36 lg:hidden" aria-hidden="true">
+        <div class="w-20 shrink-0 sm:w-36 lg:hidden" aria-hidden="true">
           <img src={`${base}hero-icon-light.svg`} alt="" class="w-full" />
         </div>
       </div>
