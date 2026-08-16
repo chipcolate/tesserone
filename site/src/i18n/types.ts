@@ -124,6 +124,7 @@ export type Strings = {
       whatAppStores: PrivacySection;
       permissions: PrivacySection;
       thirdParties: PrivacySection;
+      website: PrivacySection;
       children: PrivacySection;
       rights: PrivacySection;
       changes: PrivacySection;
