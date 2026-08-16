@@ -79,5 +79,13 @@ const baseUrl = import.meta.env.BASE_URL;
   </head>
   <body class="font-sans antialiased">
     <slot />
+    <!-- Cloudflare Web Analytics -->
+    <script
+      is:inline
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "bf9148fb7a7c42aa951f56f3cdae7615"}'
+    ></script>
+    <!-- End Cloudflare Web Analytics -->
   </body>
 </html>
