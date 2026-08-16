@@ -15,7 +15,7 @@ export const de: Strings = {
       'Ein einfacher, lokaler Kundenkarten-Manager. Keine Cloud, keine Konten, kein Tracking. Open Source.',
     privacyTitle: 'Datenschutzerklärung — Tesserone',
     privacyDescription:
-      'Tesserone sammelt keine Daten. Diese Seite erklärt, was das bedeutet — in einfachen Worten und in den Formulierungen, die App-Stores verlangen.',
+      'Die Tesserone-App sammelt keine Daten. Diese Website zählt Besucher nur aggregiert. Diese Seite erklärt beides — in einfachen Worten und in den Formulierungen, die App-Stores verlangen.',
   },
   hero: {
     eyebrow: 'Tesserone',
@@ -109,7 +109,7 @@ export const de: Strings = {
   os: {
     eyebrow: 'Open Source, bewusst einfach',
     heading: 'Jede Zeile, überprüfbar.',
-    body: 'Tesserone wird unter der Apache-2.0-Lizenz veröffentlicht. Das heißt, du kannst sie lesen, prüfen, forken oder deine eigene Version bauen. Keine Telemetrie, keine Analytics, keine Server — und nichts, was du uns aufs Wort glauben müsstest.',
+    body: 'Tesserone wird unter der Apache-2.0-Lizenz veröffentlicht. Das heißt, du kannst sie lesen, prüfen, forken oder deine eigene Version bauen. Die App hat keine Telemetrie, keine Analytics, keine Server — und nichts, was du uns aufs Wort glauben müsstest. Diese Website zählt Besucher nur aggregiert.',
     badgeLicense: 'Apache-2.0-Lizenz',
     badgeTelemetry: 'Keine Telemetrie',
     badgeServers: 'Keine Server',
@@ -160,15 +160,15 @@ export const de: Strings = {
     back: '← Zurück zu Tesserone',
     title: 'Datenschutzerklärung',
     effectiveDateLabel: 'Gültig ab',
-    effectiveDate: '20. April 2026',
+    effectiveDate: '16. August 2026',
     sections: {
       oneSentence: {
         title: 'In einem Satz',
-        body: `<p class="${prose}">Tesserone sammelt, überträgt oder teilt keine deiner Daten. Alles, was du eingibst, bleibt auf deinem Gerät.</p>`,
+        body: `<p class="${prose}">Die Tesserone-${strongOpen}App${strongClose} sammelt, überträgt oder teilt keine deiner Daten. Alles, was du eingibst, bleibt auf deinem Gerät. Diese Website zählt Besucher nur aggregiert — siehe unten.</p>`,
       },
       whatWeCollect: {
         title: 'Welche Daten wir erheben',
-        body: `<p class="${prose}">${strongOpen}Keine.${strongClose} Tesserone erhebt keine persönlichen Informationen, Nutzungsdaten, Absturzberichte, Gerätekennungen oder sonstige Daten. Es gibt kein Konto, keine Registrierung und kein Profil. Die App kommuniziert mit keinem Server, den wir betreiben — weil wir keinen betreiben.</p>`,
+        body: `<p class="${prose}">${strongOpen}Keine aus der App.${strongClose} Die App erhebt keine persönlichen Informationen, Nutzungsdaten, Absturzberichte, Gerätekennungen oder sonstige Daten. Es gibt kein Konto, keine Registrierung und kein Profil. Die App kommuniziert mit keinem Server, den wir betreiben — weil wir keinen betreiben.</p>`,
       },
       whatAppStores: {
         title: 'Welche Daten die App speichert',
@@ -182,13 +182,17 @@ export const de: Strings = {
         title: 'Drittanbieter',
         body: `<p class="${prose}">Die App enthält ${strongOpen}keine Drittanbieter-SDKs, Werbenetzwerke, Analysedienste oder Tracking-Tools${strongClose}. Sie stellt im normalen Betrieb keine Netzwerkanfragen.</p>`,
       },
+      website: {
+        title: 'Diese Website',
+        body: `<p class="${prose}">tesserone.com nutzt ${strongOpen}Cloudflare Web Analytics${strongClose}: eine datenschutzfreundliche, cookielose Zählung von Seitenaufrufen und Besuchern. Keine persönlichen Profile, kein Fingerprinting, keine Werbung. Sie sieht die App nicht und nicht die Karten auf deinem Handy. Hosting kann weiterhin technische Daten wie IPs nach eigener Policy verarbeiten.</p>`,
+      },
       children: {
         title: 'Datenschutz für Kinder',
-        body: `<p class="${prose}">Tesserone sammelt wissentlich keine Informationen von irgendjemandem — auch nicht von Kindern unter 13 Jahren (oder dem entsprechenden Mindestalter in deiner Rechtsordnung). Da wir gar keine Daten sammeln, gibt es nichts zu löschen oder auf Anfrage zu exportieren.</p>`,
+        body: `<p class="${prose}">Die App sammelt wissentlich keine Informationen von irgendjemandem — auch nicht von Kindern unter 13 Jahren (oder dem entsprechenden Mindestalter in deiner Rechtsordnung). Die Besucherzählung der Website ist aggregiert und cookielos. Chipcolate kann dich daraus nicht identifizieren — es gibt nichts Persönliches, das auf Anfrage zu löschen oder zu exportieren wäre.</p>`,
       },
       rights: {
         title: 'Deine Rechte (DSGVO, CCPA)',
-        body: `<p class="${prose}">Vorschriften wie die DSGVO und die CCPA geben dir das Recht auf Auskunft, Berichtigung oder Löschung personenbezogener Daten über dich. Chipcolate verarbeitet keine personenbezogenen Daten über Tesserone-Nutzer — wir haben also nichts zu übermitteln oder zu löschen. Deine Daten liegen vollständig auf deinem Gerät unter deiner Kontrolle — du kannst eine Karte jederzeit löschen oder die App deinstallieren, um sie zu entfernen.</p>`,
+        body: `<p class="${prose}">Vorschriften wie die DSGVO und die CCPA geben dir das Recht auf Auskunft, Berichtigung oder Löschung personenbezogener Daten über dich. Chipcolate verarbeitet keine personenbezogenen Daten über Nutzer der Tesserone-${strongOpen}App${strongClose} — aus dem Produkt haben wir also nichts zu übermitteln oder zu löschen. Deine Karten liegen vollständig auf deinem Gerät unter deiner Kontrolle — du kannst eine Karte jederzeit löschen oder die App deinstallieren. Die Besucherzählung der Website ist aggregiert; wir können niemanden darin nachschlagen.</p>`,
       },
       changes: {
         title: 'Änderungen dieser Erklärung',

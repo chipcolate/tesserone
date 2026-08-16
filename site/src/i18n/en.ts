@@ -15,7 +15,7 @@ export const en: Strings = {
       'A simple, local-first loyalty card manager. No cloud, no accounts, no tracking. Open source.',
     privacyTitle: 'Privacy Policy — Tesserone',
     privacyDescription:
-      'Tesserone collects no data. This page explains what that means, in plain language and in the formal terms app stores ask for.',
+      'The Tesserone app collects no data. This website only counts visitors in aggregate. This page explains both, in plain language and in the formal terms app stores ask for.',
   },
   hero: {
     eyebrow: 'Tesserone',
@@ -109,7 +109,7 @@ export const en: Strings = {
   os: {
     eyebrow: 'Open source, simple by design',
     heading: 'Every line, auditable.',
-    body: 'Tesserone is released under the Apache 2.0 licence. That means you can read it, audit it, fork it, or build your own. No telemetry, no analytics, no servers — and nothing to take our word on.',
+    body: 'Tesserone is released under the Apache 2.0 licence. That means you can read it, audit it, fork it, or build your own. The app has no telemetry, no analytics, no servers — and nothing to take our word on. This website only counts visitors in aggregate.',
     badgeLicense: 'Apache 2.0 Licence',
     badgeTelemetry: 'Zero telemetry',
     badgeServers: 'No servers',
@@ -160,15 +160,15 @@ export const en: Strings = {
     back: '← Back to Tesserone',
     title: 'Privacy Policy',
     effectiveDateLabel: 'Effective date',
-    effectiveDate: 'April 20, 2026',
+    effectiveDate: 'August 16, 2026',
     sections: {
       oneSentence: {
         title: 'In one sentence',
-        body: `<p class="${prose}">Tesserone does not collect, transmit, or share any of your data. Everything you enter stays on your device.</p>`,
+        body: `<p class="${prose}">The Tesserone ${strongOpen}app${strongClose} does not collect, transmit, or share any of your data. Everything you enter stays on your device. This website only counts visitors in aggregate — see below.</p>`,
       },
       whatWeCollect: {
         title: 'What data we collect',
-        body: `<p class="${prose}">${strongOpen}None.${strongClose} Tesserone does not collect any personal information, usage analytics, crash reports, device identifiers, or any other data. There is no account, no sign-up, and no profile. The app does not communicate with any server we operate — because we don't operate any.</p>`,
+        body: `<p class="${prose}">${strongOpen}None from the app.${strongClose} The app does not collect any personal information, usage analytics, crash reports, device identifiers, or any other data. There is no account, no sign-up, and no profile. The app does not communicate with any server we operate — because we don't operate any.</p>`,
       },
       whatAppStores: {
         title: 'What data the app stores',
@@ -182,13 +182,17 @@ export const en: Strings = {
         title: 'Third parties',
         body: `<p class="${prose}">The app contains ${strongOpen}no third-party SDKs, advertising networks, analytics services, or tracking tools${strongClose}. It makes no network requests in normal use.</p>`,
       },
+      website: {
+        title: 'This website',
+        body: `<p class="${prose}">tesserone.com uses ${strongOpen}Cloudflare Web Analytics${strongClose} for a privacy-first, cookie-free count of page views and visitors. No personal profiles, no fingerprinting, no ads. It does not see the app or the cards on your phone. Hosting providers may still process technical data such as IP addresses under their own policies.</p>`,
+      },
       children: {
         title: "Children's privacy",
-        body: `<p class="${prose}">Tesserone does not knowingly collect information from anyone — including children under 13 (or the equivalent minimum age in your jurisdiction). Because we collect no data at all, there is nothing to delete or export on request.</p>`,
+        body: `<p class="${prose}">The app does not knowingly collect information from anyone — including children under 13 (or the equivalent minimum age in your jurisdiction). Website visitor counts are aggregate and cookieless. Chipcolate cannot identify you from either, so there is nothing personal to delete or export on request.</p>`,
       },
       rights: {
         title: 'Your rights (GDPR, CCPA)',
-        body: `<p class="${prose}">Regulations such as the GDPR and CCPA give you rights to access, correct, or delete personal data held about you. Chipcolate holds no personal data about Tesserone users, so there is nothing for us to provide or erase. Your data resides entirely on your device, under your control — you can delete a card or uninstall the app at any time to remove it.</p>`,
+        body: `<p class="${prose}">Regulations such as the GDPR and CCPA give you rights to access, correct, or delete personal data held about you. Chipcolate holds no personal data about Tesserone ${strongOpen}app${strongClose} users, so there is nothing from the product for us to provide or erase. Your cards reside entirely on your device, under your control — you can delete a card or uninstall the app at any time to remove them. Website visitor counts are aggregate; we cannot look someone up from them.</p>`,
       },
       changes: {
         title: 'Changes to this policy',
