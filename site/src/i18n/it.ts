@@ -130,7 +130,7 @@ export const it: Strings = {
       },
       eightySix: {
         title: 'Ristoranti',
-        body: 'Il brand viene prima. Prenotazioni senza commissioni, pagine ospite white-label e dati degli ospiti che restano tuoi — 86 gli intermediari.',
+        body: 'Il brand viene prima. Prenotazioni senza commissioni, un menu digitale sulla tua pagina, e dati degli ospiti che restano tuoi — 86 gli intermediari.',
       },
       chipcolate: {
         title: 'Studio',

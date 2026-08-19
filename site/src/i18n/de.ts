@@ -130,7 +130,7 @@ export const de: Strings = {
       },
       eightySix: {
         title: 'Restaurants',
-        body: 'Deine Marke zuerst. Provisionsfreie Restaurant-Reservierungen, White-Label-Gästeseiten und Gästedaten, die dir gehören — 86 die Zwischenhändler.',
+        body: 'Deine Marke zuerst. Provisionsfreie Reservierungen, eine digitale Speisekarte auf deiner Seite, und Gästedaten, die dir gehören — 86 die Zwischenhändler.',
       },
       chipcolate: {
         title: 'Studio',

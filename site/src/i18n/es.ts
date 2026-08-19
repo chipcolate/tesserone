@@ -130,7 +130,7 @@ export const es: Strings = {
       },
       eightySix: {
         title: 'Restaurantes',
-        body: 'Tu marca primero. Reservas sin comisión, páginas de invitado white-label y datos de clientes que son tuyos — 86 a los intermediarios.',
+        body: 'Tu marca primero. Reservas sin comisión, un menú digital en tu página, y datos de clientes que son tuyos — 86 a los intermediarios.',
       },
       chipcolate: {
         title: 'Estudio',
