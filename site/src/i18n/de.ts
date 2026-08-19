@@ -122,7 +122,7 @@ export const de: Strings = {
     projects: {
       yamete: {
         title: 'Desktop',
-        body: 'Schlag-Erkennung für Apple-Silicon-MacBooks. Schlag auf den Laptop, er macht Geräusch — Open-Source-Menüleisten-App, die sich raushält.',
+        body: 'Erkennt, wenn du dem MacBook einen Klaps gibst, und stellt das als Hook bereit, um Dinge zu tun — ein Ton, ein Webhook, ein Befehl.',
       },
       makolate: {
         title: 'Objekte',

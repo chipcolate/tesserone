@@ -122,7 +122,7 @@ export const en: Strings = {
     projects: {
       yamete: {
         title: 'Desktop',
-        body: 'Slap detection for Apple Silicon MacBooks. Hit the laptop, it makes a noise — open source menu-bar app that stays out of the way.',
+        body: 'Detects when you spank the MacBook and exposes it as a hook to do things — play a sound, call a webhook, run a command.',
       },
       makolate: {
         title: 'Objects',

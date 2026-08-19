@@ -122,7 +122,7 @@ export const fr: Strings = {
     projects: {
       yamete: {
         title: 'Desktop',
-        body: 'Détection de claques pour MacBook Apple Silicon. Tapez le laptop, il fait du bruit — app open source dans la barre de menus, discrète.',
+        body: 'Détecte quand vous fessez le MacBook et l\'expose comme hook pour faire des choses — un son, un webhook, une commande.',
       },
       makolate: {
         title: 'Objets',
