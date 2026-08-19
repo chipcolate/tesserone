@@ -130,7 +130,7 @@ export const fr: Strings = {
       },
       eightySix: {
         title: 'Restaurants',
-        body: 'Votre marque d’abord. Réservations sans commission, pages invité en marque blanche, et données clients qui restent les vôtres — 86 les intermédiaires.',
+        body: 'Votre marque d’abord. Un système d\'exploitation pour restaurants : menus numériques, réservations sans commission, pages invités en marque blanche et données clients qui restent les vôtres.',
       },
       chipcolate: {
         title: 'Studio',
