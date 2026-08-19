@@ -122,7 +122,7 @@ export const es: Strings = {
     projects: {
       yamete: {
         title: 'Desktop',
-        body: 'Detección de manotazos para MacBook Apple Silicon. Pega al portátil y hace ruido — app open source en la barra de menús, sin molestar.',
+        body: 'Detecta cuando azotas el MacBook y lo expone como hook para hacer cosas — un sonido, un webhook, un comando.',
       },
       makolate: {
         title: 'Objetos',

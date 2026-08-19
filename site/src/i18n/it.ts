@@ -122,7 +122,7 @@ export const it: Strings = {
     projects: {
       yamete: {
         title: 'Desktop',
-        body: 'Rilevamento degli schiaffi per MacBook Apple Silicon. Dai uno schiaffo al laptop e fa rumore — app open source nella barra dei menu, discreta.',
+        body: 'Rileva quando sculacci il MacBook e lo espone come hook per fare cose — un suono, un webhook, un comando.',
       },
       makolate: {
         title: 'Oggetti',
