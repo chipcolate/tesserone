@@ -130,7 +130,7 @@ export const en: Strings = {
       },
       eightySix: {
         title: 'Restaurants',
-        body: 'Your brand comes first. Commission-free bookings, a digital menu on your own page, and guest data that stays yours — 86 the middlemen.',
+        body: 'Your brand comes first. A restaurant operating system: digital menus, commission-free bookings, white-label guest pages, and guest data that stays yours.',
       },
       chipcolate: {
         title: 'Studio',
