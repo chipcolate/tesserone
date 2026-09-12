@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tesserone.com/schema/wallet.schema.json",
+  "title": "Tesserone native wallet document",
+  "description": "Canonical on-disk document for the native app. One file; cards keyed by id. customLogoUri is a bare filename or omitted — never a file:// or data URI.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "cards", "settings", "tutorial"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "description": "Native document version. Integer, distinct from the user-export version string."
+    },
+    "cards": {
+      "type": "object",
+      "description": "Map of card id → FidelityCard. Each key must equal the nested card.id.",
+      "additionalProperties": { "$ref": "#/definitions/FidelityCard" }
+    },
+    "settings": { "$ref": "#/definitions/Settings" },
+    "tutorial": { "$ref": "#/definitions/Tutorial" }
+  },
+  "definitions": {
+    "BarcodeFormat": {
+      "type": "string",
+      "enum": [
+        "QR",
+        "EAN13",
+        "EAN8",
+        "CODE128",
+        "CODE39",
+        "UPCA",
+        "UPCE",
+        "PDF417",
+        "AZTEC",
+        "DATAMATRIX",
+        "ITF14"
+      ]
+    },
+    "ThemeMode": {
+      "type": "string",
+      "enum": ["system", "light", "dark"]
+    },
+    "SortMode": {
+      "type": "string",
+      "enum": ["manual", "alphabetical", "dateCreated", "dateModified"]
+    },
+    "LanguagePreference": {
+      "type": "string",
+      "enum": ["system", "en", "it", "fr", "es", "de"]
+    },
+    "TutorialStepId": {
+      "type": "string",
+      "enum": [
+        "home-add-first",
+        "home-tap-expand",
+        "expanded-tips",
+        "home-scroll",
+        "home-share-tip",
+        "home-reorder-hint",
+        "reorder-drag"
+      ]
+    },
+    "IsoDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 / RFC 3339 timestamp, e.g. 2026-06-17T09:30:00.000Z"
+    },
+    "FidelityCard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "code", "format", "sortIndex", "createdAt", "updatedAt"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "code": { "type": "string", "minLength": 1 },
+        "format": { "$ref": "#/definitions/BarcodeFormat" },
+        "color": {
+          "type": "string",
+          "description": "Card face background, typically #RRGGBB."
+        },
+        "logoSlug": {
+          "type": "string",
+          "description": "Bundled brand slug from shared/brands/brand-index.json."
+        },
+        "customLogoUri": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^/\\\\]+$",
+          "description": "Bare filename under the custom-logos directory (e.g. 1710000000000-abcd1234.jpg). Omit when unused. Never a file:// URI or data URI."
+        },
+        "notes": { "type": "string" },
+        "sortIndex": { "type": "integer" },
+        "createdAt": { "$ref": "#/definitions/IsoDateTime" },
+        "updatedAt": { "$ref": "#/definitions/IsoDateTime" }
+      }
+    },
+    "Settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["themeMode", "sortMode", "language"],
+      "properties": {
+        "themeMode": { "$ref": "#/definitions/ThemeMode" },
+        "sortMode": { "$ref": "#/definitions/SortMode" },
+        "language": { "$ref": "#/definitions/LanguagePreference" }
+      }
+    },
+    "Tutorial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "seenSteps"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "seenSteps": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "home-add-first": { "type": "boolean" },
+            "home-tap-expand": { "type": "boolean" },
+            "expanded-tips": { "type": "boolean" },
+            "home-scroll": { "type": "boolean" },
+            "home-share-tip": { "type": "boolean" },
+            "home-reorder-hint": { "type": "boolean" },
+            "reorder-drag": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}

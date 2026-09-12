@@ -10,9 +10,35 @@ It ships with an **Apple Watch companion** (wrist-launchable barcodes), **home-s
 
 The repo also contains a static landing/privacy site under `site/`, built with Astro and deployed to GitHub Pages.
 
+## Native rewrite (in progress, `feat/native-rewrite`)
+
+Expo at the repo root still ships 1.4.x hotfixes. The 2.0.0 rewrite is **independent native apps** (no KMP):
+
+- `apps/ios/` — SwiftUI/UIKit, `TesseroneKit` SPM, Watch + WidgetKit + Share Extension
+- `apps/android/` — Kotlin/Compose (`:app` + `:core` + `:wear`)
+- `shared/` — brands, i18n JSON, tokens, motion, fonts, wallet/export schema
+
+Same bundle IDs (`com.chipcolate.tesserone`). First launch migrates Expo AsyncStorage (iOS `RCTAsyncLocalStorage_V1`, Android `RKStorage`) into `store/wallet.json`. Android RN widgets are dropped on update (new Glance providers); iOS WidgetKit kinds are preserved.
+
+Build on **burago-node-1** (`ssh burago`). Do **not** rsync `--exclude /ios --exclude /android` in a way that strips `apps/ios` / `apps/android`. `xcodebuild` and Gradle **do exit** (unlike `expo run:*`). Sequence iOS sim vs Android emulator (24 GB). Wear AVD is not installed yet — compile `:wear` only unless the user asks to download a Wear image.
+
+```
+# iOS (sim name is burago-iphone, not "iPhone 16 Plus")
+cd apps/ios
+xcodebuild -project Tesserone.xcodeproj -scheme Tesserone \
+  -destination 'platform=iOS Simulator,id=<burago-iphone UDID>' \
+  -configuration Debug build CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""
+
+# Android
+cd apps/android
+./gradlew :core:test :app:assembleDebug :wear:assembleDebug
+```
+
+Do not delete Expo (`app/`, `src/`, `modules/`, `targets/`) until store cutover.
+
 ## Tech Stack
 
-**App (repo root)**
+**App (repo root, Expo 1.4 — still shippable)**
 
 - **Expo SDK 55** with React Native 0.83, TypeScript
 - **expo-router** (file-based routing in `app/`)
@@ -174,11 +200,11 @@ Two widgets on each platform: **SingleCard** (one card, ~1×1) and **CardList** 
 
 Shared JS: `src/widgets/data.ts` (builds card data from the zustand store) and `src/widgets/i18n.ts` (`ensureWidgetI18n` — the headless task / config activity never mounts the app root, so it re-inits i18next from the persisted language). `startWidgetSync` runs from `app/_layout.tsx` once cards are loaded.
 
-### Brand Logos (`data/brand-index.json` + `assets/logos/`)
+### Brand Logos (`shared/brands/brand-index.json` + `shared/brands/logos/`)
 
 Curated database of store logos (PNG). Each entry has: slug, name, aliases, alt text, primaryColor, secondaryColor, logo filename. Fuse.js fuzzy search for brand matching when adding cards.
 
-To add a brand: drop PNG in `assets/logos/`, add `require()` in the `BUNDLED_LOGOS` map in `logos.ts`, add the entry to `brand-index.json`. The card renders the logo directly on `primaryColor` (no backing tile), so `primaryColor` must contrast the logo — run `bun run check:logos` to verify the preset is legible (it fails on hard-to-read pairs like a black logo on a black background).
+To add a brand: drop PNG in `shared/brands/logos/`, add `require()` in the `BUNDLED_LOGOS` map in `logos.ts`, add the entry to `brand-index.json`. The card renders the logo directly on `primaryColor` (no backing tile), so `primaryColor` must contrast the logo — run `bun run check:logos` to verify the preset is legible (it fails on hard-to-read pairs like a black logo on a black background).
 
 ### Landing Site (`site/`)
 

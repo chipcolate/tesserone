@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tesserone</string>
+    <string name="widget_single_label">Tesserone Card</string>
+    <string name="widget_single_description">Open a loyalty card straight from your home screen.</string>
+    <string name="widget_list_label">Tesserone Cards</string>
+    <string name="widget_list_description">Show a set of loyalty cards; tap one to open it.</string>
+    <string-array name="android_wear_capabilities">
+        <item>tesserone_phone</item>
+    </string-array>
+</resources>
+

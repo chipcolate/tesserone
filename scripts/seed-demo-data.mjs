@@ -13,7 +13,7 @@ import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const brands = JSON.parse(
-  readFileSync(join(__dirname, '..', 'data', 'brand-index.json'), 'utf8')
+  readFileSync(join(__dirname, '..', 'shared', 'brands', 'brand-index.json'), 'utf8')
 );
 const brand = (slug) => brands.find((b) => b.slug === slug);
 

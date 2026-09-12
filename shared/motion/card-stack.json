@@ -1,0 +1,16 @@
+{
+  "stackSpacing": 170,
+  "cardHeight": 280,
+  "miniPeek": 45,
+  "expandedTop": 20,
+  "springs": {
+    "select": { "damping": 33, "stiffness": 260 },
+    "dismiss": { "damping": 34, "stiffness": 280 },
+    "bounce": { "damping": 42, "stiffness": 420 },
+    "reorder": { "damping": 40, "stiffness": 340 }
+  },
+  "flipDurationMs": 300,
+  "dismissDistance": 100,
+  "dismissVelocity": 500,
+  "rubberBandFactor": 0.18
+}

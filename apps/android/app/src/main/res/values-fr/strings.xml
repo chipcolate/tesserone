@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_single_label">Carte Tesserone</string>
+    <string name="widget_single_description">Ouvre une carte de fidélité directement depuis l’écran d’accueil.</string>
+    <string name="widget_list_label">Cartes Tesserone</string>
+    <string name="widget_list_description">Affiche un ensemble de cartes ; touche-en une pour l’ouvrir.</string>
+</resources>

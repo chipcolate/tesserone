@@ -39,7 +39,7 @@ export interface Settings {
   language: LanguagePreference;
 }
 
-/** Shape of each entry in data/brand-index.json. */
+/** Shape of each entry in shared/brands/brand-index.json. */
 export interface BrandEntry {
   slug: string;
   name: string;

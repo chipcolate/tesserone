@@ -1,0 +1,17 @@
+{
+  "state": {
+    "cards": {
+      "card-001": {
+        "id": "card-001",
+        "name": "Demo Market",
+        "code": "4006381333931",
+        "format": "ean13",
+        "color": "#42A5F5",
+        "sortIndex": 0,
+        "createdAt": "2026-06-17T09:30:00.000Z",
+        "updatedAt": "2026-06-17T09:30:00.000Z"
+      }
+    }
+  },
+  "version": 2
+}

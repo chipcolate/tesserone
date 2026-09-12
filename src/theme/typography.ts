@@ -1,5 +1,28 @@
 import { TextStyle } from 'react-native';
 import { mono } from './fonts';
+import scale from '../../shared/tokens/typography.json';
+
+type Weight = keyof typeof mono;
+type Transform = NonNullable<TextStyle['textTransform']>;
+
+type RoleToken = {
+  fontSize: number;
+  letterSpacing: number | null;
+  lineHeight: number | null;
+  textTransform: string | null;
+  fontWeight: string;
+};
+
+function roleStyle(token: RoleToken): TextStyle {
+  const style: TextStyle = {
+    fontSize: token.fontSize,
+    fontFamily: mono[token.fontWeight as Weight],
+  };
+  if (token.letterSpacing != null) style.letterSpacing = token.letterSpacing;
+  if (token.lineHeight != null) style.lineHeight = token.lineHeight;
+  if (token.textTransform != null) style.textTransform = token.textTransform as Transform;
+  return style;
+}
 
 /**
  * All-in monospace type scale (JetBrains Mono). Weight is encoded by the family
@@ -7,44 +30,11 @@ import { mono } from './fonts';
  * wide, so larger scales get slight negative tracking to tighten them up.
  */
 export const typography = {
-  cardName: {
-    fontSize: 18,
-    fontFamily: mono.medium,
-    letterSpacing: -0.2,
-  },
-
-  barcode: {
-    fontSize: 16,
-    fontFamily: mono.regular,
-    letterSpacing: 1.5,
-  },
-
-  label: {
-    fontSize: 14,
-    fontFamily: mono.regular,
-  },
-
-  sectionHeader: {
-    fontSize: 13,
-    fontFamily: mono.bold,
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
-  },
-
-  title: {
-    fontSize: 28,
-    fontFamily: mono.bold,
-    letterSpacing: -0.8,
-  },
-
-  body: {
-    fontSize: 16,
-    fontFamily: mono.regular,
-    lineHeight: 22,
-  },
-
-  caption: {
-    fontSize: 12,
-    fontFamily: mono.regular,
-  },
+  cardName: roleStyle(scale.cardName),
+  barcode: roleStyle(scale.barcode),
+  label: roleStyle(scale.label),
+  sectionHeader: roleStyle(scale.sectionHeader),
+  title: roleStyle(scale.title),
+  body: roleStyle(scale.body),
+  caption: roleStyle(scale.caption),
 } as const satisfies Record<string, TextStyle>;
