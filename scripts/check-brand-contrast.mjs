@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Guards brand presets against unreadable cards. For every brand in
- * data/brand-index.json it measures how much of the logo's opaque area is
+ * shared/brands/brand-index.json it measures how much of the logo's opaque area is
  * clearly distinguishable from the card background (its `primaryColor`), since
  * CardFace renders the logo directly on that color with no backing tile.
  *
@@ -18,7 +18,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const brands = JSON.parse(readFileSync(path.join(ROOT, 'data/brand-index.json'), 'utf8'));
+const brands = JSON.parse(readFileSync(path.join(ROOT, 'shared/brands/brand-index.json'), 'utf8'));
 
 // Fraction of opaque logo pixels that must clearly contrast the background.
 const MIN_VISIBLE = 0.6;
@@ -63,7 +63,7 @@ const failures = [];
 const advisories = [];
 
 for (const b of brands) {
-  const px = await opaquePixels(path.join(ROOT, 'assets/logos', b.logo));
+  const px = await opaquePixels(path.join(ROOT, 'shared/brands/logos', b.logo));
   if (px.length === 0) {
     failures.push(`${b.slug}: logo has no opaque pixels`);
     continue;

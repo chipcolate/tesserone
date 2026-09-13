@@ -4,210 +4,207 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Tesserone is a loyalty card manager app with an Apple Wallet-style card stack interaction. Local-first, zero cloud, open source (Apache 2.0). Bundle ID: `com.chipcolate.tesserone`.
+Tesserone is a loyalty card manager with an Apple Wallet-style card stack. Local-first, zero cloud, open source (Apache 2.0). Bundle ID: `com.chipcolate.tesserone`. Team ID: `HNF5BY9XXV`. App Group: `group.com.chipcolate.tesserone`. URL scheme: `tesserone`.
 
-It ships with an **Apple Watch companion** (wrist-launchable barcodes), **home-screen widgets** (iOS + Android — tap a card to open straight to its barcode), a **share extension** (share an image into the app to auto-detect its barcode), and the **"Raw Aesthetic"** design language (all-monospace type, squared corners). The UI font is JetBrains Mono throughout.
+It ships with an **Apple Watch companion** (wrist barcodes), a **Wear OS companion**, **home-screen widgets** (iOS WidgetKit + Android Glance — tap a card to open its barcode), a **share-an-image-in** flow (on-device barcode detection), and the **"Raw Aesthetic"** (JetBrains Mono throughout, squared corners).
 
-The repo also contains a static landing/privacy site under `site/`, built with Astro and deployed to GitHub Pages.
+The repo is a **monorepo**: independent native iOS and Android apps (no KMP / no shared runtime), plus the Astro landing site under `site/`.
+
+**Expo 1.4 still lives at the repo root** (`app/`, `src/`, `modules/`, `targets/`) for store hotfixes until 2.0.0 cutover. New product work goes in `apps/` + `shared/`. Do not delete the Expo tree until the native binaries replace the listings.
+
+Draft PR: https://github.com/chipcolate/tesserone/pull/65 (`feat/native-rewrite`).
+
+## Layout
+
+```
+apps/ios/          SwiftUI/UIKit phone + Watch + WidgetKit + Share Extension
+apps/android/      Kotlin/Compose :app + :core + :wear
+shared/            brands, i18n JSON, tokens, motion, fonts, wallet/export schema
+site/              Astro landing (en/it/fr/es/de) → GitHub Pages / tesserone.com
+app/, src/, …      Expo 1.4 (hotfix-only until cutover)
+```
+
+There is **no shared business-logic runtime**. Each native app reimplements CRUD, scan, and UI against the files in `shared/`.
 
 ## Tech Stack
 
-**App (repo root)**
+**iOS (`apps/ios/`)** — iOS 17+, watchOS 10, iPhone only
 
-- **Expo SDK 55** with React Native 0.83, TypeScript
-- **expo-router** (file-based routing in `app/`)
-- **react-native-reanimated 4.x** (+ `react-native-worklets`) — all animations run on the UI thread via worklets
-- **react-native-gesture-handler 2.x** — pan, tap, long-press gestures for the card stack
-- **zustand** + AsyncStorage — state management with persistence
-- **i18next / react-i18next** + `expo-localization` — app i18n (en, it, fr, es, de)
-- **fuse.js** — fuzzy search over curated brand name index
-- **JetBrains Mono** (`@expo-google-fonts/jetbrains-mono`) — the whole UI renders in this monospace family (Raw Aesthetic)
-- **react-native-watch-connectivity** (patched) + **@bacons/apple-targets** — Apple Watch companion and its phone-side sync
-- **react-native-android-widget** (Android widgets, JS-rendered) + a WidgetKit extension via **@bacons/apple-targets** (iOS) and the local **`modules/widget-bridge`** native module — home-screen widgets and their phone-side sync
-- **expo-share-intent** + the local **`modules/barcode-vision`** native module — share-an-image-in flow with on-device barcode detection
+- Swift 5.9, SwiftUI chrome, **UIKit `CardStackView`** for 1:1 stack scroll
+- Local SPM package `TesseroneKit` (models, JSON store, Expo migrator, barcodes, i18n, import/export)
+- WatchConnectivity + WidgetKit + Share Extension, all on App Group `group.com.chipcolate.tesserone`
+- Scan: VisionKit `DataScannerViewController` / AVFoundation + Vision; still images via `ImageBarcodeDetector`
+- Barcodes: hand-rolled 1D (from the old watch encoders) + Core Image 2D on iPhone; watch QR is a vendored Nayuki encoder (no CocoaPods)
+- Fonts: `shared/fonts` JetBrains Mono registered by PostScript name — **never** `fontWeight` on a single family
+- `Tesserone.xcodeproj` is checked in (Xcode 16+). `project.yml` is optional XcodeGen; not required to build
 
-Custom UI components throughout (no react-native-paper or third-party UI kits).
+**Android (`apps/android/`)** — minSdk 26, Wear minSdk 30, compile/target 35
 
-**Landing site (`site/`)**
+- Kotlin, Jetpack Compose (Material 3 as host only — chrome is Raw Aesthetic)
+- Gradle modules: `:core` (store, migrator, brands, ZXing, i18n), `:app` (phone + Glance), `:wear` (Wear Compose companion)
+- Scan: CameraX + ML Kit barcode; still images via `:core` `ImageBarcodeDetector`
+- Wear Data Layer (`WatchSnapshot` v1, same JSON as iOS WatchConnectivity)
+- Fonts copied from `shared/fonts` into `res/font` at build time (one file per weight)
 
-- **Astro 6** + **Tailwind CSS 4**
-- Astro i18n with en/it/fr/es/de; default locale (en) lives at `/`
-- Deployed to GitHub Pages (custom domain `tesserone.com`) via `.github/workflows/deploy-site.yml` on pushes touching `site/**`
+**Shared (`shared/`)**
+
+| Path | What |
+|---|---|
+| `brands/` | `brand-index.json` + logo PNGs |
+| `i18n/` | en/it/fr/es/de JSON (`{{name}}` interpolation, `_one`/`_other` plurals) |
+| `tokens/` | colors, geometry (chrome 4 / card 2 / tile 2), type scale |
+| `motion/` | card-stack spacing and spring constants |
+| `fonts/` | JetBrains Mono OFL (Regular/Medium/Bold/ExtraBold) |
+| `schema/` | native wallet JSON, export JSON, AsyncStorage migration fixtures |
+
+**Landing site (`site/`)** — Astro 6 + Tailwind 4, i18n en/it/fr/es/de, GitHub Pages (`deploy-site.yml`).
+
+**Expo 1.4 (root, hotfix-only)** — Expo SDK 55, RN 0.83, expo-router, Reanimated, zustand+AsyncStorage. Do not add features here.
 
 ## Build & Run
 
-### App
+Native Linux box is the cockpit. **iOS / watchOS / Android sim builds run on burago-node-1** (`ssh burago`, Tailscale `100.118.161.68`). See the `burago-node` skill.
 
 ```bash
-# Install dependencies
-bun install
-
-# Dev build on physical device (required — no Expo Go or simulator)
-npx expo run:ios --device
-
-# Start Metro dev server (if not already running)
-npx expo start --dev-client
-
-# Preview build (ad-hoc, no dev client)
-eas build --platform ios --local --profile preview
-
-# Install IPA on device
-xcrun devicectl device install app --device <DEVICE_UUID> <path-to-ipa>
-
-# Production build
-eas build --platform ios --local --profile production
-eas build --platform android --local --profile production
+# rsync working tree (do NOT --exclude apps/ios or apps/android)
+rsync -az --delete --exclude .git --exclude /node_modules --exclude /site/node_modules \
+  --exclude /apps/android/.gradle --exclude /apps/android/app/build \
+  --exclude /apps/android/core/build --exclude /apps/android/wear/build \
+  --exclude /apps/android/build --exclude /apps/android/local.properties \
+  -e ssh ./ burago:builds/tesserone/
 ```
+
+`xcodebuild` and Gradle **exit**. `expo run:*` hangs on Metro — do not wait on it.
+
+Sequence platforms on burago (24 GB, llama-server resident). Wear AVD is **not** installed; compile `:wear` only unless asked to download a Wear image. Simulator ad-hoc sign with `CODE_SIGN_IDENTITY=-` (not `CODE_SIGNING_ALLOWED=NO`, or App Groups are empty). The sim name is **`burago-iphone`**, not “iPhone 16 Plus”.
+
+```bash
+# iOS (on burago)
+cd ~/builds/tesserone/apps/ios
+xcodebuild -project Tesserone.xcodeproj -scheme Tesserone \
+  -destination 'platform=iOS Simulator,id=<burago-iphone UDID>' \
+  -configuration Debug build CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""
+cd TesseroneKit && swift test
+
+# Android (Linux or burago)
+cd apps/android
+./gradlew :core:test :app:assembleDebug :wear:assembleDebug
+```
+
+Physical iPhone install needs a **development cert on the build Mac**. burago currently has 0 signing identities; device installs belong on a signed-in Mac (the MacBook). USB can show an iPhone while CoreDevice still reports `pairingState: unsupported` until Developer Mode + DDI prepare succeed.
 
 ### Landing site
 
 ```bash
 cd site
 bun install
-bun run dev     # local preview at http://localhost:4321/
-bun run build   # static output to site/dist/
+bun run dev     # http://localhost:4321/
+bun run build   # site/dist/
+```
+
+### Expo 1.4 hotfix (until cutover)
+
+```bash
+bun install
+npx expo run:ios --device
+eas build --platform ios --local --profile production
 ```
 
 ## Architecture
 
-### Routing (`app/`)
+### Persistence
 
-File-based routing via expo-router:
+Native store is **not** AsyncStorage. Canonical document (`shared/schema/wallet.schema.json`):
 
-- `index.tsx` — home screen with card wallet stack and FAB menu
-- `add.tsx` — add card: orchestrates a guided 3-step wizard (barcode → brand → review), modal presentation
-- `card/[id].tsx` — card detail/edit + single-card share-out (via `shareCard`), modal presentation
-- `settings.tsx` — theme, language, import/export, about
-- `_layout.tsx` — root Stack with ThemeProvider, ShareIntentProvider, GestureHandlerRootView, KeyboardProvider, SafeAreaProvider, ToastProvider, i18n bootstrap, JetBrains Mono font loading (`useFonts`), watch-sync startup (`startWatchSync`), and ErrorBoundary
-- `+native-intent.tsx` — `redirectSystemPath` for the share extension's deep-link scheme
+```
+{ schemaVersion: 1, cards: { id: FidelityCard }, settings, tutorial, migratedFromExpo }
+```
 
-### Card Stack (`src/components/wallet/`)
+- **iOS** — App Group `store/wallet.json` + `store/custom-logos/`. Widget, Share, and the app share one file.
+- **Android** — `filesDir/store/wallet.json` + `filesDir/custom-logos/`.
 
-Apple Wallet-style card stack. Cards are `<Animated.View>` elements with transforms driven by shared values from `useCardStack`.
+`customLogoUri` is a **bare filename**. Export JSON is version `2.1.0` (data-URI custom logos). Import still accepts lowercase barcode enums.
 
-- `useCardStack.ts` — central hook: scroll, select/dismiss, flip, reorder shared values and gesture handlers
-- `CardStack.tsx` — container with scroll pan gesture, layout measurement
-- `CardItem.tsx` — single card: animated positioning, gesture composition, wobble for reorder mode
-- `CardFace.tsx` — front face: brand logo or full-name fallback
-- `CardBack.tsx` — back face: barcode rendering (EAN13, CODE128, QR, etc.) + notes
-- `CardFlip.tsx` — rotateY flip wrapper with opacity-based face swap
+**One-shot Expo migrator** (empty native store only): unwrap zustand `{state, version}` for keys `cards` / `settings` / `tutorial`. iOS: `Library/Application Support/com.chipcolate.tesserone/RCTAsyncLocalStorage_V1` (values >1024 chars are md5 sidecars). Android: SQLite `RKStorage` / `catalystLocalStorage`. Fixtures: `shared/schema/fixtures/`. Leave AsyncStorage in place after migrate.
 
-Interactions: vertical scroll with rubber-band overscroll, tap to expand and auto-flip to the barcode (maxes brightness), tap again or swipe up to dismiss, long-press expanded card to edit, wobble + drag to reorder.
+### iOS app (`apps/ios/`)
 
-### UI & Tutorial (`src/components/`)
+| Target | Bundle ID |
+|---|---|
+| Tesserone | `com.chipcolate.tesserone` |
+| TesseroneWatch | `com.chipcolate.tesserone.watchkitapp` |
+| TesseroneWidget | `com.chipcolate.tesserone.widget` (kinds `TesseroneSingleCard`, `TesseroneCardList`) |
+| TesseroneShare | `com.chipcolate.tesserone.share` |
 
-- `ui/LogoSelector.tsx` — brand picker with fuzzy search plus custom image upload
-- `ui/BrandResults.tsx` — fuzzy-match result list for the brand picker
-- `ui/Button.tsx`, `ui/Panel.tsx`, `ui/Sheet.tsx`, `ui/ActionBar.tsx` — Raw-Aesthetic primitives (squared corners from `theme/geometry.ts`)
-- `ui/Toast.tsx` — `ToastProvider` + transient toast notifications
-- `ui/Wordmark.tsx` — the Tesserone mono wordmark
-- `tutorial/TutorialOverlay.tsx` — first-run overlay coaching the card-stack interactions
-- `tutorial/useActiveTutorialStep.ts` — drives which step is visible based on app state
+- `Tesserone/Wallet/CardStackView.swift` — UIKit pan, 1:1 scroll, rubber-band 0.18, springs from `shared/motion/card-stack.json`
+- `Tesserone/Add/` — 3-step wizard (barcode → brand → review)
+- `Tesserone/Card/EditCardView.swift`, `Settings/SettingsView.swift`, `Tutorial/`
+- `Tesserone/Sync/WatchSync.swift` — `WCSession` `updateApplicationContext` + `transferFile` (`WATCH_SCHEMA_VERSION = 1`)
+- `Tesserone/Sync/WidgetSync.swift` — App Group `widgets/snapshot.json` + logos, `WidgetCenter.reloadAllTimelines()`
+- Share Extension: one image → Vision → `store/pending-scan.json` → `tesserone://add`
 
-`ui/LogoSelector.tsx` and `ui/BrandResults.tsx` are used by the card edit screen (`card/[id].tsx`); the add flow uses the wizard's `StepBrand` (which reuses `LogoSelector` for its custom-logo fallback).
+Deep links: `tesserone://open/<id>` (expand+flip), `tesserone://add`.
 
-### Add-Card Wizard (`src/components/add/`)
+### Android app (`apps/android/`)
 
-`app/add.tsx` drives a guided 3-step wizard — a single modal with internal step state, a `WizardProgress` header, and a Back/Next/Save `ActionBar`. It replaced the old single-screen form to fix a discoverability problem where brand suggestions only appeared while typing in the name field. State (name/code/format/color/notes/logoSlug/customLogoUri) lives in `add.tsx`; the step components are presentational.
+- `:core` — `WalletStore`, `ExpoMigrator`, `BrandIndex`, `BarcodeEncoder` (ZXing), `I18n`, `WatchSnapshot`
+- `:app` — Compose home/stack/wizard/edit/settings/tutorial; Glance **SingleCard** / **CardList**; `WearSync`
+- `:wear` — Wear Compose list + barcode. `applicationId` is **`com.chipcolate.tesserone`** (same as phone) so Data Layer syncs; namespace `com.chipcolate.tesserone.wear`
 
-- `WizardProgress.tsx` — segmented progress bar + "STEP n OF 3" title/subtitle header
-- `StepBarcode.tsx` — method chooser (scan / photo / type it), manual code + format entry, and the image-scan status banners; the live `CameraView` overlay is rendered by `add.tsx`
-- `StepBrand.tsx` — first-class brand search with always-visible logo results (`searchBrands` / `getBrandLogo`) plus an explicit "not listed? custom name + logo" fallback
-- `StepFinish.tsx` — live card preview (the real `CardFace` + `CardBack`), color grid, and notes before saving via `addCard`
+**Android RN widgets are dropped on update** (provider class names changed). Users re-add from the picker. iOS WidgetKit kinds are preserved so placed widgets survive.
 
-The share-an-image-in flow still routes into Step 1 with the detected barcode pre-filled (see `+native-intent.tsx` and `_layout.tsx`).
+Brand logos/index are **copied at Gradle build** from `shared/brands` into `:core` assets (not checked in under `core/src/main/assets`).
 
-### State (`src/stores/`)
+### Card stack motion
 
-- `cards.ts` — card CRUD, reorder, sort (manual/alphabetical/dateCreated), filter by name/logoSlug
-- `settings.ts` — theme mode (system/light/dark), sort mode, language preference
-- `tutorial.ts` — first-run tutorial progression state
+Constants live in `shared/motion/card-stack.json` (stackSpacing 170, cardHeight 280, miniPeek 45, expandedTop 20, rubberBand 0.18, flip 300ms cubic-out). Scroll is raw 1:1; select/dismiss/reorder use interpolating springs (mass=1, RN damping/stiffness). Tap expand auto-flips and maxes brightness; tap or swipe up dismisses; long-press expanded → edit.
 
-### Services (`src/services/`)
+### i18n
 
-- `logos.ts` — curated brand database (fuse.js search, bundled PNG logos, custom upload via expo-image-picker); also resolves logo URIs for the watch
-- `scanner.ts` — barcode type mapping, validation, scan-artifact fixes
-- `imageScan.ts` — `scanBarcodeFromImage`: detects a barcode in a still image via the local `modules/barcode-vision` native module (used by the share-in flow and gallery scan)
-- `watch.ts` — Apple Watch sync: `startWatchSync` pushes a debounced `updateApplicationContext` snapshot + `startFileTransfer` for logos; `WATCH_SCHEMA_VERSION`/`WatchSnapshot` are the wire contract
-- `importExport.ts` — JSON export/import (export via expo-sharing, import via expo-document-picker), tolerant import parsing (lowercase barcode enums migrated, missing fields defaulted), conflict resolution (keep existing/use imported/keep newer), and `shareCard` for single-card share-out
+`shared/i18n/{en,it,fr,es,de}.json` is canonical. Nested keys, `{{name}}` / `{{count}}` / `{{format}}`, `_one`/`_other` for plurals. `system` language → device locale if it is one of the five, else `en`. Expo re-exports the JSON from `src/i18n/locales/*.ts` so the index has one owner.
 
-Camera and photo-library permissions are handled inline at the call site via `expo-camera` / `expo-image-picker`; there is no standalone permissions service.
+### Brand logos
 
-### Internationalization (`src/i18n/`)
+`shared/brands/brand-index.json` + `shared/brands/logos/*.png`. Fields: slug, name, aliases, alt, primaryColor, secondaryColor, logo. `primaryColor` is the card background (logo sits on it, no tile) — `bun run check:logos` fails unreadable pairs.
 
-- `index.ts` — initializes i18next, resolves language from settings (with `system` falling back to device locale via `expo-localization`)
-- `locales/{en,it,fr,es,de}.ts` — translation dictionaries
-- `languages.ts` — supported-language metadata, default, system-locale resolver
-- `format.ts` — locale-aware number/date formatting helpers
+To add a brand:
 
-Components consume translations with `useTranslation()` from `react-i18next`.
+1. PNG in `shared/brands/logos/` (transparent background)
+2. Entry in `brand-index.json`
+3. **Until Expo cutover**, also `require()` it in `src/services/logos.ts` `BUNDLED_LOGOS`
+4. `bun run check:logos`
 
-### Theme (`src/theme/`)
+Native apps pick up new logos from the synchronized group / Gradle copy. No per-platform asset catalog entry.
 
-- `colors.ts` — dark/light tokens, card color palette (including black/grey/white), `isLightColor()`, `textOnColor()`
-- `fonts.ts` — JetBrains Mono `mono` family map (weight encoded by family name, not `fontWeight`, to avoid Android faux-bolding) + `fontAssets` for `useFonts`
-- `typography.ts` — all-monospace type scale built on `mono` (card name 18pt, barcode 16pt, title 28pt, etc.)
-- `geometry.ts` — single source of truth for Raw-Aesthetic corner radii: `CHROME_RADIUS` (4), `CARD_RADIUS` (2), `TILE_RADIUS` (2); everything squared off after the on-device A/B
-- `index.ts` — ThemeProvider with dynamic accent color, `useTheme()` hook
+## Expo 1.4 (hotfix map)
 
-### Apple Watch Companion (`ios/TesseroneWatch/`)
+Keep this working until cutover. Do not add features.
 
-SwiftUI watch app scaffolded via `@bacons/apple-targets` (the target directory name MUST match the Xcode target name for the pods.rb integration). Phone side: `src/services/watch.ts`. Watch side renders cards from a synced `WatchSnapshot`.
+- Routes: `app/index.tsx`, `add.tsx`, `card/[id].tsx`, `settings.tsx`
+- Stack: `src/components/wallet/`
+- Stores: `src/stores/{cards,settings,tutorial}.ts` (zustand + AsyncStorage)
+- Watch/widgets/share: `src/services/watch.ts`, `src/widgets/`, `modules/widget-bridge`, `targets/TesseroneWatch`, `targets/TesseroneWidget`, `expo-share-intent`
 
-- Sync: debounced `updateApplicationContext` for card data + eager file transfer for logo images
-- Barcode coverage on watch: 7 formats rendered natively (EAN-13/EAN-8/UPC-A/CODE39/ITF-14/CODE128/QR; QR via `swift_qrcodejs`, 1D family hand-rolled); AZTEC/PDF417/UPC-E/DATAMATRIX fall back to an "Open on iPhone" placeholder
-- Bundle ID: `com.chipcolate.tesserone.watchkitapp`
+Screenshot scripts (`scripts/inject-screenshot-state.mjs`, `android-seed-sql.mjs`) still seed **Expo AsyncStorage**, not native `wallet.json`.
 
-### Share Extension & Image Scan (`ios/ShareExtension/`, `modules/barcode-vision/`)
+## Landing Site (`site/`)
 
-Share an image into Tesserone (or pick one from the gallery) and the barcode is detected on-device:
-
-- `expo-share-intent` provides `ShareIntentProvider`/`useShareIntentContext` (wired in `_layout.tsx`); `app/+native-intent.tsx` redirects the share deep-link scheme
-- `modules/barcode-vision/` — a local Expo native module (iOS + Android) exposing `detectBarcodesInImage`; consumed via `src/services/imageScan.ts`
-
-### Home-Screen Widgets (`src/widgets/`, `modules/widget-bridge/`, `targets/TesseroneWidget/`)
-
-Two widgets on each platform: **SingleCard** (one card, ~1×1) and **CardList** (a grid of cards, resizable). Both deep-link `tesserone://open/<id>` so a tap opens the app on that card. Each platform renders them differently:
-
-- **iOS** — a native **WidgetKit** extension in `targets/TesseroneWidget/` (`SingleCardWidget.swift`, `CardListWidget.swift`, `TesseroneWidgetBundle.swift`), scaffolded via `@bacons/apple-targets`. It reads a snapshot the app writes into the **App Group `group.com.chipcolate.tesserone`**: `src/services/widgets.ts` `startWidgetSync` calls the local **`modules/widget-bridge`** native module (`WidgetBridgeModule.swift`) to write `widgets/snapshot.json` + logo PNGs, then `reloadWidgets()`. The widget renders empty unless the build has the App Group **entitlement** (so a `CODE_SIGNING_ALLOWED=NO` sim build won't work — see the `screenshots` skill).
-- **Android** — **react-native-android-widget**, rendered from **JS in a headless task** (`src/widgets/widgetTaskHandler.tsx` → `render.tsx` → `CardWidgets.tsx`), not a native extension. `startWidgetSync` calls `requestWidgetUpdate`. Widget names/sizes are declared in `app.json`'s `react-native-android-widget` plugin block and must match the `SINGLE_CARD_WIDGET`/`CARD_LIST_WIDGET` constants in `src/widgets/config.ts`. Per-instance card selection lives in AsyncStorage under `widget:cfg:<widgetId>`, edited in `WidgetConfigurationScreen.tsx`.
-
-Shared JS: `src/widgets/data.ts` (builds card data from the zustand store) and `src/widgets/i18n.ts` (`ensureWidgetI18n` — the headless task / config activity never mounts the app root, so it re-inits i18next from the persisted language). `startWidgetSync` runs from `app/_layout.tsx` once cards are loaded.
-
-### Brand Logos (`data/brand-index.json` + `assets/logos/`)
-
-Curated database of store logos (PNG). Each entry has: slug, name, aliases, alt text, primaryColor, secondaryColor, logo filename. Fuse.js fuzzy search for brand matching when adding cards.
-
-To add a brand: drop PNG in `assets/logos/`, add `require()` in the `BUNDLED_LOGOS` map in `logos.ts`, add the entry to `brand-index.json`. The card renders the logo directly on `primaryColor` (no backing tile), so `primaryColor` must contrast the logo — run `bun run check:logos` to verify the preset is legible (it fails on hard-to-read pairs like a black logo on a black background).
-
-### Landing Site (`site/`)
-
-- `src/pages/index.astro`, `privacy.astro`, `[lang]/…` — routes
-- `src/components/` — section components (Hero, FeatureList, Backstory, OSSection, StoreCTAs, Footer, ThemeToggle)
-- `src/i18n/{en,it,fr,es,de}.ts` — per-language strings
-- `astro.config.mjs` — `site: 'https://tesserone.com'`, i18n locales, default locale `en` has no URL prefix
-- `public/CNAME` — custom-domain marker for GitHub Pages (must match `site` hostname)
-
-### Screenshot Tooling (`scripts/`)
-
-Store-listing **copy and assets are out of scope for this repo** — they live separately. What stays here is the automated screenshot pipeline. The shot list, target devices, and capture flow are documented in the **`screenshots` skill** (`.claude/skills/screenshots/SKILL.md`); the scripts are:
-
-- `capture-ios.sh` / `capture-android.sh` — per-locale automated capture (idb+simctl / adb)
-- `capture-ios-widget.sh` / `capture-android-widget.sh` — the home-screen widget shot (`06-widget`, EN-only); placement is a one-time manual GUI step, then these re-seed + capture (see the `screenshots` skill's "Widget shot")
-- `seed-demo-data.mjs`, `inject-screenshot-state.mjs`, `android-seed-sql.mjs` — seed a deterministic demo wallet into AsyncStorage before capture
-- `capture-screenshots.sh` — interactive manual fallback
-- `render-icons.ts`, `tinify-logos.ts` — icon rendering and bundled-logo compression
+- `src/pages/index.astro`, `privacy.astro`, `[lang]/…`
+- `src/i18n/{en,it,fr,es,de}.ts`
+- `astro.config.mjs` — `site: 'https://tesserone.com'`, default locale `en` has no URL prefix
+- `public/CNAME` must match the `site` hostname
 
 ## Key Design Decisions
 
-- **Raw Aesthetic** — the entire UI renders in JetBrains Mono with squared corners and hairline borders (glassmorphism was tried and rejected); type lives in `theme/typography.ts`/`fonts.ts`, radii in `theme/geometry.ts`
-- **Apple Wallet UX** — cards at fixed stack spacing (170px), scroll to browse, tap to expand+flip to barcode with mini-stack at bottom, tap or swipe up to dismiss
-- **Springs for transitions, raw values for scroll** — scroll tracking is 1:1 with finger (no spring lag), state transitions (select/dismiss/reorder) use springs
-- **Brightness boost on expand** — saves/restores device brightness automatically when the barcode appears
-- **Reorder mode** — FAB menu toggle, iOS home screen wobble, long-press + drag
-- **Wrist-first** — Apple Watch companion shows barcodes at the till without pulling out the phone; sync is one-way (phone → watch) via WatchConnectivity
-- **Glanceable widgets** — home-screen widgets surface cards without opening the app; native WidgetKit on iOS (fed an App Group snapshot via `modules/widget-bridge`), JS-rendered via react-native-android-widget on Android
-- **On-device barcode detection** — share/gallery image scans run through the local `barcode-vision` native module; no image leaves the device
-- **Curated logos, not API** — bundled PNGs for offline-first, user upload for anything not in the set
-- **Offline by default** — the app makes no network requests in normal use; nothing is sent off-device
-- **Tolerant import format** — accepts exports with lowercase barcode enums or missing fields (normalized/defaulted on import)
+- **Native, not cross-platform** — SwiftUI/UIKit and Compose independently; share JSON/assets only
+- **Raw Aesthetic** — JetBrains Mono, squared radii (chrome 4, card/tile 2), hairline borders; weight is a font file, not `fontWeight`
+- **Apple Wallet UX** — 170px stack spacing, tap to expand+flip, mini-stack at bottom
+- **Springs for transitions, raw values for scroll** — no spring lag on the finger
+- **Brightness boost on expand** — iOS save/restore `UIScreen.brightness`; Android window override, restore system/adaptive
+- **Wrist-first** — Watch + Wear, one-way phone → wearable
+- **Glanceable widgets** — WidgetKit (App Group snapshot) and Glance; tap `tesserone://open/<id>`
+- **On-device barcode detection** — Vision / ML Kit; no image leaves the device
+- **Curated logos, not API** — bundled PNGs; user upload for anything else
+- **Offline by default** — no network in normal use
+- **Tolerant import** — lowercase barcode enums and missing fields normalized on import
+- **Same store listings** — 2.0.0 replaces 1.4.x in place; migrate wallets; then delete Expo

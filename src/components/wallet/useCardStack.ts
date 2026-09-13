@@ -5,6 +5,7 @@ import { Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import * as Brightness from 'expo-brightness';
 import { CARD_RADIUS } from '../../theme/geometry';
+import motion from '../../../shared/motion/card-stack.json';
 
 function triggerHaptic() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -15,28 +16,43 @@ function triggerLightHaptic() {
 }
 
 export const CARD_STACK = {
-  STACK_SPACING: 170,
-  CARD_HEIGHT: 280,
+  STACK_SPACING: motion.stackSpacing,
+  CARD_HEIGHT: motion.cardHeight,
   CARD_RADIUS,
-  MINI_PEEK: 45,
-  EXPANDED_TOP: 20,
+  MINI_PEEK: motion.miniPeek,
+  EXPANDED_TOP: motion.expandedTop,
 } as const;
 
 // "Raw aesthetic" motion: critically/over-damped springs — they arrive fast and
 // stop dead, no overshoot or bounce. Reads engineered rather than springy.
-export const SPRING_SELECT = { damping: 33, stiffness: 260 } as const;
-const SPRING_DISMISS = { damping: 34, stiffness: 280 } as const;
-const SPRING_BOUNCE = { damping: 42, stiffness: 420 } as const;
-export const SPRING_REORDER = { damping: 40, stiffness: 340 } as const;
+export const SPRING_SELECT = {
+  damping: motion.springs.select.damping,
+  stiffness: motion.springs.select.stiffness,
+} as const;
+const SPRING_DISMISS = {
+  damping: motion.springs.dismiss.damping,
+  stiffness: motion.springs.dismiss.stiffness,
+} as const;
+const SPRING_BOUNCE = {
+  damping: motion.springs.bounce.damping,
+  stiffness: motion.springs.bounce.stiffness,
+} as const;
+export const SPRING_REORDER = {
+  damping: motion.springs.reorder.damping,
+  stiffness: motion.springs.reorder.stiffness,
+} as const;
 
 // The flip is a discrete, mechanical hinge — a timing curve (decisive, no spring
 // settle) reads far less "jelly" than a spring. Snappy-in, hard decelerate.
-const FLIP_TIMING = { duration: 300, easing: Easing.out(Easing.cubic) } as const;
+const FLIP_TIMING = {
+  duration: motion.flipDurationMs,
+  easing: Easing.out(Easing.cubic),
+} as const;
 
-const DISMISS_DISTANCE = 100;
-const DISMISS_VELOCITY = 500;
+const DISMISS_DISTANCE = motion.dismissDistance;
+const DISMISS_VELOCITY = motion.dismissVelocity;
 // Tighter overscroll — less organic squish, more rigid resistance.
-const RUBBER_BAND_FACTOR = 0.18;
+const RUBBER_BAND_FACTOR = motion.rubberBandFactor;
 
 function rubberBand(offset: number, limit: number, factor: number): number {
   'worklet';

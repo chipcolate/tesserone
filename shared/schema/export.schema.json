@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tesserone.com/schema/export.schema.json",
+  "title": "Tesserone user export file",
+  "description": "Shareable backup / single-card share-out. Produced by the Expo app as version 2.1.0. cards is an array (not a map). customLogoUri is inlined as a data URI in 2.1.0+; older files may store a bare filename or a file:// URI.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cards", "exportedAt", "version"],
+  "properties": {
+    "cards": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/FidelityCard" }
+    },
+    "settings": {
+      "type": "object",
+      "description": "Partial settings. Expo 2.1.0 writes themeMode and sortMode; language may be absent. All fields optional.",
+      "additionalProperties": false,
+      "properties": {
+        "themeMode": { "$ref": "#/definitions/ThemeMode" },
+        "sortMode": { "$ref": "#/definitions/SortMode" },
+        "language": { "$ref": "#/definitions/LanguagePreference" }
+      }
+    },
+    "exportedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp of when the file was written."
+    },
+    "version": {
+      "type": "string",
+      "description": "Export format version string (not the native schemaVersion integer). Current producer writes 2.1.0.",
+      "examples": ["2.1.0", "1.0.0"]
+    }
+  },
+  "definitions": {
+    "BarcodeFormat": {
+      "type": "string",
+      "description": "Canonical export uses uppercase. Importers must also accept the lowercase/legacy aliases in README (ean13 → EAN13, itf → ITF14, unknown → CODE128).",
+      "enum": [
+        "QR",
+        "EAN13",
+        "EAN8",
+        "CODE128",
+        "CODE39",
+        "UPCA",
+        "UPCE",
+        "PDF417",
+        "AZTEC",
+        "DATAMATRIX",
+        "ITF14"
+      ]
+    },
+    "ThemeMode": {
+      "type": "string",
+      "enum": ["system", "light", "dark"]
+    },
+    "SortMode": {
+      "type": "string",
+      "enum": ["manual", "alphabetical", "dateCreated", "dateModified"]
+    },
+    "LanguagePreference": {
+      "type": "string",
+      "enum": ["system", "en", "it", "fr", "es", "de"]
+    },
+    "FidelityCard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "code", "format", "sortIndex", "createdAt", "updatedAt"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "code": { "type": "string", "minLength": 1 },
+        "format": { "$ref": "#/definitions/BarcodeFormat" },
+        "color": { "type": "string" },
+        "logoSlug": { "type": "string" },
+        "customLogoUri": {
+          "type": "string",
+          "minLength": 1,
+          "description": "2.1.0+ inlines the logo as a data URI (data:image/…;base64,…). Older exports may use a bare filename or a file:// URI; the importer keeps only the filename portion (or materializes a data URI to a new file)."
+        },
+        "notes": { "type": "string" },
+        "sortIndex": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

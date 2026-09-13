@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import tinify from 'tinify';
 
-const LOGOS_DIR = join(process.cwd(), 'assets', 'logos');
+const LOGOS_DIR = join(process.cwd(), 'shared', 'brands', 'logos');
 const MANIFEST_PATH = join(LOGOS_DIR, '.tinified.json');
 
 // Cap source PNGs at this longest-edge size. Logos render at 160x48 logical

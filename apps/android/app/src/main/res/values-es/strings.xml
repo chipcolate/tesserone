@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_single_label">Tarjeta Tesserone</string>
+    <string name="widget_single_description">Abre una tarjeta de fidelidad directamente desde la pantalla de inicio.</string>
+    <string name="widget_list_label">Tarjetas Tesserone</string>
+    <string name="widget_list_description">Muestra un conjunto de tarjetas; toca una para abrirla.</string>
+</resources>

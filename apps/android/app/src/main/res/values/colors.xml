@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tesserone_dark_bg">#0A0A0A</color>
+    <color name="tesserone_light_bg">#FAFAF8</color>
+    <color name="ic_launcher_background">#FAFAF8</color>
+</resources>

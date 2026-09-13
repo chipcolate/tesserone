@@ -1,0 +1,12 @@
+.gradle/
+**/.gradle/
+build/
+**/build/
+local.properties
+*.iml
+.idea/
+.cxx/
+captures/
+.DS_Store
+# Brand logos/index are copied from ../../shared/brands at build time.
+core/src/main/assets/

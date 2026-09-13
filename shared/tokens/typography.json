@@ -1,0 +1,51 @@
+{
+  "cardName": {
+    "fontSize": 18,
+    "letterSpacing": -0.2,
+    "lineHeight": null,
+    "textTransform": null,
+    "fontWeight": "medium"
+  },
+  "barcode": {
+    "fontSize": 16,
+    "letterSpacing": 1.5,
+    "lineHeight": null,
+    "textTransform": null,
+    "fontWeight": "regular"
+  },
+  "label": {
+    "fontSize": 14,
+    "letterSpacing": null,
+    "lineHeight": null,
+    "textTransform": null,
+    "fontWeight": "regular"
+  },
+  "sectionHeader": {
+    "fontSize": 13,
+    "letterSpacing": 0.8,
+    "lineHeight": null,
+    "textTransform": "uppercase",
+    "fontWeight": "bold"
+  },
+  "title": {
+    "fontSize": 28,
+    "letterSpacing": -0.8,
+    "lineHeight": null,
+    "textTransform": null,
+    "fontWeight": "bold"
+  },
+  "body": {
+    "fontSize": 16,
+    "letterSpacing": null,
+    "lineHeight": 22,
+    "textTransform": null,
+    "fontWeight": "regular"
+  },
+  "caption": {
+    "fontSize": 12,
+    "letterSpacing": null,
+    "lineHeight": null,
+    "textTransform": null,
+    "fontWeight": "regular"
+  }
+}

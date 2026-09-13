@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "cards": {},
+  "settings": {
+    "themeMode": "system",
+    "sortMode": "manual",
+    "language": "system"
+  },
+  "tutorial": {
+    "enabled": true,
+    "seenSteps": {}
+  }
+}

@@ -36,9 +36,17 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# generated native folders
+# generated native folders (Expo prebuild at repo root only)
 /ios
 /android
+
+# Native rewrite trees (keep sources; ignore build output)
+apps/android/.gradle/
+apps/android/**/build/
+apps/android/local.properties
+apps/ios/**/xcuserdata/
+apps/ios/DerivedData/
+apps/ios/TesseroneKit/.build/
 
 # generated apple-targets assets (regenerated from expo-target.config.js)
 /targets/*/Assets.xcassets/

@@ -16,7 +16,8 @@ Local-first. Zero cloud. Zero bloat. Open source.
 
 - **Wallet-style card stack** — scroll, tap to bring a card forward with its barcode, tap again or swipe up to send it back
 - **Apple Watch companion** — your barcodes on your wrist, scannable at the till without pulling out your phone
-- **Home-screen widgets** — pin a single card or a grid of cards to your iOS or Android home screen; tap one to open straight to its barcode
+- **Home-screen widgets** — pin a single card or a grid of cards to your iOS or Android home screen; tap one to open straight to its barcode. The native Android rewrite uses Glance (`SingleCardWidgetReceiver` / `CardListWidgetReceiver`); updating from the Expo app **drops existing RN widgets** because the provider class names change — re-add them from the picker.
+- **Wear OS companion** — barcodes on the wrist (native `:wear` module), synced from the phone via the Data Layer, matching the Apple Watch companion
 - **Brightness boost** — screen brightness maxes out when viewing a barcode, restores when you're done
 - **Guided add** — a quick 3-step flow (barcode → brand → review) to scan, snap, or type a card and preview it before saving
 - **Barcode scanning** — scan loyalty cards with the camera, share in a screenshot, or enter details manually
@@ -83,7 +84,25 @@ cd tesserone
 bun install
 ```
 
-### Run on a device
+### Native rewrite (2.0, in progress)
+
+Independent SwiftUI + Compose apps live in `apps/ios` and `apps/android`. Shared brands/i18n/tokens/fonts are in `shared/`. Expo at the repo root still ships until cutover.
+
+```bash
+# iOS (Xcode 16+, scheme Tesserone)
+cd apps/ios
+xcodebuild -project Tesserone.xcodeproj -scheme Tesserone \
+  -destination 'platform=iOS Simulator,name=burago-iphone' \
+  -configuration Debug build CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""
+
+# Android
+cd apps/android
+./gradlew :core:test :app:assembleDebug :wear:assembleDebug
+```
+
+See `apps/ios/README.md` and `apps/android/README.md`.
+
+### Run on a device (Expo 1.4)
 
 **iOS**
 
@@ -129,9 +148,9 @@ eas build --platform android --local --profile production
 
 Tesserone ships with a curated set of store logos. To add a new brand:
 
-1. Add a PNG logo to `assets/logos/` (transparent background)
+1. Add a PNG logo to `shared/brands/logos/` (transparent background)
 2. Register the asset in `src/services/logos.ts` in the `BUNDLED_LOGOS` map
-3. Add the brand entry to `data/brand-index.json` with name, aliases, colors, and logo filename — `primaryColor` is the card background, so it must contrast the logo (the logo renders directly on it, with no backing tile)
+3. Add the brand entry to `shared/brands/brand-index.json` with name, aliases, colors, and logo filename — `primaryColor` is the card background, so it must contrast the logo (the logo renders directly on it, with no backing tile)
 4. Run `bun run check:logos` to verify the preset is legible — it fails on hard-to-read pairs like a black logo on a black background
 
 Users can also upload custom logos from their photo gallery when adding a card.

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_single_label">Tesserone-Karte</string>
+    <string name="widget_single_description">Öffne eine Kundenkarte direkt vom Homescreen.</string>
+    <string name="widget_list_label">Tesserone-Karten</string>
+    <string name="widget_list_description">Zeigt mehrere Karten; tippe eine an, um sie zu öffnen.</string>
+</resources>

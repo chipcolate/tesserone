@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tesserone</string>
+    <string-array name="android_wear_capabilities">
+        <item>tesserone_wear</item>
+    </string-array>
+</resources>

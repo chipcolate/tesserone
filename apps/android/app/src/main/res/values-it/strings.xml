@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_single_label">Tessera Tesserone</string>
+    <string name="widget_single_description">Apri una tessera fedeltà direttamente dalla schermata Home.</string>
+    <string name="widget_list_label">Tessere Tesserone</string>
+    <string name="widget_list_description">Mostra un gruppo di tessere; toccane una per aprirla.</string>
+</resources>
